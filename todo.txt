@@ -1,0 +1,8 @@
+This file is the todo for almost everything.
+
+General:
+ - Start keeping track of work time
+
+Pre-Documentation:
+ - Mockups
+ 
