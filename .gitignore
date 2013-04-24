@@ -1,5 +1,5 @@
 *
-prework/*
+!prework
 !*.tex
 !*.bib
 !*.png
