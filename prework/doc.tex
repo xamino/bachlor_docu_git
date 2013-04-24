@@ -5,13 +5,17 @@
 \usepackage{a4wide}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+% Better font
+\usepackage{lmodern}
+% Better font rendering
+\usepackage{microtype}
 % Packages for pictures:
 \usepackage{graphicx}
 \usepackage{float}
 % Package for urls:
 \usepackage{url}
 \usepackage{hyperref}
-
+%Define bib style:
 \bibliographystyle{alpha}
 
 %Alternative paragraph style
@@ -20,17 +24,16 @@
 
 \begin{document}
 
-%TODO: Pre-Work? Really?
-\title{Implementation of a Java Framework for Marker Based Detection in Augmented Reality \\ {\large Pre-Work}}
+\title{Implementation of a Java Framework for Marker Based Detection in Augmented Reality \\ {\large Proposal}}
 \author{Tamino Hartmann}
 \date{\today}
 
 \maketitle
 
 \begin{abstract}
-TODO: Place abstract here.
-Maybe I should change the font of the document?
-The \LaTeX \ one looks kind of boring by now...
+This paper represents the proposal of the bachelor thesis for Tamino Hartmann.
+The goal is the development of an Android framework written in Java to allow the detection and usage of printed markers in augmented reality via a device's camera.
+To prove the concept, the framework will be developed right into a first application that will implement it.
 \end{abstract}
 
 \newpage
@@ -40,17 +43,47 @@ The \LaTeX \ one looks kind of boring by now...
 
 \newpage
 
-\section{Hello World!}
+\section{TODO}
+
+\begin{itemize}
+	\item I need a catchy name for the framework and for the app that will come from it (simply that they can be referenced easily and quickly).
+	\item Improve on the title page. Should be consistent until the end of my work.
+\end{itemize}
+
+\section{Introduction}
+
+The goal of the framework will be reached by programming an application that uses it.
+The framework will be initially based on the Android port\cite{opencvandroid} of OpenCV\cite{opencv}, implemented as a Java package.
+Ideally, the final version will run independent of the OpenCV module beneath it, although we do not guarantee that functionality at the moment for the final version.
+Should the OpenCV library be freely exchangeable, the framework will also be usable beyond Android.
+
+To develop and test the framework right from the start, we will develop an Android application (henceforth app) that implements it.
+The app will allow for the real-time viewing of virtual objects on top of a marker.
+By moving the device, the object can be viewed from different perspectives.
+This shall prove the capability and initial concept of the framework and also serve as a starting point for any future work.
+
+This paper consists of all the work done before any actual implementation is done.
+We will look at the basic requirements of the framework and app.
+Basic necessities will be listed and reviewed.
+We'll also present mockups of the final app and a proposal for the structure of the framework.
+However, the results may vary at the end for both the look of the app and the structure of the framework, so we claim no responsibility for their correctness as of now.
+The final state will be compared to the proposed state in a second paper, in which we will look back at the development and summarize the important aspects.
+
+Apart from the programmatic development of the framework, the app, and the final review of our work, we will also deliver at least basic documentation for the framework and app.
+For the framework this will at least include a Javadoc\footnote{See: \url{http://en.wikipedia.org/wiki/Javadoc}.} file for the complete code and a basic tutorial for usage.
+For the app, we expect little documentation to be required for the usage.
+Therefore, we propose implementing a basic helping function within the app either as contextual tips or manual pages accessible from within the app.
+The code for the app will also include a Javadoc file.
+
+\section{Mockups}
+
+Looooots of sensible pictures and diagrams here.
 
 First sentence. :D
 Note the paragraph style after the break.
 I'll also be writing all of my sentences on their own lines to allow for ideal git tracking.
 
 Test the links: \url{www.youtube.com}
-
-\section{Mockups}
-
-Looooots of sensible pictures and diagrams here.
 
 \newpage
 \bibliography{doc}
