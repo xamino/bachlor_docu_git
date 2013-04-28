@@ -1,8 +1,11 @@
 This file is the todo for almost everything.
 
+[X] Marks finished things, [O] marks things to be done, [I] marks things in progress.
+
 General:
- - Start keeping track of work time
+ - [X]Start keeping track of work time
+ - [O]Consider developing with https://developer.nvidia.com/tegra-android-development-pack
 
 Pre-Documentation:
- - Mockups
+ - [I]Mockups
  
