@@ -1,6 +1,6 @@
 %Generally: improve formatting. Not pretty, but should be.
 
-\documentclass[a4paper]{article}
+\documentclass[a4paper,twoside]{article}
 
 \usepackage{a4wide}
 \usepackage[utf8]{inputenc}
@@ -15,8 +15,19 @@
 % Package for urls:
 \usepackage{url}
 \usepackage{hyperref}
+%Take care of header:
+\usepackage{fancyhdr}
 %Define bib style:
 \bibliographystyle{alpha}
+
+%Prepare header & footer:
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\renewcommand{\sectionmark}[1]{\markright{\MakeUppercase \thesection.\ #1}}
+\fancyhead[RO] {\rightmark}
+\fancyhead[LE] {\author{Tamino Hartmann}}
+\fancyfoot[RO, LE] {\thepage}
 
 %Alternative paragraph style
 \setlength{\parindent}{0.0in}
@@ -29,6 +40,7 @@
 \date{\today}
 
 \maketitle
+\thispagestyle{empty}
 
 \begin{abstract}
 This paper represents the proposal of the bachelor thesis for Tamino Hartmann.
@@ -36,14 +48,18 @@ The goal is the development of an Android framework written in Java to allow the
 To prove the concept, the framework will be developed right into a first application that will implement it.
 \end{abstract}
 
+%Leave an empty page:
+\newpage
+\mbox{}
+
+%And now get to the table of contents:
 \newpage
 
-%Do or do not, that is the question here... :P
 \tableofcontents
 
 \newpage
 
-\section{TODO}
+\section*{TODO}
 
 \begin{itemize}
 	\item I need a catchy name for the framework and for the app that will come from it (simply that they can be referenced easily and quickly).
@@ -80,17 +96,49 @@ For the app, we expect little documentation to be required for the usage.
 Therefore, we propose implementing a basic helping function within the app either as contextual tips or manual pages accessible from within the app.
 The code for the app will also include a Javadoc file.
 
-\section{Mockups}
+\section{App Design}
 
-Looooots of sensible pictures and diagrams here.
+Within these sections we will discuss the graphical interface of the app and its control flow.
 
-First sentence. :D
-Note the paragraph style after the break.
-I'll also be writing all of my sentences on their own lines to allow for ideal git tracking.
+\subsection{Control Flow}
 
-Test the links: \url{www.youtube.com}
+TODO: Flowchart etc.
+
+\subsection{Mockups}
+
+Upon starting the app on a capable device, the app presents itself as shown in Figure \ref{fig:start_mockup}.
+This is effectively the start screen from where all the interaction takes place.
+The green light in the top left shows that the app is detecting the marker with a high confidence, meaning that there are no large uncertainties.
+If the marker is too warped or partially covered, the light switches to red.
+If the app can still detect the marker but is having difficulties, the light switches to orange.
+This mechanism is meant to offer fast and accurate feedback to the detection capability.
+Another method of direct feedback is the already displayed axis-object.
+This is meant to offer fast feedback to the orientation and scaling of the coordinate space to the user before a custom object is displayed.
+The visibility of the axis-object can be toggled in the settings.
+
+The menu button on the status bar at the bottom of the screen opens up a menu as seen in Figure ???.
+From here the user can control the overlays they wish displayed over the camera view and control what is rendered into the picture.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=15cm]{images/start_mockup.png}
+	\caption[Start screen mockup.]{Mockup of how the start screen of the final app might look. Note the menu button on the bottom, the rendered axes, and the green status light signifying that the marker is being read with a high confidence.}
+	\label{fig:start_mockup}
+\end{figure}
+
+\section{Framework API}
+
+In this section, we take a close look at the proposed structure and capabilities of the framework's API.
+The final implementation will however deviate with a high probability.
+
+\section{Conclusion}
+
+TODO...
 
 \newpage
+
+\listoffigures
+%\listoftables
 \bibliography{doc}
 
 \end{document}
