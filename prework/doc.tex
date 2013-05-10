@@ -17,6 +17,8 @@
 \usepackage{hyperref}
 %Take care of header:
 \usepackage{fancyhdr}
+% Textwrapping for tables:
+\usepackage{tabulary}
 %Define bib style:
 \bibliographystyle{alpha}
 
@@ -67,10 +69,17 @@
 \section{Application}
 \input{text/application.tex}
 \newpage
+% Results
+\section{Results}
+\input{text/results.tex}
+\newpage
+% Conclusion
 \section{Conclusion}
 \input{text/conclusion.tex}
-
 \newpage
+%Glossary
+\section*{Glossary}
+\input{text/glossary.tex}
 
 \listoffigures
 %\listoftables

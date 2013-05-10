@@ -1,12 +1,62 @@
 \subsection{Application Context}
 
-\subsection{System Profile}
+The app is to be developed to provide a proof-of-concept for the framework.
+Basic tasks of the app include showing off the capabilities of the framework, proving the implementation, and as an example on how to utilize the framework.
+
+The app will be developed for Android 4 and above, although the framework will be independent from any Android version.
+The app will force landscape view as it offers the more natural layout for the layout of the app.
+Apart from OpenCV for the framework, the app shall have no further dependencies on further 3rd party tools.
+This should ensure a clean and fast code for the application.
+
+The app should be capable of running smoothly on a Tegra 3 processor\footnote{See: \url{http://www.nvidia.com/object/tegra-3-processor.html}.}.
+The development device is the Transformer Prime, a 10'' tablet from ASUS\footnote{See: \url{http://eee.asus.com/en/transformer-prime/features}.}.
+This means that the app should run smoothly on a 1.6Ghz Quadcore ARM processor rendering to a 1280 by 800 pixel screen.
 
 \subsection{System Tasks}
 
+In this section, we will take a look at the various tasks the final app should be capable of doing.
+
+\subsubsection*{Required Tasks}
+
+\begin{tabulary}{\textwidth}{L || L}
+View Camera & The user should, upon opening the app, be confronted with the view of the live camera feed. By default, if a marker is detected, a simple 3d coordinate marker is shown in place of an object. \\
+\hline
+Load Model & Load and prepare a 3d model to be viewed in the camera feed on top of the marker. Any model in a recognized format should be selectable as a file from a file browser. \\
+\hline
+Modify Model & This task shall allow the user to change basic properties such as rotation and scale of a loaded object.\\
+\hline
+Unload Model & Unload a model, returning the view to the standard 3d coordinate marker on top of the marker (if detected). Unloading a model can also be achieved by loading a new one to replace it. \\
+\hline
+Change Settings & Allows the user to modify the frames per second to render the output, how often to update the frame, and the visual quality of the video feed on which the marker detection is run. Should enable the app to be adapted to run on a wide variety of devices.\\
+\hline
+Toggle Debugging Information & If desirable, the user can toggle a debugging view to be rendered on top of the feed. This should offer detailed information on the shown view, marker detection, and any other factors. \\
+\hline
+Screenshot & As Android does not offer a screenshot tool by default, an option to capture the feed shall be provided. \\
+\end{tabulary}
+
+\subsubsection*{Optional Tasks}
+
+This section represents tasks that could be added but might not be.
+Any feature that does not make the final app is to be taken as a suggestion for possible future expansion.
+
+\begin{tabulary}{\textwidth}{L || L}
+Marker Definition & If possible, the user can load any recognized picture to be used as a marker beyond the default one. Certain properties will most likely be required of the picture however. \\
+\hline
+Modify Model & Further options such as toggling the rendering of a wireframe or textures. Future work might even include shader control or blending options for transparency or blur.\\
+\end{tabulary}
+
 \subsection{Dialog Structure}
 
+TODO
+
 \subsection{Mockups}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=15cm]{images/start_mockup.png}
+	\caption[Start screen mockup.]{Mockup of how the start screen of the final app might look. Note the menu button on the bottom, the rendered axes, and the green status light signifying that the marker is being read with a high confidence. TODO: Correct - missing menu}
+	\label{fig:start_mockup}
+\end{figure}
 
 Upon starting the app on a capable device, the app presents itself as shown in Figure \ref{fig:start_mockup}.
 This is effectively the start screen from where all the interaction takes place.
@@ -18,12 +68,5 @@ Another method of direct feedback is the already displayed axis-object.
 This is meant to offer fast feedback to the orientation and scaling of the coordinate space to the user before a custom object is displayed.
 The visibility of the axis-object can be toggled in the settings.
 
-The menu button on the status bar at the bottom of the screen opens up a menu as seen in Figure ???.
+The menu button on the status bar at the bottom of the screen opens up a menu as seen in Figure TODO.
 From here the user can control the overlays they wish displayed over the camera view and control what is rendered into the picture.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=15cm]{images/start_mockup.png}
-	\caption[Start screen mockup.]{Mockup of how the start screen of the final app might look. Note the menu button on the bottom, the rendered axes, and the green status light signifying that the marker is being read with a high confidence.}
-	\label{fig:start_mockup}
-\end{figure}
