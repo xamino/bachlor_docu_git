@@ -9,7 +9,6 @@ General:
  - [O]Consider developing with https://developer.nvidia.com/tegra-android-development-pack
 
 Pre-Documentation:
- - [I]Rework "flow" of doc, sections etc for optimal paper
  - [I]Mockups
  - [O]Improve on the title page. Should be consistent until the end of my work.
  - [O]Improve the introduction. Especially the URL-jungle. :P
