@@ -1,6 +1,23 @@
 In this section, we take a close look at the proposed structure and capabilities of the framework's API.
 The final implementation will however deviate with a high probability.
 
+\subsection{Proposed Functionality}
+
+The framework shall have two primary capabilities: first, it should enable fast and easy access to the 3d space calculated from the marker.
+Second, given a model to display, it should be capable of returning a rendering of the object within the scene.
+
+Generally, the framework shall work like in the following.
+Upon import of the framework into the project, the program passes the image to the framework.
+This shall be possible to do in two ways: one, let OpenCV read directly from the camera, or two, give the framework the frames from the program manually.
+This allows the possibility of using other video or picture streams with the framework\footnote{For example, rendering an object into a video.}.
+
+Now the magic happens; OpenCV calculates the 3d space.
+Before passing it on to the framework, the program can read the 3d space.
+This direct access to the resulting coordinate space allows a more down-to-earth programming should it be required.
+If the program is only interested in the final rendered frame, given a model, the framework then renders the object into the scene and returns the frame to the program.
+
+Figure TODO shows the proposed outside view of the framework, and where data can be input or read.
+
 \subsection{TODO, but include: Marker}
 
 \begin{figure}
