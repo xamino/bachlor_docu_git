@@ -15,6 +15,7 @@ This means that the app should run smoothly on a 1.6Ghz Quadcore ARM processor r
 \subsection{System Tasks}
 
 In this section, we will take a look at the various tasks the final app should be capable of doing.
+Note that we differentiate between required tasks (meaning tasks that should reliably and completely work for the app to be considered done) and optional tasks (tasks that might be included, depending on time and scope of their implementation).
 
 \subsubsection*{Required Tasks}
 
@@ -43,9 +44,17 @@ Any feature that does not make the final app is to be taken as a suggestion for 
 Marker Definition & If possible, the user can load any recognized picture to be used as a marker beyond the default one. Certain properties will most likely be required of the picture however. \\
 \hline
 Modify Model & Further options such as toggling the rendering of a wireframe or textures. Future work might even include shader control or blending options for transparency or blur.\\
+\hline
+Multiple Tracker Support & Enable the app to track multiple markers at once and render their objects simultaneously.\\
+\hline
+Primitive Objects & Allow basic text or pictures to be used directly as an object without having to build them manually in a 3d modeling program. This feature would enable fast prototyping for text- and picture-based AR.\\
 \end{tabulary}
 
 \subsection{Dialog Structure}
+
+The following shows a graph of the usage flow in the app graphical user interface.
+Please note the difference between full screen and partial overlays.
+We tried to keep all menus from overlaying the complete screen to allow quick and easy navigation and access between the options and features of the app.
 
 TODO
 
