@@ -62,13 +62,14 @@ TODO
 
 \begin{figure}
 	\centering
-	\includegraphics[width=15cm]{images/start_mockup.png}
-	\caption[Start screen mockup.]{Mockup of how the start screen of the final app might look. Note the menu button on the bottom, the rendered axes, and the green status light signifying that the marker is being read with a high confidence. TODO: Correct - missing menu}
-	\label{fig:start_mockup}
+	\includegraphics[width=15cm]{images/main_nomenu.png}
+	\caption[Start screen mockup.]{Mockup of how the start screen of the final app might look. Note the menu partially hidden to the right, the rendered axes, and the green status light signifying that the marker is being read with a high confidence.}
+	\label{fig:main_nomenu}
 \end{figure}
 
-Upon starting the app on a capable device, the app presents itself as shown in Figure \ref{fig:start_mockup}.
+Upon starting the app on a capable device, the app presents itself as shown in Figure \ref{fig:main_nomenu}.
 This is effectively the start screen from where all the interaction takes place.
+
 The green light in the top left shows that the app is detecting the marker with a high confidence, meaning that there are no large uncertainties.
 If the marker is too warped or partially covered, the light switches to red.
 If the app can still detect the marker but is having difficulties, the light switches to orange.
@@ -77,5 +78,27 @@ Another method of direct feedback is the already displayed axis-object.
 This is meant to offer fast feedback to the orientation and scaling of the coordinate space to the user before a custom object is displayed.
 The visibility of the axis-object can be toggled in the settings.
 
-The menu button on the status bar at the bottom of the screen opens up a menu as seen in Figure TODO.
-From here the user can control the overlays they wish displayed over the camera view and control what is rendered into the picture.
+The menu on the right can be swiped in to be fully displayed.
+The four main points are <Paired Elements>, <Markers>, <Settings>, and <Record>.
+
+TODO: Add mockup.
+
+<Paired Elements> lists the current paired marker-object pairs that the app can detect.
+From here, the user can modify existing pairs by touching them, which opens a new menu in place with options pertaining to that pair, including its removal.
+Adding new pairs is done via the <Add> button at the top, displaying a menu to select the marker and object to pair.
+
+TODO: Add mockup.
+
+<Markers> lists the available markers and provides options for organizing them.
+Again, touching a marker opens an in-place menu with options.
+Adding new markers, either by loading a picture, using a default, or taking a picture from the camera, can be done via the <Add> button.
+
+TODO: Add mockup.
+
+<Settings> is just that.
+Here, the user can change app-specific settings such as video resolution, directories, debugging information, and more.
+
+TODO: Add mockup.
+
+<Record> allows the user to record the current rendering, either as a picture or possibly as a video.
+The options beneath this item are for controlling those features.
