@@ -52,11 +52,17 @@ Primitive Objects & Allow basic text or pictures to be used directly as an objec
 
 \subsection{Dialog Structure}
 
-The following shows a graph of the usage flow in the app graphical user interface.
-Please note the difference between full screen and partial overlays.
-We tried to keep all menus from overlaying the complete screen to allow quick and easy navigation and access between the options and features of the app.
+Figure \ref{fig:dialog_structure} shows a graph of the usage flow in the app graphical user interface.
+Note that apart from the layout change from just the main screen to the screen with the menu displayed at the right border, all sub-menus are displayed in-place to the original menu.
+This allows the main purpose of the app, namely the rendering of AR, to always be in the focus of the user.
+This enables rapid and direct feedback to any changes the user does within the menus.
 
-TODO
+\begin{figure}
+	\centering
+	\includegraphics[width=10cm]{images/dialogs.eps}
+	\caption[App Dialog Structure.]{Overview of the dialog structure of the app. Except where otherwise noted, all actions from one dialog to another are a simple touch.}
+	\label{fig:dialog_structure}
+\end{figure}
 
 \subsection{Mockups}
 
