@@ -49,3 +49,9 @@ A marker is a visually significant pattern that the system can detect within an 
 
 Depending on the capabilities of the finished framework, it could be possible to track multiple markers in a single instance.
 This would allow multiple objects to be rendered simultaneously, increasing the use cases for the framework.
+
+To enable the functionality, the recorded or live video stream must have a pre-defined marker somewhere in it.
+This can be a screen showing the marker, a printed marker, or any other way of displaying a marker in a scene.
+Depending on the capabilities of OpenCV, the framework will then detect its relative 3d position.
+With the detected space, the framework can now render objects into the scene with the correct rotation, scaling, and perspective.
+
