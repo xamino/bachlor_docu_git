@@ -32,7 +32,7 @@ As proposed, the framework should offer a wide variety of uses, without being ov
 Another important aspect we want to make possible is the possibility of changing all the more important parameters during runtime, such as switching the model or adding a new marker.
 This should allow a much smoother usage of the framework and any derived apps as a result.
 
-\subsection{Demarcation}
+\subsection{Limitations of Scope}
 
 The following are features that will not be implemented.
 However, where possible, the framework will allow easy adaption to extend its functionality beyond what it will offer from the start.
@@ -42,8 +42,12 @@ Marker-less Tracking & Marker-less tracking will most likely not be within the s
 \hline
 Occlusion & The capability to detect where scene occlusion is taking place is definitely beyond the scope of the framework, as this requires extensively more work.\\
 \hline
-TODO & More to come...\\
+Fancy Rendering & For now, no support of stereoscopic rendering of any kind. Depending on the difficulty of implementation, support for different direct rendering engines within the framework might be included.\\
 \end{tabulary}
+
+\subsection{Class Diagram}
+
+TODO: Modules: Info / Debug Collector subthread (talks via listeners etc); direct OpenCV connection class; rendering class (maybe make modular in itself so that other rendering methods can easily be written?)
 
 \subsection{Application Programming Interface}
 
