@@ -16,6 +16,10 @@ Before passing it on to the framework, the program can read the 3d space.
 This direct access to the resulting coordinate space allows a more down-to-earth programming should it be required.
 If the program is only interested in the final rendered frame, given a model, the framework then renders the object into the scene and returns the frame to the program.
 
+Apart from the above mentioned basic functionality capabilities, the framework should also handle the easy gathering of performance and error information.
+Accessing the information will be done via a listener or an equal mechanism so that any developers can choose when and how to use the information collected by the framework.
+Care should be taken to ensure that the error collection can run even when the framework encounters problems, possibly by putting it in a separat thread.
+
 \begin{figure}
 	\centering
 	\includegraphics[width=12cm]{images/sequence_access.eps}
@@ -67,4 +71,9 @@ To enable the functionality, the recorded or live video stream must have a pre-d
 This can be a screen showing the marker, a printed marker, or any other way of displaying a marker in a scene.
 Depending on the capabilities of OpenCV, the framework will then detect its relative 3d position.
 With the detected space, the framework can now render objects into the scene with the correct rotation, scaling, and perspective.
+
+The framework should be made to be thread safe.
+Internally the framework will most likely at least have one sub thread for error and information collection and propagation.
+If possible, it should be easy to put the framework into it's own thread domain so that any programs using it do not have to worry about locking down their threads by accessing the framework.
+This means that the framework will most likely work asynchronous, with the possibility of forcing it to run synchronous where required.
 
