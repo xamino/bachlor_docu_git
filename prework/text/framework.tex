@@ -28,7 +28,20 @@ As proposed, the framework should offer a wide variety of uses, without being ov
 Another important aspect we want to make possible is the possibility of changing all the more important parameters during runtime, such as switching the model or adding a new marker.
 This should allow a much smoother usage of the framework and any derived apps as a result.
 
-\subsection{Application Interface}
+\subsection{Demarcation}
+
+The following are features that will not be implemented.
+However, where possible, the framework will allow easy adaption to extend its functionality beyond what it will offer from the start.
+
+\begin{tabulary}{\textwidth}{L || L}
+Marker-less Tracking & Marker-less tracking will most likely not be within the scope of the initial framework. However, as changing markers during runtime will probably be possible, adding this feature should not be overly difficult.\\
+\hline
+Occlusion & The capability to detect where scene occlusion is taking place is definitely beyond the scope of the framework, as this requires extensively more work.\\
+\hline
+TODO & More to come...\\
+\end{tabulary}
+
+\subsection{Application Programming Interface}
 
 The following represents the suggested interface for the framework.
 With the listed methods, all functionality that the framework offers can be accessed.
