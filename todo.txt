@@ -3,10 +3,8 @@ This file is the todo for almost everything.
 [X] Marks finished things, [O] marks things to be done, [I] marks things in progress.
 
 General:
- - [X]Start keeping track of work time
  - [O]I need a catchy name for the framework and for the app that will come from it
       (simply that they can be referenced easily and quickly).
- - [O]Consider developing with https://developer.nvidia.com/tegra-android-development-pack
 
 Pre-Documentation:
  - [I]Mockups
