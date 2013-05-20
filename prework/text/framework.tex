@@ -47,14 +47,39 @@ Fancy Rendering & For now, no support of stereoscopic rendering of any kind. Dep
 
 \subsection{Class Diagram}
 
-TODO: Modules: Info / Debug Collector subthread (talks via listeners etc); direct OpenCV connection class; rendering class (maybe make modular in itself so that other rendering methods can easily be written?)
-
 \begin{figure}
 	\centering
 	\includegraphics[width=10cm]{images/class_diagram.eps}
-	\caption[TODO]{TODO: Image not done.}
+	\caption[General Class Diagram]{This is the preliminary class diagram of the proposed functionality of the framework. Note the low number of public methods: this should make usage of the framework very easy. Also note that the Messenger class has no dependencies towards other classes to enable it to run as a distraction-free subthread from the rest of the framework.}
 	\label{fig:class_diagram}
 \end{figure}
+
+Now let us take a look at the proposed class structure within the framework, as seen in Figure \ref{fig:class_diagram}.
+Main access is controlled over the framework controller, which almost exclusively contains all the public methods callable from outside of the framework.
+Only the Messanger class offers public access too.
+
+The Messanger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
+Allowing outside threads to be directly notified when a message is written enables comparatively fail-safe information gathering.
+This should also help with the transparency of using the framework.
+Note that to keep the Messanger thread-safe, the register and remove methods for listeners are one atomic protected block.
+The Messanger thread itself is controlled from the framework with default behaviour enabled should it stop running.
+
+The Controller encapsulates all the primmary functionality within the framework.
+Apart from managing all the other classes on startup and closure, it also handles the information exchange between them and the caller.
+It also enables the management of the trackables and their assigned renderables.
+Changing the source for the video to detect markers and changing the rendering engine can be done here too, if desired.
+The Controller also handles any inter-system compatibility that the passage of information between the Renderer and Wrapper require.
+
+The OpenGL ES Renderer class handles the generation of the images for the output in the form of a canvas.
+It takes the 3d coordinate system from the OpenCV wrapper and renders the objects with the given specifications onto the final canvas.
+
+Last is the OpenCV Wrapper. The Wrapper handles the control of the OpenCV library and does any managing work requried for the framework.
+It also enables some source and destination control for respectively the images and 3d coordinate space.
+
+The above proposed system should enable an easily extensible build for the framework.
+For example, using the framework with any OpenCV version apart from the Android port should be achievable by simply writting an extra wrapper.
+The same applies for the Renderer; it can simply be replaced by new modules that render to DirectX or the full OpenGL specification.
+While we encourage such modularity, we will not promise it for the final version of this work.
 
 \subsection{Application Programming Interface}
 
