@@ -1,6 +1,6 @@
 *
 !prework
-!images
+!img
 !text
 !*.tex
 !*.bib
@@ -8,3 +8,4 @@
 !*.eps
 !*.txt
 !*.ods
+!*.cls
