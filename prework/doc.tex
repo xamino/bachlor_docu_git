@@ -1,90 +1,88 @@
-%Generally: improve formatting. Not pretty, but should be.
+\documentclass{thesis}
 
-\documentclass[a4paper,twoside]{article}
-
-\usepackage{a4wide}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-% Better font
-\usepackage{lmodern}
-% Better font rendering
-\usepackage{microtype}
-% Packages for pictures:
-\usepackage{graphicx}
-\usepackage{float}
-% Package for urls:
-\usepackage{url}
-\usepackage{hyperref}
-%Take care of header:
-\usepackage{fancyhdr}
-% Textwrapping for tables:
-\usepackage{tabulary}
 % Better captions:
 \usepackage[font=small,labelfont=bf]{caption}
-%Define bib style:
-\bibliographystyle{alpha}
 
-%Prepare header & footer:
-\pagestyle{fancy}
-\fancyhead{}
-\fancyfoot{}
-\renewcommand{\sectionmark}[1]{\markright{\MakeUppercase \thesection.\ #1}}
-\fancyhead[RO] {\rightmark}
-\fancyhead[LE] {\author{Tamino Hartmann}}
-\fancyfoot[RO, LE] {\thepage}
+% hier namen etc. einsetzen
+\fullname{Tamino PSM Hartmann}
+\email{tamino.hartmann@uni-ulm.de}
+\headline{Implementation of a Java Framework\\ for Marker Based Detection\\ in Augmented Reality}
+\titel{Thema}
+\jahr{2013}
+\matnr{722891}
+\gutachterA{Gutachter 1}
+%\gutachterB{Gutachter 2}
+\betreuer{Marc Schickler}
+\typ{Bachelor thesis }
+\fakultaet{Engineering and Computer Science}
+\institut{Institute of Databases and Information Systems}
 
-%Alternative paragraph style
-\setlength{\parindent}{0.0in}
-\setlength{\parskip}{0.1in}
+\license{
+This work is licensed under the Creative Commons.
+Attribution-NonCommercial-ShareAlike 3.0 License. To view a copy of this
+license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/de/ or send a
+letter to Creative Commons, 543 Howard Street, 5th Floor, San Francisco,
+California, 94105, USA. \\ Satz: PDF-\LaTeXe
+}
+
+\hypersetup{%
+	pdftitle=\pdfescapestring{\thetitel},
+	pdfauthor={\thefullname},
+ 	pdfsubject={\thetyp},
+}
+
+% hyphenations:
+\hyphenation{Ta-mi-no}
+\hyphenation{Hart-mann}
 
 \begin{document}
-
-\title{Implementation of a Java Framework for Marker Based Detection in Augmented Reality \\ {\large Bachelor Thesis}}
-\author{Tamino Hartmann}
-\date{\today}
-
+\frontmatter
 \maketitle
-\thispagestyle{empty}
+\clearpage
+\impressum
 
-%Abstract:
-\input{text/abstract.tex}
+\cleardoublepage
+\setstretch{1.4}
 
-%Leave an empty page:
-\newpage
-\mbox{}
-
-%And now get to the table of contents:
-\newpage
+\input{text/abstract}
+\cleardoublepage
+\input{text/gratitude}
 
 \tableofcontents
 
-\newpage
+\mainmatter
 % Overview section
-\section{Overview}
+\chapter{Overview}
 \input{text/overview.tex}
-\newpage
 % Section on the framework
-\section{Framework}
+\chapter{Framework}
 \input{text/framework.tex}
-\newpage
 % Application work:
-\section{Application}
+\chapter{Application}
 \input{text/application.tex}
-\newpage
 % Results
-\section{Results}
+\chapter{Results}
 \input{text/results.tex}
-\newpage
 % Conclusion
-\section{Conclusion}
+\chapter{Conclusion}
 \input{text/conclusion.tex}
-\newpage
 %Glossary
-\section*{Glossary}
+\chapter{Glossary}
 \input{text/glossary.tex}
 
+\appendix
+%\input{sources}
+
+\backmatter
+
 \listoffigures
-%\listoftables
-\bibliography{doc}
+\listoftables
+
+% Bibliograhpy
+\bibliographystyle{alpha}
+\bibliography{literature.bib}
+
+\clearpage
+\erklaerung
 
 \end{document}

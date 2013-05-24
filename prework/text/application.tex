@@ -1,4 +1,4 @@
-\subsection{Application Context}
+\section{Application Context}
 
 The app is to be developed to provide a proof-of-concept for the framework.
 Basic tasks of the app include showing off the capabilities of the framework, proving the implementation, and as an example on how to utilize the framework.
@@ -12,12 +12,12 @@ The app should be capable of running smoothly on a Tegra 3 processor\footnote{Se
 The development device is the Transformer Prime, a 10'' tablet from ASUS\footnote{See: \url{http://eee.asus.com/en/transformer-prime/features}.}.
 This means that the app should run smoothly on a 1.6Ghz Quadcore ARM processor rendering to a 1280 by 800 pixel screen.
 
-\subsection{System Tasks}
+\section{System Tasks}
 
 In this section, we will take a look at the various tasks the final app should be capable of doing.
 Note that we differentiate between required tasks (meaning tasks that should reliably and completely work for the app to be considered done) and optional tasks (tasks that might be included, depending on time and scope of their implementation).
 
-\subsubsection*{Required Tasks}
+\subsection{Required Tasks}
 
 \begin{tabulary}{\textwidth}{L || L}
 View Camera & The user should, upon opening the app, be confronted with the view of the live camera feed. By default, if a marker is detected, a simple 3d coordinate marker is shown in place of an object. \\
@@ -35,7 +35,7 @@ Toggle Debugging Information & If desirable, the user can toggle a debugging vie
 Screenshot & As Android does not offer a screenshot tool by default, an option to capture the feed shall be provided. \\
 \end{tabulary}
 
-\subsubsection*{Optional Tasks}
+\subsection{Optional Tasks}
 
 This section represents tasks that could be added but might not be.
 Any feature that does not make the final app is to be taken as a suggestion for possible future expansion.
@@ -52,7 +52,7 @@ Primitive Objects & Allow basic text or pictures to be used directly as an objec
 Camera Chooser & For devices that have multiple cameras, allow the user to choose which one to use as source for the live view and the rendering.\\
 \end{tabulary}
 
-\subsection{Dialog Structure}
+\section{Dialog Structure}
 
 Figure \ref{fig:dialog_structure} shows a graph of the usage flow in the app graphical user interface.
 Note that apart from the layout change from just the main screen to the screen with the menu displayed at the right border, all sub-menus are displayed in-place to the original menu.
@@ -61,16 +61,16 @@ This enables rapid and direct feedback to any changes the user does within the m
 
 \begin{figure}
 	\centering
-	\includegraphics[width=10cm]{images/dialogs.eps}
+	\includegraphics[width=10cm]{img/dialogs.eps}
 	\caption[App Dialog Structure.]{Overview of the dialog structure of the app. Except where otherwise noted, all actions from one dialog to another are a simple touch.}
 	\label{fig:dialog_structure}
 \end{figure}
 
-\subsection{Mockups}
+\section{Mockups}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=15cm]{images/main_nomenu.png}
+	\includegraphics[width=15cm]{img/main_nomenu.png}
 	\caption[Start screen mockup.]{Mockup of how the start screen of the final app might look. Note the menu partially hidden to the right, the rendered axes, and the green status light signifying that the marker is being read with a high confidence.}
 	\label{fig:main_nomenu}
 \end{figure}
