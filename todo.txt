@@ -8,7 +8,6 @@ General:
 
 Pre-Documentation:
  - [I]Mockups (menu)
- - [O]Improve on the title page. Should be consistent until the end of my work.
  - [O]Improve the introduction. Especially the URL-jungle. :P
  - [O]Implement corrections from first discussion (Email?)
  - [O]Add mention of easy picture & text rendering (maybe have Renderer supply that?)
