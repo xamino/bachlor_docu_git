@@ -148,7 +148,7 @@
 
 {\footnotesize
 {\bfseries University of Ulm} \textbar ~89069 Ulm \textbar ~Germany
-\hspace*{78.5mm}\parbox[t]{38mm}{\bfseries Faculty for\\
+\hspace*{78.5mm}\parbox[t]{38mm}{\bfseries Faculty of\\
 \@fakultaet\\
 \mdseries \@institut}\\[2cm]
 
