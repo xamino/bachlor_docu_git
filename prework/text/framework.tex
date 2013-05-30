@@ -34,10 +34,27 @@ This should allow a much smoother usage of the framework and any derived apps as
 
 \section{Limitations of Scope}
 
-TODO: Text (nice-to-have)
+To clarify the scope of the proposed framework, all features that will be delivered are described within the following table.
+Note that while these are the main features, aspects of them might change for the implementation.
+
+\begin{tabulary}{\textwidth}{L || L}
+Debug Messaging & The framework should be easy to debug and allow simple access to status messages.\\
+\hline
+Manage Trackers & Allow to add and remove trackers during runtime.\\
+\hline
+Manage Rendering & Offer the possibility of putting an own render module into the pipeline and modify any properties required to render such as transparency, etc.\\
+\hline
+Read Raw Data & Give the possibility of accessing the raw data returned from the OpenCV Wrapper so that custom solutions can be built without changing the source code.\\
+\hline
+Modular Source Data & The source data should not be dependent on a certain device; using any video or image files as source should work equally well, if desired.
+\end{tabulary}
+
+The features in the following table are features that might be implemented, if their development proves to be beneficial to the framework and are easy enough to be added along the sidelines.
 
 \begin{tabulary}{\textwidth}{L || L}
 Animated Objects & Allow the object to have an animation and offer control access to it.\\
+\hline
+Simple Advanced Rendering & Possibly add some simple extra rendering features.\\
 \end{tabulary}
 
 The following are features that will not be implemented.
