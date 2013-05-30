@@ -6,8 +6,9 @@ General:
  - [O]I need a catchy name for the framework and for the app that will come from it
       (simply that they can be referenced easily and quickly).
 
-Pre-Documentation:
+Documentation:
  - [I]Mockups (menu)
  - [O]Improve the introduction. Especially the URL-jungle. :P
- - [O]Implement corrections from first discussion (Email?)
  - [O]Add mention of easy picture & text rendering (maybe have Renderer supply that?)
+ - [O]Redo all tables so that they show in the list of tables and look professional
+     (see: http://en.wikibooks.org/wiki/LaTeX/Tables#Professional_tables)
