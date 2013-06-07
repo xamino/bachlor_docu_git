@@ -54,11 +54,6 @@ Camera Chooser & For devices that have multiple cameras, allow the user to choos
 
 \section{Dialog Structure}
 
-Figure \ref{fig:dialog_structure} shows a graph of the usage flow in the app graphical user interface.
-Note that apart from the layout change from just the main screen to the screen with the menu displayed at the right border, all sub-menus are displayed in-place to the original menu.
-This allows the main purpose of the app, namely the rendering of AR, to always be in the focus of the user.
-This enables rapid and direct feedback to any changes the user does within the menus.
-
 \begin{figure}
 	\centering
 	\includegraphics[width=10cm]{img/dialogs.eps}
@@ -66,11 +61,16 @@ This enables rapid and direct feedback to any changes the user does within the m
 	\label{fig:dialog_structure}
 \end{figure}
 
+Figure \ref{fig:dialog_structure} shows a graph of the usage flow in the app graphical user interface.
+Note that apart from the layout change from just the main screen to the screen with the menu displayed at the right border, all sub-menus are displayed in-place to the original menu.
+This allows the main purpose of the app, namely the rendering of AR, to always be in the focus of the user.
+This enables rapid and direct feedback to any changes the user does within the menus.
+
 \section{Mockups}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=15cm]{img/main_nomenu.png}
+	\includegraphics[width=12cm]{img/main_nomenu.png}
 	\caption[Start screen mockup.]{Mockup of how the start screen of the final app might look. Note the menu partially hidden to the right, the rendered axes, and the green status light signifying that the marker is being read with a high confidence.}
 	\label{fig:main_nomenu}
 \end{figure}
@@ -91,24 +91,23 @@ The four main points are <Paired Elements>, <Markers>, <Settings>, and <Record>.
 
 \begin{figure}
 	\centering
-	% Note: width has to be done manually!
-	\minipage{0.45\textwidth}
+	\minipage{0.49\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{img/menu_paired.png}
+		\includegraphics[width=0.5\linewidth]{img/menu_paired.png}
 		\caption[Paired Element Menu Mockup.]{Mockup of the <Paired Elements> part of the main menu. From here, the user can select to work on an existing pair or add a new one.}
 		\label{fig:menu_paired}
 	\endminipage\hfill
-	\minipage{0.45\textwidth}
+	\minipage{0.49\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{img/menu_paired_pair.png}
-		\caption[Paired Element Pair Menu Mockup.]{Mockup of the menu for modifying existing pairs, including removing them. Note the switch to use a pair and the preview of the marker and object with the ability to change both.}
-		\label{fig:menu_paired_pair}
-	\endminipage\hfill
-	\minipage{0.45\textwidth}
-		\centering
-		\includegraphics[width=0.8\linewidth]{img/menu_paired_add.png}
+		\includegraphics[width=0.5\linewidth]{img/menu_paired_add.png}
 		\caption[Paired Element Pair Add Menu Mockup.]{Mockup of the menu to add a new pair to use. Here the initial marker and object can be chosen, along with any exposed options before creating the pairing for active use.}
 		\label{fig:menu_paired_add}
+	\endminipage\hfill
+	\minipage{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{img/menu_paired_pair.png}
+		\caption[Paired Element Pair Menu Mockup.]{Mockup of the menu for modifying existing pairs, including removing them. Note the switch to use a pair and the preview of the marker and object with the ability to change both.}
+		\label{fig:menu_paired_pair}
 	\endminipage\hfill
 \end{figure}
 
@@ -116,11 +115,31 @@ Figure \ref{fig:menu_paired} shows the <Paired Elements> menu, which lists the c
 From here, the user can modify existing pairs by touching them, which opens a new menu shown in Figure \ref{fig:menu_paired_pair} in place with options pertaining to that pair, including its removal.
 Adding new pairs is done via the <Add> button at the top, displaying the menu as in Figure \ref{fig:menu_paired_add} to select the marker and object to pair.
 
-TODO: Add mockup.
+\begin{figure}
+	\centering
+	\minipage{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{img/menu_marker.png}
+		\caption[Marker Element Menu Mockup.]{Mockup of the <Marker> sub-menu of the main menu. From here, modifying and adding new markers is provided.}
+		\label{fig:menu_marker}
+	\endminipage\hfill
+	\minipage{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{img/menu_marker_add.png}
+		\caption[Marker Add Menu Mockup.]{Mockup for adding a new marker by choosing a suitable image file to use.}
+		\label{fig:menu_marker_add}
+	\endminipage\hfill
+	\minipage{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{img/menu_marker_modify.png}
+		\caption[Modify Marker Menu Mockup.]{Modifying existing markers is done in this mockup. This includes the option to delete a marker.}
+		\label{fig:menu_marker_modify}
+	\endminipage\hfill
+\end{figure}
 
-<Markers> lists the available markers and provides options for organizing them.
-Again, touching a marker opens an in-place menu with options.
-Adding new markers, either by loading a picture, using a default, or taking a picture from the camera, can be done via the <Add> button.
+<Markers>, as seen in Figure \ref{fig:menu_marker}, lists the available markers and provides options for organizing them.
+Again, touching a marker opens an in-place menu with options, as in Figure \ref{fig:menu_marker_modify}.
+Adding new markers via Figure \ref{fig:menu_marker_add}, either by loading a picture, using a default, or taking a picture from the camera, can be done via the <Add> button.
 
 TODO: Add mockup.
 
