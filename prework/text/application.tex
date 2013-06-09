@@ -22,11 +22,9 @@ Note that we differentiate between required tasks (meaning tasks that should rel
 \begin{tabulary}{\textwidth}{L || L}
 View Camera & The user should, upon opening the app, be confronted with the view of the live camera feed. By default, if a marker is detected, a simple 3d coordinate marker is shown in place of an object. \\
 \hline
-Load Model & Load and prepare a 3d model to be viewed in the camera feed on top of the marker. Any model in a recognized format should be selectable as a file from a file browser. \\
+Manage Model & Load, prepare, and remove a 3d model to be used within the app with a marker. Any model in a recognized format should be selectable as a file from a file browser. \\
 \hline
-Modify Model & This task shall allow the user to change basic properties such as rotation and scale of a loaded object.\\
-\hline
-Unload Model & Unload a model, returning the view to the standard 3d coordinate marker on top of the marker (if detected). Unloading a model can also be achieved by loading a new one to replace it. \\
+Manage Markers & Allow for the management of multiple markers and their associations to the models. \\
 \hline
 Change Settings & Allows the user to modify the frames per second to render the output, how often to update the frame, and the visual quality of the video feed on which the marker detection is run. Should enable the app to be adapted to run on a wide variety of devices.\\
 \hline
@@ -43,7 +41,7 @@ Any feature that does not make the final app is to be taken as a suggestion for 
 \begin{tabulary}{\textwidth}{L || L}
 Marker Definition & If possible, the user can load any recognized picture to be used as a marker beyond the default one. Certain properties will most likely be required of the picture however. \\
 \hline
-Modify Model & Further options such as toggling the rendering of a wireframe or textures. Future work might even include shader control or blending options for transparency or blur.\\
+Modify Model & This task shall allow the user to change basic properties such as rotation and scale of a loaded object. Further options might be toggling the rendering of a wireframe or textures. Future work might even include shader control or blending options for transparency or blur.\\
 \hline
 Multiple Tracker Support & Enable the app to track multiple markers at once and render their objects simultaneously.\\
 \hline
@@ -71,7 +69,7 @@ This enables rapid and direct feedback to any changes the user does within the m
 \begin{figure}
 	\centering
 	\includegraphics[width=12cm]{img/main_nomenu.png}
-	\caption[Start screen mockup.]{Mockup of how the start screen of the final app might look. Note the menu partially hidden to the right, the rendered axes, and the green status light signifying that the marker is being read with a high confidence.}
+	\caption[Start Screen Mockup.]{Mockup of how the start screen of the final app might look. Note the menu partially hidden to the right, the rendered axes, and the green status light signifying that the marker is being read with a high confidence.}
 	\label{fig:main_nomenu}
 \end{figure}
 
@@ -89,7 +87,7 @@ The visibility of the axis-object can be toggled in the settings.
 The menu on the right can be swiped in to be fully displayed.
 The four main points are <Paired Elements>, <Markers>, <Settings>, and <Record>.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\minipage{0.49\textwidth}
 		\centering
@@ -103,9 +101,9 @@ The four main points are <Paired Elements>, <Markers>, <Settings>, and <Record>.
 		\caption[Paired Element Pair Add Menu Mockup.]{Mockup of the menu to add a new pair to use. Here the initial marker and object can be chosen, along with any exposed options before creating the pairing for active use.}
 		\label{fig:menu_paired_add}
 	\endminipage\hfill
-	\minipage{0.49\textwidth}
+	\minipage{0.9\textwidth}
 		\centering
-		\includegraphics[width=0.5\linewidth]{img/menu_paired_pair.png}
+		\includegraphics[width=0.25\linewidth]{img/menu_paired_pair.png}
 		\caption[Paired Element Pair Menu Mockup.]{Mockup of the menu for modifying existing pairs, including removing them. Note the switch to use a pair and the preview of the marker and object with the ability to change both.}
 		\label{fig:menu_paired_pair}
 	\endminipage\hfill
@@ -115,7 +113,7 @@ Figure \ref{fig:menu_paired} shows the <Paired Elements> menu, which lists the c
 From here, the user can modify existing pairs by touching them, which opens a new menu shown in Figure \ref{fig:menu_paired_pair} in place with options pertaining to that pair, including its removal.
 Adding new pairs is done via the <Add> button at the top, displaying the menu as in Figure \ref{fig:menu_paired_add} to select the marker and object to pair.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\minipage{0.49\textwidth}
 		\centering
@@ -129,9 +127,9 @@ Adding new pairs is done via the <Add> button at the top, displaying the menu as
 		\caption[Marker Add Menu Mockup.]{Mockup for adding a new marker by choosing a suitable image file to use.}
 		\label{fig:menu_marker_add}
 	\endminipage\hfill
-	\minipage{0.49\textwidth}
+	\minipage{0.9\textwidth}
 		\centering
-		\includegraphics[width=0.5\linewidth]{img/menu_marker_modify.png}
+		\includegraphics[width=0.25\linewidth]{img/menu_marker_modify.png}
 		\caption[Modify Marker Menu Mockup.]{Modifying existing markers is done in this mockup. This includes the option to delete a marker.}
 		\label{fig:menu_marker_modify}
 	\endminipage\hfill
@@ -141,12 +139,22 @@ Adding new pairs is done via the <Add> button at the top, displaying the menu as
 Again, touching a marker opens an in-place menu with options, as in Figure \ref{fig:menu_marker_modify}.
 Adding new markers via Figure \ref{fig:menu_marker_add}, either by loading a picture, using a default, or taking a picture from the camera, can be done via the <Add> button.
 
-TODO: Add mockup.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=4cm]{img/menu_settings.png}
+	\caption[Settings Menu Mockup.]{This mockups depicts the <Settings> menu. From here, the user should be allowed to change a few general settings of the app and to read the <About> page.}
+	\label{fig:menu_settings}
+\end{figure}
 
-<Settings> is just that.
+The <Settings> menu seen in Figure \ref{fig:menu_settings} is just that.
 Here, the user can change app-specific settings such as video resolution, directories, debugging information, and more.
 
-TODO: Add mockup.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=4cm]{img/menu_record.png}
+	\caption[Record Menu Mockup.]{This mockup shows the panel for the <Record> menu, from which a screenshot or a short video clip can be taken of the output of the app.}
+	\label{fig:menu_settings}
+\end{figure}
 
 <Record> allows the user to record the current rendering, either as a picture or possibly as a video.
 The options beneath this item are for controlling those features.

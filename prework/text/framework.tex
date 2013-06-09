@@ -1,5 +1,6 @@
 In this section, we take a close look at the proposed structure and capabilities of the framework's API.
 The final implementation will however deviate with a high probability.
+The final paper will be corrected to account for these changes\footnote{TODO: Tamino, might also want to check with Marc.}.
 
 \section{Proposed Functionality}
 
@@ -65,7 +66,7 @@ Marker-less Tracking & Marker-less tracking will most likely not be within the s
 \hline
 Occlusion & The capability to detect where scene occlusion is taking place is definitely beyond the scope of the framework, as this requires extensively more work.\\
 \hline
-Fancy Rendering & For now, no support of stereoscopic rendering of any kind. Depending on the difficulty of implementation, support for different direct rendering engines within the framework might be included.\\
+Fancy Rendering & For now, no support of stereoscopic rendering of any kind. Depending on the difficulty of implementation, support for different direct rendering engines within the framework might be included which would allow an easy way of adding this functionality.\\
 \end{tabulary}
 
 \section{Class Diagram}
@@ -79,13 +80,13 @@ Fancy Rendering & For now, no support of stereoscopic rendering of any kind. Dep
 
 Now let us take a look at the proposed class structure within the framework, as seen in Figure \ref{fig:class_diagram}.
 Main access is controlled over the framework controller, which almost exclusively contains all the public methods callable from outside of the framework.
-Only the Messanger class offers public access too.
+Only the messenger class offers public access too.
 
-The Messanger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
+The messenger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
 Allowing outside threads to be directly notified when a message is written enables comparatively fail-safe information gathering.
 This should also help with the transparency of using the framework.
-Note that to keep the Messanger thread-safe, the register and remove methods for listeners are one atomic protected block.
-The Messanger thread itself is controlled from the framework with default behaviour enabled should it stop running.
+Note that to keep the messenger thread-safe, the register and remove methods for listeners are one atomic protected block.
+The messenger thread itself is controlled from the framework with default behaviour enabled should it stop running.
 
 The Controller encapsulates all the primmary functionality within the framework.
 Apart from managing all the other classes on startup and closure, it also handles the information exchange between them and the caller.
@@ -100,7 +101,7 @@ Last is the OpenCV Wrapper. The Wrapper handles the control of the OpenCV librar
 It also enables some source and destination control for respectively the images and 3d coordinate space.
 
 The above proposed system should enable an easily extensible build for the framework.
-For example, using the framework with any OpenCV version apart from the Android port should be achievable by simply writting an extra wrapper.
+For example, using the framework with any OpenCV version apart from the Android port should be achievable by simply writing an extra wrapper.
 The same applies for the Renderer; it can simply be replaced by new modules that render to DirectX or the full OpenGL specification.
 While we encourage such modularity, we will not promise it for the final version of this work.
 
@@ -135,6 +136,6 @@ With the detected space, the framework can now render objects into the scene wit
 
 The framework should be made to be thread safe.
 Internally the framework will most likely at least have one sub thread for error and information collection and propagation.
-If possible, it should be easy to put the framework into it's own thread domain so that any programs using it do not have to worry about locking down their threads by accessing the framework.
+If possible, it should be easy to put the framework into its own thread domain so that any programs using it do not have to worry about locking down their threads by accessing the framework.
 This means that the framework will most likely work asynchronous, with the possibility of forcing it to run synchronous where required.
 
