@@ -7,7 +7,7 @@ The final paper will be corrected to account for these changes\footnote{TODO: Ta
 The framework shall have two primary capabilities: first, it should enable fast and easy access to the 3d space calculated from the marker.
 Second, given a model to display, it should be capable of returning a rendering of the object within the scene.
 
-Generally, the framework shall work like in the following.
+Generally, the framework shall work as in the following.
 Upon import of the framework into the project, the program passes the image to the framework.
 This shall be possible to do in two ways: one, let OpenCV read directly from the camera, or two, give the framework the frames from the program manually.
 This allows the possibility of using other video or picture streams with the framework\footnote{For example, rendering an object into a video.}.
@@ -19,7 +19,7 @@ If the program is only interested in the final rendered frame, given a model, th
 
 Apart from the above mentioned basic functionality capabilities, the framework should also handle the easy gathering of performance and error information.
 Accessing the information will be done via a listener or an equal mechanism so that any developers can choose when and how to use the information collected by the framework.
-Care should be taken to ensure that the error collection can run even when the framework encounters problems, possibly by putting it in a separat thread.
+Care should be taken to ensure that the error collection can run even when the framework encounters problems, possibly by putting it in a separate thread.
 
 \begin{figure}
 	\centering
@@ -73,7 +73,7 @@ The following are features that will not be implemented.
 However, where possible, the framework will allow easy adaption to extend its functionality beyond what it will offer from the start.
 
 \begin{tabulary}{\textwidth}{L || L}
-Marker-less Tracking & Marker-less tracking will most likely not be within the scope of the initial framework. However, as changing markers during runtime will probably be possible, adding this feature should not be overly difficult.\\
+Marker-less Tracking & Marker-less tracking will most likely not be within the scope of the initial framework. However, as changing markers during runtime will probably be possible, adding this feature should not be overly difficult.\footnote{TAMINO TODO: Might want to reword that.}\\
 \hline
 Occlusion & The capability to detect where scene occlusion is taking place is definitely beyond the scope of the framework, as this requires extensively more work.\\
 \hline
@@ -97,9 +97,9 @@ The messenger class allows easy and quick access to any debugging, logging, or e
 Allowing outside threads to be directly notified when a message is written enables comparatively fail-safe information gathering.
 This should also help with the transparency of using the framework.
 Note that to keep the messenger thread-safe, the register and remove methods for listeners are one atomic protected block.
-The messenger thread itself is controlled from the framework with default behaviour enabled should it stop running.
+The messenger thread itself is controlled from the framework with default behavior enabled should it stop running.
 
-The Controller encapsulates all the primmary functionality within the framework.
+The Controller encapsulates all the primary functionality within the framework.
 Apart from managing all the other classes on startup and closure, it also handles the information exchange between them and the caller.
 It also enables the management of the trackables and their assigned renderables.
 Changing the source for the video to detect markers and changing the rendering engine can be done here too, if desired.
@@ -108,7 +108,7 @@ The Controller also handles any inter-system compatibility that the passage of i
 The OpenGL ES Renderer class handles the generation of the images for the output in the form of a canvas.
 It takes the 3d coordinate system from the OpenCV wrapper and renders the objects with the given specifications onto the final canvas.
 
-Last is the OpenCV Wrapper. The Wrapper handles the control of the OpenCV library and does any managing work requried for the framework.
+Last is the OpenCV Wrapper. The Wrapper handles the control of the OpenCV library and does any managing work required for the framework.
 It also enables some source and destination control for respectively the images and 3d coordinate space.
 
 The above proposed system should enable an easily extensible build for the framework.
@@ -121,7 +121,7 @@ While we encourage such modularity, we will not promise it for the final version
 The following represents the suggested interface for the framework.
 With the listed methods, all functionality that the framework offers can be accessed.
 
-TODO: Place javadoc here.
+TAMINO TODO: Place javadoc here.
 
 \section{Usage}
 
@@ -132,13 +132,13 @@ TODO: Place javadoc here.
 	\label{fig:marker_example}
 \end{figure}
 
-To enable the framework to detect a 3d coordinate system from a video feed, a marker will be required.
+To enable the framework to detect a 3d coordinate system from a video feed, a marker with specific properties will be required.
 A marker is a visually significant pattern that the system can detect within an image and be used to calculate spatial coordinates. Figure \ref{fig:marker_example} shows an example for such a marker.
 
 TODO: Maybe add a small exposition about markers? See paper.
 
 Depending on the capabilities of the finished framework, it could be possible to track multiple markers in a single instance.
-This would allow multiple objects to be rendered simultaneously, increasing the use cases for the framework.
+This would allow multiple objects to be rendered simultaneously, increasing the use cases for the framework – although care will have to be taken to keep any overhead to a minimum.
 
 To enable the functionality, the recorded or live video stream must have a pre-defined marker somewhere in it.
 This can be a screen showing the marker, a printed marker, or any other way of displaying a marker in a scene.
@@ -150,3 +150,37 @@ Internally the framework will most likely at least have one sub thread for error
 If possible, it should be easy to put the framework into its own thread domain so that any programs using it do not have to worry about locking down their threads by accessing the framework.
 This means that the framework will most likely work asynchronous, with the possibility of forcing it to run synchronous where required.
 
+\section{Implementation}
+
+The following section describes in more detail the implementation of the framework.
+First we implemented a test project to experiment with OpenCV on Android to collect data on possible solutions and problems.
+
+At first, a feature-based approach was tried.
+That meant that feature detection was used on the marker, resulting in a cloud of key feature points.
+These can then theoretically be located in an image from which we have likewise extracted feature points.
+However, this method proved to be too computationally expensive.
+Initial tests only for detecting feature points in a live camera view already yielded framerates below 2 frames per second.
+This was deemed insufficient for a realtime use of the finished product.
+
+More research turned up a better solution based on the method used by the comparable Aruco\cite{aruco} framework.
+The method was implemented as follows.
+
+\subsection{Method for Tracking Markers}
+
+The following is done each frame with OpenCV.
+It results in a list of detected markers with their transformation matrices.
+
+First, the input frame is transformed into a simple gray-scale image.
+This gray-scale image is then processed with the Canny\cite{canny} edge detector, resulting in nice continuous edges of most objects within the frame.
+We then extract all contours from the edges.
+These contours are used to fit polynomial approximations to all detected contours.
+We can then filter the polynomial objects based on criteria for our markers, mainly for any contours that have 4 corners and conform to certain angles.
+These filtered contours are then processed to identify which marker is which contour.
+
+One of the major advantages of the polynomial representation of the markers is that it allows easy extraction of the homography required to calculate the 3d position of the markers.
+Apart from that, it is also significantly faster – our first tests resulted in framerates of about 8 frames per second.
+
+However, while 8 fps is better than 2 fps, it is still somewhat too slow for easy use.
+Therefor, we suggest using multitasking to process multiple frames in parallel.
+Some optimizations that we also use include writing all the OpenCV calls in a single, native C++ method that is called from the Java framework.
+That call is also the point where the framework can easily be adapted to different systems, as switching the OpenCV calls can easily be done by writing a new, comparable method that simply replaces that single call.
