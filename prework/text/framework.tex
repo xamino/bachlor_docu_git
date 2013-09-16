@@ -184,3 +184,12 @@ However, while 8 fps is better than 2 fps, it is still somewhat too slow for eas
 Therefor, we suggest using multitasking to process multiple frames in parallel.
 Some optimizations that we also use include writing all the OpenCV calls in a single, native C++ method that is called from the Java framework.
 That call is also the point where the framework can easily be adapted to different systems, as switching the OpenCV calls can easily be done by writing a new, comparable method that simply replaces that single call.
+
+\section{How to Use}
+
+Using the framework is very easy.
+Simply create an instance of the MainInstance of the framework either in the constructor or in the onCreate method.
+After creating the instance, call the onCreate method of the framework within the activity's onCreate.
+To create the framework, it requires an Android GroupView where it will place the camera view and the view responsible for rendering the detected objects.
+Now all that remains is to also call onPause, onResume, and onDestroy in the respective functions of the activity via the framework.
+Now the parameters of the framework can be changed at any time, probably with event listeners.
