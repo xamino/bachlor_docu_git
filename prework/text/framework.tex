@@ -125,18 +125,6 @@ TAMINO TODO: Place javadoc here.
 
 \section{Usage}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=4cm]{img/marker_example.png}
-	\caption[Example Marker.]{An example of a marker. This image is either printed or displayed by some other means in the real world to allow a system to use it as a reference to base a virtual overlay off of it.}
-	\label{fig:marker_example}
-\end{figure}
-
-To enable the framework to detect a 3d coordinate system from a video feed, a marker with specific properties will be required.
-A marker is a visually significant pattern that the system can detect within an image and be used to calculate spatial coordinates. Figure \ref{fig:marker_example} shows an example for such a marker.
-
-TODO: Maybe add a small exposition about markers? See paper.
-
 Depending on the capabilities of the finished framework, it could be possible to track multiple markers in a single instance.
 This would allow multiple objects to be rendered simultaneously, increasing the use cases for the framework – although care will have to be taken to keep any overhead to a minimum.
 
@@ -178,12 +166,11 @@ We can then filter the polynomial objects based on criteria for our markers, mai
 These filtered contours are then processed to identify which marker is which contour.
 
 One of the major advantages of the polynomial representation of the markers is that it allows easy extraction of the homography required to calculate the 3d position of the markers.
-Apart from that, it is also significantly faster – our first tests resulted in framerates of about 8 frames per second.
+Apart from that, it is also significantly faster – our first tests resulted in framerates of about 5 frames per second.
 
-However, while 8 fps is better than 2 fps, it is still somewhat too slow for easy use.
+However, while 5 fps is better than 2 fps, it is still somewhat too slow for easy use.
 Therefor, we suggest using multitasking to process multiple frames in parallel.
-Some optimizations that we also use include writing all the OpenCV calls in a single, native C++ method that is called from the Java framework.
-That call is also the point where the framework can easily be adapted to different systems, as switching the OpenCV calls can easily be done by writing a new, comparable method that simply replaces that single call.
+This allows the framework to run with around 7 fps.
 
 \section{How to Use}
 
