@@ -159,11 +159,18 @@ The following is done each frame with OpenCV.
 It results in a list of detected markers with their transformation matrices.
 
 First, the input frame is transformed into a simple gray-scale image.
-This gray-scale image is then processed with the Canny\cite{canny} edge detector, resulting in nice continuous edges of most objects within the frame.
-We then extract all contours from the edges.
-These contours are used to fit polynomial approximations to all detected contours.
-We can then filter the polynomial objects based on criteria for our markers, mainly for any contours that have 4 corners and conform to certain angles.
-These filtered contours are then processed to identify which marker is which contour.
+This gray-scale image is then processed into a monochrome image via an adaptive threshold method.
+This results in clearly cut black and white areas that we can use in the next step.
+We then extract all contours from the image.
+These contours are used to fit polynomial approximations to all detected contours above a certain size.
+We impose a size restriction to contours as we require a certain minimum size later when identifying the markers, and early exclusion of marker candidates speeds the process up significantly.
+We can then filter the polynomial objects based on criteria for our markers, mainly for any contours that have 4 corners, are convex, and are a closed polynomial.
+
+Now that we have a selection of detected perspective rectangles that might be markers, we sample all candidates for a black border.
+Then we check for the orientation bits: if we find these, we can be comparatively sure that we have a valid marker and can continue to its identification.
+If the detection of orientation fails (meaning that we do not find a pattern of three white and one black inner corner block), we consider the candidate to be invalid.
+Now all that remains is the marker identification, which is done by sampling the remaining inside bits and error correcting them.
+This process is further detailed in \ref{section_markers}\footnote{TODO: Maybe rework ordering? Is this answered in the linked section?}.
 
 One of the major advantages of the polynomial representation of the markers is that it allows easy extraction of the homography required to calculate the 3d position of the markers.
 Apart from that, it is also significantly faster – our first tests resulted in framerates of about 5 frames per second.
@@ -171,6 +178,8 @@ Apart from that, it is also significantly faster – our first tests resulted in
 However, while 5 fps is better than 2 fps, it is still somewhat too slow for easy use.
 Therefor, we suggest using multitasking to process multiple frames in parallel.
 This allows the framework to run with around 7 fps.
+This low increase may have a few reasons, of which the most likely is probably that OpenCV is currently not multi-threading capable.
+As it does improve performance, we decided to keep it.
 
 \section{How to Use}
 
