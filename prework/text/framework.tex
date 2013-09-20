@@ -1,25 +1,25 @@
 In this section, we take a close look at the proposed structure and capabilities of the framework's API.
-The final implementation will however deviate with a high probability.
-The final paper will be corrected to account for these changes\footnote{TODO: Tamino, might also want to check with Marc.}.
+The final implementation will however deviate with a high probability.\footnote{TODO: blah}
+The final paper will be corrected to account for these changes\footnote{TODO: Tamino, might also want to check with Marc. – AYE!}.
 
 \section{Proposed Functionality}
 
-The framework shall have two primary capabilities: first, it should enable fast and easy access to the 3d space calculated from the marker.
-Second, given a model to display, it should be capable of returning a rendering of the object within the scene.
+The framework shall have two primary capabilities: first, it should enable fast and easy access to the 3d homography calculated from the marker.
+Second, given a model to display, it should be capable of returning a rendering of the object within the scene on top of the live preview.
 
 Generally, the framework shall work as in the following.
 Upon import of the framework into the project, the program passes the image to the framework.
-This shall be possible to do in two ways: one, let OpenCV read directly from the camera, or two, give the framework the frames from the program manually.
+This shall be possible to do in two ways: one, let OpenCV read directly from the camera, or two, give the framework the frames from the program manually.\footnote{TODO: in / out?}
 This allows the possibility of using other video or picture streams with the framework\footnote{For example, rendering an object into a video.}.
 
-Now the magic happens; OpenCV calculates the 3d space.
-Before passing it on to the framework, the program can read the 3d space.
+Now the magic happens; OpenCV calculates the 3d homography for any detected marker.
+Before passing it on to the framework, the program can read the homography, if the rendering part of the framework is to be unused.
 This direct access to the resulting coordinate space allows a more down-to-earth programming should it be required.
 If the program is only interested in the final rendered frame, given a model, the framework then renders the object into the scene and returns the frame to the program.
 
 Apart from the above mentioned basic functionality capabilities, the framework should also handle the easy gathering of performance and error information.
-Accessing the information will be done via a listener or an equal mechanism so that any developers can choose when and how to use the information collected by the framework.
-Care should be taken to ensure that the error collection can run even when the framework encounters problems, possibly by putting it in a separate thread.
+Accessing the information will be done via a listener or an equal mechanism so that any developers can choose when and how to use the information collected by the framework.\footnote{TODO: ups... should be doable though}
+Care should be taken to ensure that the error collection can run even when the framework encounters problems, possibly by putting it in a separate thread\footnote{TODO: oh no, more multithreading... :P}.
 
 \begin{figure}
 	\centering
@@ -29,7 +29,7 @@ Care should be taken to ensure that the error collection can run even when the f
 \end{figure}
 
 Figure \ref{fig:sequence_access} shows the proposed outside view of the framework, and where data can be input or read.
-As proposed, the framework should offer a wide variety of uses, without being overly complex.
+As proposed, the framework should offer a wide variety of uses, without being overly complex from an outside perspective.
 Another important aspect we want to make possible is the possibility of changing all the more important parameters during runtime, such as switching the model or adding a new marker.
 This should allow a much smoother usage of the framework and any derived apps as a result.
 
@@ -41,6 +41,9 @@ For this work, we implement it's API.
 To use the framework on Android, the OpenCV Manager\footnote{See: \url{https://play.google.com/store/apps/details?id=org.opencv.engine}.} needs to be installed.
 This program offers the best version for each Android device according to its specifications and capabilities.
 Apart from OpenCV, OpenGL ES 2.0 is used for the rendering of the 3D objects to the display.
+
+For rendering, we use OpenGL ES version 2.
+We chose not to go with version three because at this time, a minority of devices support it and we lack access to a device for debugging.
 
 TODO: Add OpenGL 2.0 stuff that might be important. Why not use 1.1 etc...
 
@@ -73,7 +76,7 @@ The following are features that will not be implemented.
 However, where possible, the framework will allow easy adaption to extend its functionality beyond what it will offer from the start.
 
 \begin{tabulary}{\textwidth}{L || L}
-Marker-less Tracking & Marker-less tracking will most likely not be within the scope of the initial framework. However, as changing markers during runtime will probably be possible, adding this feature should not be overly difficult.\footnote{TAMINO TODO: Might want to reword that.}\\
+Marker-less Tracking & Marker-less tracking will most likely not be within the scope of the initial framework.\footnote{TODO: Explain that the detection would have to be re-written for that to work.}\\
 \hline
 Occlusion & The capability to detect where scene occlusion is taking place is definitely beyond the scope of the framework, as this requires extensively more work.\\
 \hline
@@ -91,9 +94,9 @@ Fancy Rendering & For now, no support of stereoscopic rendering of any kind. Dep
 
 Now let us take a look at the proposed class structure within the framework, as seen in Figure \ref{fig:class_diagram}.
 Main access is controlled over the framework controller, which almost exclusively contains all the public methods callable from outside of the framework.
-Only the messenger class offers public access too.
+Apart from the framework controller, some model classes are also accessible as public classes to ease data transfer (notably for example the marker class so that little effort has to go into data conversion).
 
-The messenger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
+The messenger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.\footnote{TODO: check & correct}
 Allowing outside threads to be directly notified when a message is written enables comparatively fail-safe information gathering.
 This should also help with the transparency of using the framework.
 Note that to keep the messenger thread-safe, the register and remove methods for listeners are one atomic protected block.
@@ -133,7 +136,7 @@ This can be a screen showing the marker, a printed marker, or any other way of d
 Depending on the capabilities of OpenCV, the framework will then detect its relative 3d position.
 With the detected space, the framework can now render objects into the scene with the correct rotation, scaling, and perspective.
 
-The framework should be made to be thread safe.
+The framework should be made to be thread safe.\footnote{TODO}
 Internally the framework will most likely at least have one sub thread for error and information collection and propagation.
 If possible, it should be easy to put the framework into its own thread domain so that any programs using it do not have to worry about locking down their threads by accessing the framework.
 This means that the framework will most likely work asynchronous, with the possibility of forcing it to run synchronous where required.
