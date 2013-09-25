@@ -1,6 +1,5 @@
-In this section, we take a close look at the proposed structure and capabilities of the framework's API.
-The final implementation will however deviate with a high probability.\footnote{TODO: blah}
-The final paper will be corrected to account for these changes\footnote{TODO: Tamino, might also want to check with Marc. – AYE!}.
+In this section, we take a close look at the proposed structure and capabilities of the framework.
+We will then discuss the implementation and its difficulties.
 
 \section{Proposed Functionality}
 
@@ -8,34 +7,38 @@ The framework shall have two primary capabilities: first, it should enable fast 
 Second, given a model to display, it should be capable of returning a rendering of the object within the scene on top of the live preview.
 
 Generally, the framework shall work as in the following.
-Upon import of the framework into the project, the program passes the image to the framework.
-This shall be possible to do in two ways: one, let OpenCV read directly from the camera, or two, give the framework the frames from the program manually.\footnote{TODO: in / out?}
-This allows the possibility of using other video or picture streams with the framework\footnote{For example, rendering an object into a video.}.
+Once the framework is running, OpenCV reads the camera frame directly from the camera.
+This frame is copied to the worker threads that will detect markers.
+The original unaltered frame is passed back up to be shown as the background of the later rendering.
 
-Now the magic happens; OpenCV calculates the 3d homography for any detected marker.
-Before passing it on to the framework, the program can read the homography, if the rendering part of the framework is to be unused.
-This direct access to the resulting coordinate space allows a more down-to-earth programming should it be required.
-If the program is only interested in the final rendered frame, given a model, the framework then renders the object into the scene and returns the frame to the program.
+These worker threads are where the computational expensive part of actually detecting the marker happens.
+Using the Android Java port of the OpenCV library, we detect markers and calculate their homography.
+All detected markers are put into a list with the important deducted information, such as the corresponding identification number of the detected marker.
 
-Apart from the above mentioned basic functionality capabilities, the framework should also handle the easy gathering of performance and error information.
-Accessing the information will be done via a listener or an equal mechanism so that any developers can choose when and how to use the information collected by the framework.\footnote{TODO: ups... should be doable though}
-Care should be taken to ensure that the error collection can run even when the framework encounters problems, possibly by putting it in a separate thread\footnote{TODO: oh no, more multithreading... :P}.
+This list is passed back to the main controlling element of the framework.
+Here it can be passed directly to listening classes if that option was chosen.
+If not, the list is filtered for only those markers that the user wants to track (meaning any that were registered beforehand).
+Then the model information is attached to all detected trackable assets and passed down to the rendering part of the framework.
+Here, this filtered and supplemented list is used to render all objects onto the correct positions with the correct perspective modifications on top of the camera feed.
+
+Apart from the above mentioned basic functionality capabilities, the framework should also handle the easy gathering of performance and error information, mainly be extending the relevant functions of Android.
+This can include gathering the logs to a listener, bypassing the Android logging mechanism, and any further functionality that could be useful.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=12cm]{img/sequence_access.eps}
-	\caption[Access Sequence.]{The proposed sequence of the workflow with the framework, using OpenCV.}
+	\caption[TODO Access Sequence.]{The proposed sequence of the workflow with the framework, using OpenCV.}
 	\label{fig:sequence_access}
 \end{figure}
 
 Figure \ref{fig:sequence_access} shows the proposed outside view of the framework, and where data can be input or read.
 As proposed, the framework should offer a wide variety of uses, without being overly complex from an outside perspective.
 Another important aspect we want to make possible is the possibility of changing all the more important parameters during runtime, such as switching the model or adding a new marker.
-This should allow a much smoother usage of the framework and any derived apps as a result.
+This should allow a less restrictive usage of the framework and any derived apps as a result.
 
 \section{Dependencies}
 
-The framework will depend on two external software solutions.
+The framework will depend mainly on two external software solutions, apart from the dependencies given by the platform that it will run on.
 The first is OpenCV, an open source collection of computer vision and machine learning software.
 For this work, we implement it's API.
 To use the framework on Android, the OpenCV Manager\footnote{See: \url{https://play.google.com/store/apps/details?id=org.opencv.engine}.} needs to be installed.
