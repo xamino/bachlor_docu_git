@@ -38,19 +38,25 @@ This should allow a less restrictive usage of the framework and any derived apps
 
 \section{Dependencies}
 
-The framework will depend mainly on two external software solutions, apart from the dependencies given by the platform that it will run on.
-The first is OpenCV, an open source collection of computer vision and machine learning software.
-For this work, we implement it's API.
-To use the framework on Android, the OpenCV Manager\footnote{See: \url{https://play.google.com/store/apps/details?id=org.opencv.engine}.} needs to be installed.
-This program offers the best version for each Android device according to its specifications and capabilities.
-Apart from OpenCV, OpenGL ES 2.0 is used for the rendering of the 3D objects to the display.
+Primary dependency is of course an Android environment, given that it is the target platform for the framework.
+The framework is written in Java with the Android dependencies used.
+Aside from the basic requirements, the framework will depend mainly on two external software solutions.
 
-For rendering, we use OpenGL ES version 2.
-We chose not to go with version three because at this time, a minority of devices support it and we lack access to a device for debugging.
+The first is OpenCV\cite{opencv}, an open source collection of computer vision and machine learning software.
+The framework makes use of the Java-based port.
+To use the framework on Android, the OpenCV Manager\cite{opencvmanager} needs to be installed alongside the app using the framework, as the marker detection relies on it.
+The OpenCV manager offers the best version for each Android device according to its specifications and capabilities.
 
-TODO: Add OpenGL 2.0 stuff that might be important. Why not use 1.1 etc...
+Apart from OpenCV, OpenGL ES is used for the rendering of the 3D objects to the display.
+For this dependency, nothing has to be considered from an app that would use the framework, as the mobile version of OpenGL is already built into Android.
+According to the capabilities of the developer device used, we chose to use OpenGL ES 2.0.
+We chose not to go with version three because at this time, a minority of devices support it and we lack access to a device capable of it.\footnote{TAMINO TODO: Add OpenGL 2.0 stuff that might be important. Why not use 1.1 etc...}
 
 \section{Limitations of Scope}
+
+In the following we will look at the features required of the framework to be considered complete.
+Some nice-to-have features will also be listed, meaning features that will not be implemented but could possibly be interesting for future further work.
+For completeness, we will also take a short look at features that are possibly too difficult to do and or would require significant work.
 
 To clarify the scope of the proposed framework, all features that will be delivered are described within the following table.
 Note that while these are the main features, aspects of them might change for the implementation.
@@ -60,11 +66,11 @@ Debug Messaging & The framework should be easy to debug and allow simple access 
 \hline
 Manage Trackers & Allow to add and remove trackers during runtime.\\
 \hline
-Manage Rendering & Offer the possibility of putting an own render module into the pipeline and modify any properties required to render such as transparency, etc.\\
-\hline
 Read Raw Data & Give the possibility of accessing the raw data returned from the OpenCV Wrapper so that custom solutions can be built without changing the source code.\\
 \hline
-Modular Source Data & The source data should not be dependent on a certain device; using any video or image files as source should work equally well, if desired.
+Configuration & Allow easy visualization for various aspects of the framework.\\
+\hline
+Multi-threading & Allow computationally expensive tasks to run multi-threaded.\\
 \end{tabulary}
 
 The features in the following table are features that might be implemented, if their development proves to be beneficial to the framework and are easy enough to be added along the sidelines.
@@ -79,11 +85,11 @@ The following are features that will not be implemented.
 However, where possible, the framework will allow easy adaption to extend its functionality beyond what it will offer from the start.
 
 \begin{tabulary}{\textwidth}{L || L}
-Marker-less Tracking & Marker-less tracking will most likely not be within the scope of the initial framework.\footnote{TODO: Explain that the detection would have to be re-written for that to work.}\\
+Marker-less Tracking & Marker-less tracking will most likely not be within the scope of the initial framework\footnote{TODO: See also section ~ }.\\
 \hline
 Occlusion & The capability to detect where scene occlusion is taking place is definitely beyond the scope of the framework, as this requires extensively more work.\\
 \hline
-Fancy Rendering & For now, no support of stereoscopic rendering of any kind. Depending on the difficulty of implementation, support for different direct rendering engines within the framework might be included which would allow an easy way of adding this functionality.\\
+Fancy Rendering & No support for stereoscopic rendering. Depending on the difficulty of implementation, support for different direct rendering engines within the framework might be included which would allow an easy way of adding this functionality.\\
 \end{tabulary}
 
 \section{Class Diagram}
@@ -91,58 +97,95 @@ Fancy Rendering & For now, no support of stereoscopic rendering of any kind. Dep
 \begin{figure}
 	\centering
 	\includegraphics[width=10cm]{img/class_diagram.eps}
-	\caption[General Class Diagram]{This is the preliminary class diagram of the proposed functionality of the framework. Note the low number of public methods: this should make usage of the framework very easy. Also note that the Messenger class has no dependencies towards other classes to enable it to run as a distraction-free subthread from the rest of the framework.}
+	\caption[TODO General Class Diagram]{This is the preliminary class diagram of the proposed functionality of the framework. Note the low number of public methods: this should make usage of the framework very easy. Also note that the Messenger class has no dependencies towards other classes to enable it to run as a distraction-free subthread from the rest of the framework.}
 	\label{fig:class_diagram}
 \end{figure}
 
-Now let us take a look at the proposed class structure within the framework, as seen in Figure \ref{fig:class_diagram}.
+Now let us take a look at the proposed class structure of the framework, as seen in Figure \ref{fig:class_diagram}.
 Main access is controlled over the framework controller, which almost exclusively contains all the public methods callable from outside of the framework.
 Apart from the framework controller, some model classes are also accessible as public classes to ease data transfer (notably for example the marker class so that little effort has to go into data conversion).
 
-The messenger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.\footnote{TODO: check & correct}
-Allowing outside threads to be directly notified when a message is written enables comparatively fail-safe information gathering.
-This should also help with the transparency of using the framework.
-Note that to keep the messenger thread-safe, the register and remove methods for listeners are one atomic protected block.
-The messenger thread itself is controlled from the framework with default behavior enabled should it stop running.
+The messenger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
+This allows outside threads to be directly notified when a message is written and allows the end user to expand on any messages from the framework.
 
 The Controller encapsulates all the primary functionality within the framework.
-Apart from managing all the other classes on startup and closure, it also handles the information exchange between them and the caller.
-It also enables the management of the trackables and their assigned renderables.
-Changing the source for the video to detect markers and changing the rendering engine can be done here too, if desired.
+Apart from managing all the other classes on startup and closure, it also handles the information exchange between them and the caller, rendering all of these invisible to the outside program.
+It also enables the management of the trackables and their assigned renderables\footnote{TAMINO TODO: Rework wording, might want to define in glossary too.}.
 The Controller also handles any inter-system compatibility that the passage of information between the Renderer and Wrapper require.
 
 The OpenGL ES Renderer class handles the generation of the images for the output in the form of a canvas.
-It takes the 3d coordinate system from the OpenCV wrapper and renders the objects with the given specifications onto the final canvas.
+It takes the 3d coordinate system from the OpenCV wrapper and renders the objects with the given specifications onto the  canvas over the camera feed.
 
 Last is the OpenCV Wrapper. The Wrapper handles the control of the OpenCV library and does any managing work required for the framework.
-It also enables some source and destination control for respectively the images and 3d coordinate space.
+This mainly includes the management of the worker threads that contain the marker detection algorithm.
 
-The above proposed system should enable an easily extensible build for the framework.
-For example, using the framework with any OpenCV version apart from the Android port should be achievable by simply writing an extra wrapper.
-The same applies for the Renderer; it can simply be replaced by new modules that render to DirectX or the full OpenGL specification.
-While we encourage such modularity, we will not promise it for the final version of this work.
+The above proposed system should enable an easily extensible build for the framework while retaining a simplistic use case.
+It should, in theory, be relatively easy to exchange either the worker threads or the render class to enable the framework to run beyond Android.
+That would enable the framework to run on normal personal computers using the full-fledged version of OpenGL or possibly DirectX.
 
 \section{Application Programming Interface}
 
 The following represents the suggested interface for the framework.
 With the listed methods, all functionality that the framework offers can be accessed.
 
-TAMINO TODO: Place javadoc here.
+{\footnotesize
+\begin{tabulary}{\textwidth}{J || J}
+<Initialization> & Constructs all the internal classes and prepares the major functionality. Also used to set the most important values such as camera distortion and camera perspective, as these are crucial for a correct processing. Furthermore also used to set the output layout where the results are drawn to.\\
+\hline
+onCreate & Must be called in the activities onCreate; handles all the necessary calls within the framework.\\
+\hline
+onResume & Must be called in the activities onResume.\\
+\hline
+onPause & Must be called in the activities onPause.\\
+\hline
+onDestroy & Must be called in the activities onDestroy.\\
+\hline
+registerListener & Add a homography listener. Listeners will be called if the correct flag has been set. Listeners will receive a list of detected markers containing all information.\\
+\hline
+removeListener & Removes a homography listener. \\
+\hline
+registerEntity & Adds an entity containing the ID, visibility status, and vertice buffer. This means that upon detection of the corresponding marker, the object will be rendered on top of it, according to the status of the visibility.\\
+\hline
+removeEntity & Removes an entity from the list.\\
+\hline
+setDebugFlag & Sets the given debug flag. For possible flags please see the Javadoc.\\
+\hline
+removeDebugFlag & Unsets the given debug flag.\\
+\end{tabulary}
+}
+
+Important to note is that the onCreate, onPause, onResume, and onDestroy methods are inherent to the way programs work on Android, and thus must be called for the framework to function correctly.
+
+Upon initialization of the framework, entities can be added to be tracked and rendered with the registerEntity method.
+To do that, the user has to implement the entity interface, providing functionality for reading the identification that the object is to be bound to, whether it is to be rendered (the visibility option), and finally a FloatBuffer containing the vertice location and color information.
+The use of the FloatBuffer might not seem intuitive at first glance, however that allows the framework to handle the rendering all on its own, greatly simplifying the usage of the framework.
 
 \section{Usage}
 
-Depending on the capabilities of the finished framework, it could be possible to track multiple markers in a single instance.
-This would allow multiple objects to be rendered simultaneously, increasing the use cases for the framework – although care will have to be taken to keep any overhead to a minimum.
+The finished framework can track multiple markers in a single instance.
+In fact, it tracks all markers it finds from the beginning, only filtering out the ones that the user is interested in before rendering.
+This allows comparatively easy use of multiple, separately tracked entities.
+However, this also has a significant drawback: as the framework is computationally expensive, multiple markers can quickly degrade its performance, even if the user only is interested in a single marker.
+Therefore we suggest care considering the placement of unused markers to maximize performance.
 
-To enable the functionality, the recorded or live video stream must have a pre-defined marker somewhere in it.
-This can be a screen showing the marker, a printed marker, or any other way of displaying a marker in a scene.
-Depending on the capabilities of OpenCV, the framework will then detect its relative 3d position.
-With the detected space, the framework can now render objects into the scene with the correct rotation, scaling, and perspective.
+For the tracking to work, the marker must be visible to the camera.
+The marker can be shown on a separate screen, printed on paper, or drawn.
+The framework will then detect the presence of the marker, continue with its identification and perspective information, and finally store it as a successfully detected marker for the render interface to render.
+Utilizing the thus calculated perspective information, paired with the correct object, the renderer then proceeds to render objects onto their respective markers.
 
-The framework should be made to be thread safe.\footnote{TODO}
-Internally the framework will most likely at least have one sub thread for error and information collection and propagation.
-If possible, it should be easy to put the framework into its own thread domain so that any programs using it do not have to worry about locking down their threads by accessing the framework.
-This means that the framework will most likely work asynchronous, with the possibility of forcing it to run synchronous where required.
+Concerning the placement and creation of the marker a few points should be considered.
+First off, the framework offers a helper method for creating a binary representation of a marker given an identification number.
+This removes any need for the user to manually create and encode a marker and the resulting marker is guaranteed to be correct.
+
+Secondly, the marker should be black on white, with the black border contrasted by white space around it.
+Correct detection of the presence of a marker can not be guaranteed otherwise.
+Generally speaking, the framework is sensitive to the contrast range of the recorded camera feed, and thus it should be maximized.
+Apart from monochrome markers, this also means that the environment should be brightly and constantly lit.
+
+Thirdly, the marker should be created and printed digitally.
+The correct detection of the border is the first and most important step in the detection of the marker and should thus be as good as can be managed.
+While hand drawn markers can work, experimentation has shown that it is almost impossible to draw as accurate as required for the detection to be equal to printed markers.
+This is only true for the border, however: the internal 4x4 grid containing the orientation and identification of the marker can be drawn in, so long as the drawing is done carefully.
 
 \section{Implementation}
 
