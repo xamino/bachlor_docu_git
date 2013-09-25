@@ -192,49 +192,67 @@ This is only true for the border, however: the internal 4x4 grid containing the 
 The following section describes in more detail the implementation of the framework.
 First we implemented a test project to experiment with OpenCV on Android to collect data on possible solutions and problems.
 
-At first, a feature-based approach was tried.
+At first, a feature-based detection approach for markers was tried.
 That meant that feature detection was used on the marker, resulting in a cloud of key feature points.
 These can then theoretically be located in an image from which we have likewise extracted feature points.
-However, this method proved to be too computationally expensive.
-Initial tests only for detecting feature points in a live camera view already yielded framerates below 2 frames per second.
+However, this method proved to be too computationally expensive considering that we would then still need to identify the marker and calculate the geometric information.
+Initial tests only for detecting feature points in a live camera view yielded framerates below 2 frames per second.
 This was deemed insufficient for a realtime use of the finished product.
 
 More research turned up a better solution based on the method used by the comparable Aruco\cite{aruco} framework.
-The method was implemented as follows.
+What follows is our implementation of the same principle.
 
 \subsection{Method for Tracking Markers}
 
-The following is done each frame with OpenCV.
+This section describes in detail how we detect, identify, and calculate the perspective transformation of the markers in the framework.
+These steps are done for each frame, leveraging the image processing capabilities of OpenCV.
 It results in a list of detected markers with their transformation matrices.
 
-First, the input frame is transformed into a simple gray-scale image.
-This gray-scale image is then processed into a monochrome image via an adaptive threshold method.
-This results in clearly cut black and white areas that we can use in the next step.
-We then extract all contours from the image.
-These contours are used to fit polynomial approximations to all detected contours above a certain size.
-We impose a size restriction to contours as we require a certain minimum size later when identifying the markers, and early exclusion of marker candidates speeds the process up significantly.
-We can then filter the polynomial objects based on criteria for our markers, mainly for any contours that have 4 corners, are convex, and are a closed polynomial.
+The first step is to reduce the color image into a binary image.
+To do this, we take the gray-scaled image that we receive from OpenCV and threshold it against a constant value.
+As we are interested in highly contrasted regions as our markers are monochrome, this threshold was chosen relatively low.
+Alternative methods are available, but either have other drawbacks or take a longer amount of time.
+
+This binary image is suitable for fast detection of all contours within the image.
+The detected contours are then filtered for size, as any contour that represents a marker below a certain size will be too small to safely and correctly identify.
+The filtering also improves performance as it removes much contour noise, therefore decreasing our workload for further steps.
+Next we calculate polynomial approximations for all remaining contours.
+We can then filter the polynomial objects based on criteria for our markers.
+Of these criteria there are two: only objects with 4 corners and that form a convex hull are kept.
 
 Now that we have a selection of detected perspective rectangles that might be markers, we sample all candidates for a black border.
-Then we check for the orientation bits: if we find these, we can be comparatively sure that we have a valid marker and can continue to its identification.
+To do this, we first have to de-warp the part of the image that is confined by the rectangles.
+This is done to decrease sampling difficulty and costs us almost nothing speed-wise.
+The now square texture is then used in the further steps, of which the first is to check that the candidates have a valid black border.
+Next we check for the orientation bits: if we find these, we can be comparatively sure that we have a valid marker and can continue to its identification.
 If the detection of orientation fails (meaning that we do not find a pattern of three white and one black inner corner block), we consider the candidate to be invalid.
-Now all that remains is the marker identification, which is done by sampling the remaining inside bits and error correcting them.
-This process is further detailed in \ref{section_markers}\footnote{TODO: Maybe rework ordering? Is this answered in the linked section?}.
+Now all that remains is the marker identification, which is done by sampling the remaining inside bits and decoding them.
+This process is further detailed in \ref{section_markers}.
 
-One of the major advantages of the polynomial representation of the markers is that it allows easy extraction of the homography required to calculate the 3d position of the markers.
-Apart from that, it is also significantly faster – our first tests resulted in framerates of about 5 frames per second.
+One of the major advantages of the polynomial representation of the markers is that it is very easy to calculate the 3d position of the markers from them.
+This is done by solving a linear equation that tries to find the translation values required to move the marker from the camera plane correctly to its 3d location according to its perspective distorted location.
+That step is the one that requires the camera matrix and camera distortion values, which have to be determined beforehand for each device.
+The resulting translation is saved along with marker identification and angle.
+It will later be used to correctly place an object on top of the marker to be rendered in OpenGL.
+All thus detected marker candidates are then passed to the main controller, which manages them for the renderer.
 
-However, while 5 fps is better than 2 fps, it is still somewhat too slow for easy use.
-Therefor, we suggest using multitasking to process multiple frames in parallel.
-This allows the framework to run with around 7 fps.
-This low increase may have a few reasons, of which the most likely is probably that OpenCV is currently not multi-threading capable.
-As it does improve performance, we decided to keep it.
+For further commentary on the implementation, see section \ref{implementation}.
+Concerning final performance of the framework, see section \ref{performance}.
 
 \section{How to Use}
 
 Using the framework is very easy.
 Simply create an instance of the MainInstance of the framework either in the constructor or in the onCreate method.
 After creating the instance, call the onCreate method of the framework within the activity's onCreate.
-To create the framework, it requires an Android GroupView where it will place the camera view and the view responsible for rendering the detected objects.
+To create the framework, it requires an Android GroupView where it will place the camera view and the view responsible for rendering the detected objects and the camera values for the target device\footnote{TAMINO TODO: link app where these can be obtained?}.
 Now all that remains is to also call onPause, onResume, and onDestroy in the respective functions of the activity via the framework.
-Now the parameters of the framework can be changed at any time, probably with event listeners.
+
+The framework offers some helper functions to shift some workload away from the user.
+These should allow the usage of the framework to be very quick to learn and implement, without having to understand how the framework works internally.
+
+One such helper function is the creation of correct markers in the form of a binary array.
+This can be used one-off to create a printable set of markers, or during use of the framework for internal representation of markers.
+The method takes the identification number and generates the complete marker for it, including border, orientation bits, and Hamming encoding.
+
+Another helper function loads a 3d model file and converts it to the correct representation to be used with the entity class.
+This method takes a file path\footnote{TAMINO TODO: Or a reference to the loaded object? might be better.}, loads the object, and converts it to the FloatBuffer data structure used by the framework.

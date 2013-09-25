@@ -1,15 +1,26 @@
-TODO: Put results of app here (actual screenshots, review of code, etc.)
+This section provides a commentary of the implementation work of the framework.
+We will also take a closer look at the performance of the finished framework and where improvements can be made in the future.
+To allow our work to be put into perspective, we will also compare the framework with the Aruco framework.
+
+\section{Implementation}
+\label{implementation}
+
+TODO: list problems, etc.
+
+\section{Performance}
+\label{performance}
+
+Compared to the feature detection approach, this algorithm can easily manage up to four frames per second.
+However, while four is better than two frame per second, it is still somewhat too slow for easy use.
+Therefor, we suggested and implemented multitasking to process multiple frames in parallel.
+This allows the framework to run with around seven frame per second for one marker.
+
+This low increase may have a few reasons, of which the most likely is probably that OpenCV is currently not multi-
+threading capable.
+As it does improve performance, we decided to keep it.
+
+TODO: Framework and app
 
 \section{Comparison to similar Apps}
 
 TODO: Compare with aruco.
-
-As we use the same approach to marker detection and tracking as Aruco, that will be our main comparison.
-Aruco manages a framerate of 4 fps for one marker and one object to render.
-Our framework manages about 8 fps, although that is possibly only because the device we used is faster.
-
-\section{Performance}
-
-TODO: Framework and app
-
-TODO: Add timing functions to Messenger!

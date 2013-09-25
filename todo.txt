@@ -16,3 +16,6 @@ Documentation:
 Program:
  - do messenger listener!
  - add flag for removing duplicates
+ - add flag for thresholding methods!
+ - polynomial approximization: check if orientation can also be filtered as in master
+   paper
