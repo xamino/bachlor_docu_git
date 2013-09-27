@@ -7,6 +7,8 @@ To allow our work to be put into perspective, we will also compare the framework
 
 \subsection{Encountered Difficulties}
 
+% Sparse documentation and help
+% TODO: extract the two differences – what exactly do you mean to say with them? Expand!
 The first major difficulty we encountered upon beginning the implementation was the sparse documentation of the Java OpenCV for Android framework.
 The probable cause for this is most likely due to the fact that OpenCV was originally written for desktop applications using C++.
 That means that there are two major differences between the more widely used and documented version of the framework compared to the version used for this project.
@@ -14,6 +16,8 @@ The first is that one of the goals of our work was to write a Java framework, th
 The second difference is due to the fact that our framework's platform was to be Android, for which a few small differences existed compared to the normal use of OpenCV.
 These two differences seem to have been sufficient in decreasing the usage of the Java port of OpenCV enough that documentation and accessible tutorials and examples proved to be far in between.
 
+% Problems debugging
+% TODO: Extract problems with mat, that stupid thing deserves its own paragraph. :P
 A further difficulty thus proved to be the debugging of errors while programming our framework.
 This came from the fact that we had to spend a lot of time reverse engineering C++ code for desktop applications to work on Android equivalently.
 Add to that that OpenCV runs in C++ even on Android and tracing errors to their source proved difficult.
@@ -21,6 +25,13 @@ Often only careful consideration of error messages and stack traces in the depth
 It did not help that the object data class mostly used for image operations in OpenCV, so-called mat (short for matrices), were more or less black boxes from the Java point of view.
 Out of that arose problems concerning correct initializations concerning both required size and type, including number and size of single channels.
 Errors when using mat incorrectly proved to be hard to find, as the error messages were given using insufficiently accurate number codes that did little to help in finding the original error.
+The error code we mostly fought with was 215, which can mean anything from incorrect mat sizes to incorrect number of channels.
+A quick search also showed that very same code used for unimplemented methods within OpenCV itself.
+
+% Paradigm problems
+Another challenging aspect concerning the use of OpenCV in the Android Java environment was found in the use of C++ program paradigms within the Java wrapper.
+This meant for example that the result of a method was not returned, but instead written into an object passed on to the method.
+While generally more of a nuisance than a source of error, it would be helpful if the wrapper took care of the paradigm shift between Java and the C++ interface, thus freeing developers from having to work in two paradigms in parallel.
 
 \subsection{???}
 
