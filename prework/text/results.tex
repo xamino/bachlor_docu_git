@@ -5,6 +5,25 @@ To allow our work to be put into perspective, we will also compare the framework
 \section{Implementation}
 \label{implementation}
 
+\subsection{Encountered Difficulties}
+
+The first major difficulty we encountered upon beginning the implementation was the sparse documentation of the Java OpenCV for Android framework.
+The probable cause for this is most likely due to the fact that OpenCV was originally written for desktop applications using C++.
+That means that there are two major differences between the more widely used and documented version of the framework compared to the version used for this project.
+The first is that one of the goals of our work was to write a Java framework, thus encouraging that we use the Java wrapper for OpenCV.
+The second difference is due to the fact that our framework's platform was to be Android, for which a few small differences existed compared to the normal use of OpenCV.
+These two differences seem to have been sufficient in decreasing the usage of the Java port of OpenCV enough that documentation and accessible tutorials and examples proved to be far in between.
+
+A further difficulty thus proved to be the debugging of errors while programming our framework.
+This came from the fact that we had to spend a lot of time reverse engineering C++ code for desktop applications to work on Android equivalently.
+Add to that that OpenCV runs in C++ even on Android and tracing errors to their source proved difficult.
+Often only careful consideration of error messages and stack traces in the depths of the Android log allowed any progress to be made in tracing a bug.
+It did not help that the object data class mostly used for image operations in OpenCV, so-called mat (short for matrices), were more or less black boxes from the Java point of view.
+Out of that arose problems concerning correct initializations concerning both required size and type, including number and size of single channels.
+Errors when using mat incorrectly proved to be hard to find, as the error messages were given using insufficiently accurate number codes that did little to help in finding the original error.
+
+\subsection{???}
+
 TODO: list problems, etc.
 
 \section{Performance}
