@@ -66,6 +66,33 @@ The only bigger difficulties encountered while working with OpenGL ES were using
 \subsection{Performance}
 \label{performance}
 
+Here, we will take a brief look at the general performance of the Imagine framework.
+All numbers that will be given are approximations only, as we did not statistically analyze them.
+For a more in depth look of Imagine's performance, further work can be done as necessary.
+
+To give the following numbers a frame of reference, here some numbers concerning the general speed of the Android platform, and the OpenGL ES and OpenCV utilization on it.
+
+OpenCV captures the preview frame of the camera from Android for the base frame from which all processing originates.
+This means that the speed at which it does this is the first important reference for all further values.
+The speed of this operation proves to be the first limiting factor: due to how Android camera capture works, the preview only offers 15 frames per second.
+This has some strong implications for the Imagine framework: however much the work done can be optimized, it will never be capable of running faster than that.
+As humans only begin to see a smooth video upwards of approximately 20 frames per second – for perfectly smooth video however at least 60 frames per second – this places Imagine already outside the range of smooth output.
+
+Android itself renders the interface at 60 frames per second\footnote{As of Android 4.1.}.
+OpenGL ES also easily achieves 60 frames per second, although it is to note that the graphic pipeline has the advantage of serious hardware acceleration.
+Of course the speed at which OpenGL ES will render a scene for the Imagine framework is highly dependent on the complexity of the models, although that should not be a limiting factor for some time yet.
+
+The comparison of these two limiting factors shows that Imagine is mainly performance dependent on the OpenCV for Android framework.
+Newer versions of it should theoretically be able to increase the speed up to the framerate of the camera preview.
+To achieve even higher speeds, the speed at which Android fetches the camera preview must be increased, which could happen with newer devices and or newer version of Android.
+All of these possible speed increases however lie outside of the influence of the Imagine framework.
+
+For the speed of the Imagine framework, a general understanding of the algorithm that detects markers is required – as described in section \ref{detection_workflow}.
+
+TODO: CONTINUE
+
+----------------------- TODO: Framework and app -----------------------
+
 Compared to the feature detection approach, this algorithm can easily manage up to four frames per second.
 However, while four is better than two frame per second, it is still somewhat too slow for easy use.
 Therefor, we suggested and implemented multitasking to process multiple frames in parallel.
@@ -74,8 +101,6 @@ This allows the framework to run with around seven frame per second for one mark
 This low increase may have a few reasons, of which the most likely is probably that OpenCV is currently not multi-
 threading capable.
 As it does improve performance, we decided to keep it.
-
-TODO: Framework and app
 
 \section{Features and Capabilities}
 
