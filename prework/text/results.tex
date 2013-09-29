@@ -87,9 +87,13 @@ Newer versions of it should theoretically be able to increase the speed up to th
 To achieve even higher speeds, the speed at which Android fetches the camera preview must be increased, which could happen with newer devices and or newer version of Android.
 All of these possible speed increases however lie outside of the influence of the Imagine framework.
 
-For the speed of the Imagine framework, a general understanding of the algorithm that detects markers is required – as described in section \ref{detection_workflow}.
+For the speed of the Imagine framework, a general understanding of the algorithm that detects markers is required – as can be found in section \ref{detection_workflow}.
+Imagine idles at seven frames per second, meaning that this is the best case performance under ideal circumstances with no markers present.
+When markers are present and detected, performance takes a hard dip.
+Six markers can be detected at a bit above two frames per second.
+This effect only increases with more active markers within the camera view.
 
-TODO: CONTINUE
+TODO: CONTINUE with step by step numbers in ms.
 
 ----------------------- TODO: Framework and app -----------------------
 
