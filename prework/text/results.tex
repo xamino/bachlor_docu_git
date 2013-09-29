@@ -7,37 +7,63 @@ To allow our work to be put into perspective, we will also compare the framework
 
 \subsection{Encountered Difficulties}
 
-% Sparse documentation and help
-% TODO: extract the two differences – what exactly do you mean to say with them? Expand!
-The first major difficulty we encountered upon beginning the implementation was the sparse documentation of the Java OpenCV for Android framework.
+% Sparse help
+The first major difficulty we encountered upon beginning the implementation was the user generated documentation of the Java OpenCV for Android framework in the form of questions and answers or tutorials.
 The probable cause for this is most likely due to the fact that OpenCV was originally written for desktop applications using C++.
 That means that there are two major differences between the more widely used and documented version of the framework compared to the version used for this project.
-The first is that one of the goals of our work was to write a Java framework, thus encouraging that we use the Java wrapper for OpenCV.
-The second difference is due to the fact that our framework's platform was to be Android, for which a few small differences existed compared to the normal use of OpenCV.
+The first is that one of the goals of our work was to write a Java framework, thus encouraging that we use the Java wrapper for OpenCV – thus making the majority of C++ resources moot and hard to use.
+The second difference is due to the fact that our framework's platform was to be Android, for which a few small differences existed compared to the normal use of OpenCV – such as the use of OpenCV via the elegant solution of a separate application, the OpenCV manager.
 These two differences seem to have been sufficient in decreasing the usage of the Java port of OpenCV enough that documentation and accessible tutorials and examples proved to be far in between.
+This forced development to rely all too often on examples written for other platforms and programming languages.
+Luckily however the framework syntax is consistent, although the used data types are not always transferable.
+Thus such translation work was possible if difficult.
+
+% Lacking documentation
+But not only unofficial documentation is lacking: official documentation in the form of documentation for the application programming interface and official tutorials are, for all intents, almost non existent at the time of this paper.
+Comparably to the lacking user generated documentation, this can be mitigated by using material intended for C++.
+C++ documentation is also all there is for the Javadoc used within the IDE.
+It is not easy working in Java with C++ code as Javadoc, with further text mostly not relevant to the problems encountered when coding with it.
+
+% Problems with stupid mat
+While we're on the topic of the C++ base of OpenCV, allow us to criticize the single most frustrating aspect of using OpenCV: the matrix object data type, short mat.
+Mats are used within OpenCV as a one-size-fits-all solution for any data ranging from vector points that represent polygons to multi-channel images in various more or less used formats.
+While it was still easy to recognize the RGBA format\footnote{RGBA stands for, respectively: red, green, blue, alpha. This depicts the order and type of channels for an image.} that the framework receives the camera image in, using the correct conversions and the correct mat subtypes in the principle work thread within Imagine proved to be very frustrating.
+First we encountered difficulties with the conversion of different image formats to other formats, an operation that costs a good bit of processing power and time.
+Thankfully, we were able to work around any conversions by parallel usage of multiple mats whose results are used on one another to retain a higher overall speed.
+Then another difficulty emerged while using the OpenCV function to calculate polygons for detected contours within an image.
+The method for these polygons returns these in a special mat subtype that is specialized for floating point numbers.
+However, the methods we then required to work with these polygons required the polygons in a normal mat, thus forcing us to convert from one type of mat to another.
+Again this problem could largely be mitigated by converting as little as possible, although the base conversion proved to be one of the smaller problems in the grand scope of speed within the Imagine worker threads.
+Furthermore, there exist no methods for determining the type and allocation of channels within a mat.
+While not being able to check for these properties forced a clean usage of the data class within Imagine and thus probably increased speed somewhat, such methods are crucial for learning the correct usage of mat and certainty of stored data type.
+Writing and reading data with mats is also something that requires faith, as no checks for sanity can be performed on the data.
+For example, the method for reading a single coordinate returns a double array – always, even when using the mat for binary images (in which case a boolean would suffice), luminance images (possibly a short data type), or as an integer matrix (integers).
+The returned value then has to be cast to the (hopefully) correct data type – and if we made a mistake somewhere along the line and the mat doesn't contain the data we expect it to contain, we have little in the way of catching that mistake.
+We therefore kindly suggest that OpenCV for Android make use of the Java generics mechanism, as we believe that would start to simplify the confusion surrounding mats.
 
 % Problems debugging
-% TODO: Extract problems with mat, that stupid thing deserves its own paragraph. :P
-A further difficulty thus proved to be the debugging of errors while programming our framework.
-This came from the fact that we had to spend a lot of time reverse engineering C++ code for desktop applications to work on Android equivalently.
-Add to that that OpenCV runs in C++ even on Android and tracing errors to their source proved difficult.
-Often only careful consideration of error messages and stack traces in the depths of the Android log allowed any progress to be made in tracing a bug.
-It did not help that the object data class mostly used for image operations in OpenCV, so-called mat (short for matrices), were more or less black boxes from the Java point of view.
-Out of that arose problems concerning correct initializations concerning both required size and type, including number and size of single channels.
-Errors when using mat incorrectly proved to be hard to find, as the error messages were given using insufficiently accurate number codes that did little to help in finding the original error.
-The error code we mostly fought with was 215, which can mean anything from incorrect mat sizes to incorrect number of channels.
-A quick search also showed that very same code used for unimplemented methods within OpenCV itself.
+A further difficulty proved to be the debugging of errors while programming the worker threads within Imagine.
+This came from the fact that OpenCV runs in C++ even on Android and tracing errors to their source thus proved difficult.
+Often only careful consideration of error messages and stack traces in the depths of the Android log allowed any progress to be made in tracing a bug, although mostly trial and error proved to be the primary method of correcting these errors.
+Problems debugging errors were also due to the paradigm differences in error handling between how Java in general does it (using so-called exceptions) and C++ does it (using integers as error codes).
+OpenCV for Android does not cast the numeric error codes into equivalent Java exceptions, instead leaving them as-is.
+Furthermore, the numerical error codes proved to be very generic in their implications.
+An example of this can be found with the error code we mostly fought with, which was 215.
+That numerical error can (and does!) mean anything from incorrect mat sizes to incorrect number of channels.
+A quick search also showed that that very same code is also used to signal unimplemented methods within OpenCV itself.
 
 % Paradigm problems
-Another challenging aspect concerning the use of OpenCV in the Android Java environment was found in the use of C++ program paradigms within the Java wrapper.
-This meant for example that the result of a method was not returned, but instead written into an object passed on to the method.
-While generally more of a nuisance than a source of error, it would be helpful if the wrapper took care of the paradigm shift between Java and the C++ interface, thus freeing developers from having to work in two paradigms in parallel.
+While on the topic of paradigm differences: another difficulty we encountered with OpenCV for Android was the difference in coding styles.
+With this we mean for example that the result of a method was not returned, but instead written into an object passed on to the method\footnote{This stems from the way C++ usually does error handling by returning numerical error codes. The result is written into a referenced data class, freeing the return call for passing back numerically coded error or success messages.}.
+Due to the existence of exceptions, this is usually done differently when using Java.
+While generally more of a nuisance than a source of error, it would be helpful if the wrapper took care of the paradigm shift between Java and the C++ interface, thus freeing developers from having to work with two paradigms in parallel.
 
-\subsection{???}
+% General
+Generally speaking, OpenCV for Android proved usable for this work, but with some difficulty, as can be seen by the lengthy dissection here.
+OpenGL ES proved to relatively trivial to use, notably because of the wealthy online resources in the form of extensive documentation and multiple tutorials.
+The only bigger difficulties encountered while working with OpenGL ES were using multidimensional math for the matrix operations and how to get the renderer to render to a transparent layer.
 
-TODO: list problems, etc.
-
-\section{Performance}
+\subsection{Performance}
 \label{performance}
 
 Compared to the feature detection approach, this algorithm can easily manage up to four frames per second.
@@ -50,6 +76,11 @@ threading capable.
 As it does improve performance, we decided to keep it.
 
 TODO: Framework and app
+
+\section{Features and Capabilities}
+
+TODO: Place screenshots of debugging views and finished output here.
+Also mention helpers here?
 
 \section{Comparison to similar Apps}
 
