@@ -12,10 +12,4 @@ Documentation:
  - [O]Add mention of easy picture & text rendering (maybe have Renderer supply that?)
  - [O]Redo all tables so that they show in the list of tables and look professional
      (see: http://en.wikibooks.org/wiki/LaTeX/Tables#Professional_tables)
-     
-Program:
- - do messenger listener!
- - add flag for removing duplicates
- - add flag for thresholding methods!
- - polynomial approximization: check if orientation can also be filtered as in master
-   paper
+
