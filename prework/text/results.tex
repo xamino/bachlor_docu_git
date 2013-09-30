@@ -70,6 +70,8 @@ Here, we will take a brief look at the general performance of the Imagine framew
 All numbers that will be given are approximations only, as we did not statistically analyze them.
 For a more in depth look of Imagine's performance, further work can be done as necessary.
 
+\subsubsection{Frames per Second}
+
 To give the following numbers a frame of reference, here some numbers concerning the general speed of the Android platform, and the OpenGL ES and OpenCV utilization on it.
 
 OpenCV captures the preview frame of the camera from Android for the base frame from which all processing originates.
@@ -99,18 +101,35 @@ Imagine idles at up to seven frames per second, meaning that this is the best ca
 When markers are present and detected, performance takes a hard dip.
 This and the difference multithreading makes can be seen in figure \ref{fig:performance_chart}.
 
-TODO: CONTINUE with step by step numbers in ms.
+\subsubsection{Speed of Operations in Detector}
 
------------------------ TODO: Framework and app -----------------------
+The first performance sensitive operation is the conversion of the input image into a binary image.
+The default method with a static threshold takes around 8 ms.
+It is significantly faster than adaptive thresholding with 88 ms.
+However it does not work reliably in low contrast images or in high dynamic ranges within an image.
 
-Compared to the feature detection approach, this algorithm can easily manage up to four frames per second.
-However, while four is better than two frame per second, it is still somewhat too slow for easy use.
-Therefor, we suggested and implemented multitasking to process multiple frames in parallel.
-This allows the framework to run with around seven frame per second for one marker.
+Next is the operation that finds all contours from the binary image.
+This operation is a vital part of the algorithm and can not easily be exchanged for some other operation.
+The cost of finding contours varies strongly on the binary image, but generally takes around 22 ms.
 
-This low increase may have a few reasons, of which the most likely is probably that OpenCV is currently not multi-
-threading capable.
-As it does improve performance, we decided to keep it.
+Now Imagine has to process each contour separately, as each could be a marker.
+This step is where most of the performance is siphoned from.
+In total these operations take around 100 ms, with a high variance for the number of markers.
+
+For each found contour, we calculate the polynomial approximation and use it to filter out any polygons that aren't convex and don't have 4 corners.
+This step takes about 3 ms.
+Imagine then calculates the perspective transform and applies it to dewarp the texture of the marker candidate to allow sampling.
+Using the rgba input mat, OpenCV does this step in 12 ms.
+Originally however we require a grayscale image at this point; however it turns out that OpenCV has no hardware acceleration for dewarping grayscale mats on a Tegra CPU, such as the developer machine has.
+Using the grayscale image would impose a more hefty performance cost.
+
+If the contour is still a valid candidate at this point, Imagine tries to detect a marker from it and the dewarped texture.
+This method takes anywhere from 5 ms to 30 ms, depending on whether the candidate is valid in terms of sampling its properties from the texture (meaning valid border, orientation, and identification marks).
+If a marker is rotated, then the correction of the identification pattern takes additional time, as rotating matrices is computationally expensive.
+
+Now only one step remains for a complete marker detection: calculating the perspective transformations.
+This is done for all detected markers, but luckily is relatively fast compared to other operations.
+OpenCV takes 2 ms to calculate the data for every marker.
 
 \section{Features and Capabilities}
 
