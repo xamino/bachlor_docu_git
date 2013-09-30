@@ -87,15 +87,17 @@ Newer versions of it should theoretically be able to increase the speed up to th
 To achieve even higher speeds, the speed at which Android fetches the camera preview must be increased, which could happen with newer devices and or newer version of Android.
 All of these possible speed increases however lie outside of the influence of the Imagine framework.
 
-For the speed of the Imagine framework, a general understanding of the algorithm that detects markers is required – as can be found in section \ref{detection_workflow}.
-Imagine idles at seven frames per second, meaning that this is the best case performance under ideal circumstances with no markers present.
-When markers are present and detected, performance takes a hard dip.
-With two markers on-screen, Imagine runs at around four frames per second.
-Six markers can be detected at a bit above two frames per second.
-Twelve press performance down to 1.5 frames per second.
-As can be seen, this effect only increases with more active markers within the camera view.
+\begin{figure}
+	\centering
+	\includegraphics[width=14cm]{img/performance_chart.png}
+	\caption[Imagine Performance Chart.]{This chart shows the performance in frames per second of Imagine, working both as a single pipeline and with multithreading. The effect of the number of markers in a camera image on the performance can clearly be seen.}
+	\label{fig:performance_chart}
+\end{figure}
 
-TODO: Do a small experiment, white background with only markers as variable.
+For the speed of the Imagine framework, a general understanding of the algorithm that detects markers is required – as can be found in section \ref{detection_workflow}.
+Imagine idles at up to seven frames per second, meaning that this is the best case performance under ideal circumstances with no markers present.
+When markers are present and detected, performance takes a hard dip.
+This and the difference multithreading makes can be seen in figure \ref{fig:performance_chart}.
 
 TODO: CONTINUE with step by step numbers in ms.
 
