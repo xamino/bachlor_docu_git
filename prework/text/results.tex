@@ -133,8 +133,37 @@ OpenCV takes 2 ms to calculate the data for every marker.
 
 \section{Features and Capabilities}
 
-TODO: Place screenshots of debugging views and finished output here.
-Also mention helpers here?
+\subsection{Debugging Capabilities}
+
+Imagine offers some easy options for selective debugging beyond the log output on Android.
+Specifically for debugging the visual pipeline we implemented some options so that pinpointing an error is comparatively easy.
+Setting debugging up is done via flags and should only be done before calling the onCreate function\footnote{TAMINO TODO: Check if this is true and whether it should be mentioned here or should only be within the program docs.}.
+
+The first option we offer is to activate a more verbose logging mode, where Imagine logs quite a bit more information concerning possible errors – for example, the status of the hamming decoding upon marker detection.
+On par with that one can also activate frame per frame time logging, where Imagine will log the time each detection and rendering step takes.
+
+Going into the visual debugging it is important to note that marker detection is partially suspended.
+In any case Imagine deactivates multithreading to enable the output to be shown – as seen in section \ref{performance}, this decreases performance quite a bit.
+Once in visual debugging mode, three main aspects can be shown.
+The first option that can be activated shows the binary picture.
+This can be used to check whether the chosen binarization method is working correctly.
+
+Another output that can be chosen is to let Imagine draw the detected contours.
+This option can be used to detect errors within the contour detection that arise from the method used to binarize the image.
+
+The following visual debugging methods are the more helpful ones.
+Of these, the option to display the polygons of detected markers is best used to check that Imagine sees a marker.
+Here, Imagine draws the perspective bounding box of all marker candidates that have been detected.
+To check whether Imagine correctly samples a marker candidate, both the option to draw the marker textures and the marker identification patterns can be used.
+Drawing marker textures can verify that Imagine has correctly dewarped a texture and show how warped the marker surface was.
+This can be seen when the dewarped marker texture is not perfectly aligned with the square sampling.
+The marker identifications can be used in conjunction with the option to draw the sampling onto the marker textures to check whether Imagine is correctly sampling the pattern of candidate markers.
+
+All of these debugging capabilities arose out of the step-by-step development process.
+Once we realized how useful such functions were, we decided to keep them accessible from the outside.
+Thus we made sure that they work relatively well and can be activated easily\footnote{This is realized by the methods in MainInterface for setting and removing debugging flags.}.
+
+TODO: CONTINUE
 
 \section{Comparison to similar Apps}
 

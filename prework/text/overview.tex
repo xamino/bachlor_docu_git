@@ -3,7 +3,8 @@
 This paper represents the proposal and initial development work for an Android framework to simplify the detection and usage of makers in augmented reality.
 
 The goal of the framework will be reached by programming an application that uses it.
-The framework will be initially based on the Android\footnote{See: \url{http://www.android.com/}.} port\cite{opencvandroid} of OpenCV\cite{opencv}, implemented as a Java package.
+The framework will initially only target applications written for Android\cite{android} using Java.
+It will utilize the framework OpenCV for Android\cite{opencvandroid}, a sub-project of the original OpenCV framework\cite{opencv} specifically targeted for Android devices.
 Ideally, the final version will run independent of the OpenCV module beneath it, although we do not guarantee that functionality at the moment for the final version.
 Should the OpenCV library be freely exchangeable, the framework will also be usable beyond Android\footnote{TODO: Correct / delete?}.
 
@@ -20,13 +21,13 @@ However, the results may vary at the end for both the look of the app and the st
 The final state will then be compared to the proposed state where we will look back at the development and summarize the important aspects and encountered difficulties.
 
 Apart from the programmatic development of the framework, the app, and the final review of our work, we will also deliver at least basic documentation for the framework and app.
-For the framework this will at least include a Javadoc\footnote{See: \url{http://en.wikipedia.org/wiki/Javadoc}.} file for the complete code and a basic tutorial for usage.
+For the framework this will at least include a Javadoc\cite{docjava} file for the complete code and a basic tutorial for usage.
 For the app, we expect little documentation to be required for the usage.
 Therefore, we propose implementing a basic helping function within the app either as contextual tips or manual pages accessible from within the app.
 The code for the app will also include a Javadoc file.
 
 \section{Project Context}
 
-This paper represents the proposal developed by Tamino Hartmann as his bachelor thesis at the Faculty of Engineering and Computer Science\footnote{See: \url{http://www.uni-ulm.de/en/in/faculty-of-engineering-and-computer-science.html}.} at the Institute of Databases and Information Systems\footnote{See: \url{http://www.uni-ulm.de/en/in/dbis.html}.} at the University of Ulm\footnote{See: \url{http://www.uni-ulm.de/en/homepage.html}.}.
-The supervisor is Marc Schickler\footnote{See: \url{http://www.uni-ulm.de/en/in/dbis/team/marc-schickler.html}.} and the examiner is Professor Doctor Manfred Reichert\footnote{See: \url{http://www.uni-ulm.de/en/in/iui-dbis/staff/manfred-reichert.html}.}.
+This paper represents the proposal developed by Tamino Hartmann as his bachelor thesis at the Faculty of Engineering and Computer Science\cite{faculty} at the Institute of Databases and Information Systems at the University of Ulm\cite{ulmuni}.
+The supervisor is Marc Schickler and the examiner is Professor Doctor Manfred Reichert.
 The work was commissioned as a bachelor thesis to create a framework for fast and easy integration of marker-based tracking for future projects.
