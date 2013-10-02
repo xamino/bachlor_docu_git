@@ -151,7 +151,16 @@ This can be used to check whether the chosen binarization method is working corr
 Another output that can be chosen is to let Imagine draw the detected contours.
 This option can be used to detect errors within the contour detection that arise from the method used to binarize the image.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=10cm]{img/debugging_view.png}
+	\caption[Debugging View]{A screenshot of how the three more relevant debugging views can look. Shown are the polygonal rendering (perspective red squares around markers), the marker texture with the sampling points, and the correctly rotated processed marker pattern.}
+	\label{fig:debugging_view}
+\end{figure}
+
 The following visual debugging methods are the more helpful ones.
+Figure \ref{fig:debugging_view} shows how the polygonal rendering, the texture sampling of markers, and the detected identification pattern are shown.
+
 Of these, the option to display the polygons of detected markers is best used to check that Imagine sees a marker.
 Here, Imagine draws the perspective bounding box of all marker candidates that have been detected.
 To check whether Imagine correctly samples a marker candidate, both the option to draw the marker textures and the marker identification patterns can be used.
@@ -163,8 +172,19 @@ All of these debugging capabilities arose out of the step-by-step development pr
 Once we realized how useful such functions were, we decided to keep them accessible from the outside.
 Thus we made sure that they work relatively well and can be activated easily\footnote{This is realized by the methods in MainInterface for setting and removing debugging flags.}.
 
-TODO: CONTINUE
+\subsection{Features}
+
+Of the features listed in section \ref{scope_limit}, the following are accessible and usable.
+Debug messaging is possible beyond the functionality already offered by Android, most notably a unified logging mechanism and timing functions.
+Managing so-called trackables is possible, including the on-the-fly adding, removing, and exchanging of marker-object associations.
+Reading the pure 3d transformation data is also possible via a listener, bypassing the graphical part of Imagine.
+Manual configuration is somewhat possible, as many values can be changed to accomondate special use cases.
+It is however easily possible to configure debugging views to display relevant information and to enable extensive debugging output.
+Multi-threading is also implemented and beneficial, as seen in section \ref{performance}.
+If required or when debugging views are to be used, a single thread pipeline can also be used.
+
+Therefore we conclude that our framework covers the basics in functionality, although a multitude of improvements can be made\footnote{TAMINO TODO: reference last section here}.
 
 \section{Comparison to similar Apps}
 
-TODO: Compare with aruco.
+TODO: Compare with aruco. TAMINO DO!
