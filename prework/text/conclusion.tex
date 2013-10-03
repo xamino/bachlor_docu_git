@@ -10,21 +10,62 @@ In this section, we will propose some aspects that we think could be of interest
 
 \subsection{Performance}
 
-Where we could possibly do something.
-Such as writing the Detector in C++.
+Concerning the performance of Imagine a lot could still be done, although globally the performance will remain limited by the capabilities of OpenCV for Android.
+One of the main aspects that could be tried however is writing the main method that detects markers using OpenCV with native C++ and calling that from the Java environment with a native call.
+We did not try that because of two factors: one, a basic Java framework was the primary goal, and two, developing a Java application for Android with native code in C++ is not trivial.
+It would also have further divided our attention away from the core functionality, as considerable time would have had to be spent learning and utilizing the native development kit.
+
+We are also confident that some aspects of the OpenCV code could be optimized even further, although that might require a more significant analysis with better and robuster timing features.
+The performance of the worker threads when using multithreading could certainly also be improved further, as multithreading is hard to do correctly.
+
+Apart from Imagine, improvements in the runtime environment – Android itself – could yield further speed gains, although normal developers would face a nontrivial task to do so.
+
+Apart from software aspects various hardware considerations could also lead to better performance.
+One would be the increase of the speed at which the camera generates preview images, allowing OpenCV to grab these faster for further accessing.
+A higher count of CPU cores could also serve to increase the speed by running more worker threads.
+A faster CPU than the 1.4 Ghz quadcore used here will probably also increase performance.
 
 \subsection{Features}
 
+Imagine is most obviously lacking a decent rendering system for production use that can fully utilize the OpenGL ES 2.0 framework.
+Shading, texturing, and animation would benefit the use-cases greatly.
 Features that could easily be implemented for major gain.
+Again, these features are nontrivial for us, thus we decided to leave that for future work and concentrate on the core framework first.
+
+Another feature that would make using Imagine easier is implementing either a lookup model for camera values or offering an internal method for generating them.
+This would allow the removal of determining these numbers externally into the framework, further abstracting away possible hurdles to using it.
 
 \subsection{Improvements}
 
-Things that are currently not so nice.
+From an architectural standpoint, the flow of data within the framework could be solved better.
+Especially the transfer of data to and from the worker threads could surely be solved better to remove execution blocks.
+Most notably the fetching of input frames could be resolved so that the live preview drawn in the background were independent in speed from the worker threads.
+
+The external application programming interface could be expanded too to allow a better and more detailed control of the inner workings.
+Care should be taken to keep the basic simplicity of using the framework though.
+Internal states that could be opened to external control include the resolution of the images, rendering settings, and marker properties.
 
 \subsection{Extended Possibilities}
 
-Porting to other platforms
+Speaking on a more general view, some extended possibilities for future work offers themselves.
+One of the more interesting ones would be the porting of the framework to other platforms, most likely for desktop computers first as they offer significantly more processing power.
+Higher graphical fidelity and more features for the rendering side would also become a possibility.
+
+A further possibility would be the harnessing of further OpenCV functionality concerning the adaptability of the output.
+This could range from situation aware rendering concerning the lighting of models to detection of further information from objects found in the scene.
 
 \section{Closing Statement}
 
-???
+We have shown our results of implementing a Java framework for Android for marker based detection to be used in augmented reality programs.
+This includes preparatory work for the framework and the basic application that utilizes it, to the finished results.
+The framework, called Imagine, covers the basic required features to be fully functioning, although various aspects could still be greatly improved and expanded upon.
+
+Apart from the framework, documentation and explanation of its workings have been created.
+Documentation is to be found in the Javadoc of the project, also seamlessly accessible by any modern IDE during active development.
+This paper highlights the internal functionality of Imagine and how to access it.
+Insight into debugging capabilities and possible areas where difficulties might arise are also highlighted.
+
+We have also shown some possibilities for further work that would significantly expand the use-cases of our framework.
+To help with future evaluations we have also done some basic benchmarks and timed the currently most processing intensive part – the detection algorithm.
+
+??? TODO
