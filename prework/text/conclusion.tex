@@ -36,6 +36,7 @@ Another feature that would make using Imagine easier is implementing either a lo
 This would allow the removal of determining these numbers externally into the framework, further abstracting away possible hurdles to using it.
 
 \subsection{Improvements}
+\label{improvements}
 
 From an architectural standpoint, the flow of data within the framework could be solved better.
 Especially the transfer of data to and from the worker threads could surely be solved better to remove execution blocks.
@@ -44,6 +45,8 @@ Most notably the fetching of input frames could be resolved so that the live pre
 The external application programming interface could be expanded too to allow a better and more detailed control of the inner workings.
 Care should be taken to keep the basic simplicity of using the framework though.
 Internal states that could be opened to external control include the resolution of the images, rendering settings, and marker properties.
+
+TODO: Marker boards, refine corners using subpixel interpolation, ...???
 
 \subsection{Extended Possibilities}
 

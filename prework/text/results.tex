@@ -183,8 +183,36 @@ It is however easily possible to configure debugging views to display relevant i
 Multi-threading is also implemented and beneficial, as seen in section \ref{performance}.
 If required or when debugging views are to be used, a single thread pipeline can also be used.
 
-Therefore we conclude that our framework covers the basics in functionality, although a multitude of improvements can be made\footnote{TAMINO TODO: reference last section here}.
+Therefore we conclude that our framework covers the basics in functionality, although a multitude of improvements can be made.
+These improvements are listed in section \ref{improvements}.
 
 \section{Comparison to similar Apps}
 
-TODO: Compare with aruco. TAMINO DO!
+In this section, we will compare Imagine to two other marker-based augmented reality frameworks for Android.
+Both are opensource projects and can be used freely in personal projects.
+
+\subsection{Aruco}
+
+Aruco\cite{aruco} is a minimal library for augmented reality applications based on OpenCV.
+Primarily, it is intended for desktop C++ applications, although an Android port and web-based Javascript port exist.
+For the purpose of comparing it to our own framework, we will base the comparison on the Javascript port\cite{jsaruco} running on the same developer machine.
+
+The main features of Aruco are simple usage, 1024 markers that can be identified, and the support of so-called AR boards\footnote{Markers composed of several markers for higher reliability.}.
+The marker detection algorithm used by Aruco is the basis for our own work and thus works similarly.
+The main differences in implementation are that Aruco does sub pixel accuracy and a higher number of markers.
+
+The Javascript port runs at around 4 frames per second in a mobile web browser.
+This is a low difference compared to Imagine, although our framework runs natively.
+We believe this due to the fact that while Aruco is based on OpenCV, the Javascript port can not use the library, and thus re-implements the required features.
+That removes any overhead caused by unused features and allows a completely native environment for data objects, without any significant conversions having to be done, which were one bottleneck in Imagine.
+
+\subsection{DroidAR}
+
+DroidAR\cite{droidar} is another framework for Android that allows, among other augmented reality features, marker-based tracking.
+Due to difficulties using the framework on the developer's machine, no performance comparison could be made.
+
+Feature wise a few things are different compared to Imagine, although some interesting parallels also exist.
+Most notably, DroidAR uses threads for the detection of markers and also utilizes OpenCV for Android.
+The detection method is also similar to both Aruco and Imagine.
+However, the actual detection is done with native C++ code.
+DroidAR can differentiate 4096 markers, although only 5 can be detected at once, probably for performance reasons.
