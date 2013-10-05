@@ -2,15 +2,10 @@
 
 The app is to be developed to provide a proof-of-concept for the framework.
 Basic tasks of the app include showing off the capabilities of the framework, proving the implementation, and as an example on how to utilize the framework.
-
 The app will be developed for Android 4 and above, although the framework will be independent from any Android version within the scope of its dependencies on external libraries.
 The app will force landscape view as it offers the more natural layout for the layout of the app.
-Apart from OpenCV for the framework, the app shall have no further dependencies on further 3rd party tools.
+Apart of the OpenCV for Android library for Imagine, the application shall have no further dependencies on other 3rd party tools.
 This should ensure a clean and fast code for the application.
-
-The app should be capable of running smoothly on a Tegra 3 processor\footnote{See: \url{http://www.nvidia.com/object/tegra-3-processor.html}.}.
-The development device is the Transformer Prime, a 10'' tablet from ASUS\footnote{See: \url{http://eee.asus.com/en/transformer-prime/features}.}.
-This means that the app should run smoothly on a 1.6Ghz Quadcore ARM processor rendering to a 1280 by 800 pixel screen.
 
 \section{System Tasks}
 
@@ -26,24 +21,9 @@ Manage Model & Load, prepare, and remove a 3d model to be used within the app wi
 \hline
 Manage Markers & Allow for the management of multiple markers and their associations to the models. \\
 \hline
-Change Settings & Allows the user to modify the frames per second to render the output, how often to update the frame, and the visual quality of the video feed on which the marker detection is run. Should enable the app to be adapted to run on a wide variety of devices.\\
-\hline
 Toggle Debugging Information & If desirable, the user can toggle a debugging view to be rendered on top of the feed. This should offer detailed information on the shown view, marker detection, and any other factors. \\
 \hline
 Screenshot & As Android does not offer a screenshot tool by default, an option to capture the feed shall be provided. \\
-\end{tabulary}
-
-\subsection{Optional Tasks}
-
-This section represents tasks that could be added but might not be.
-Any feature that does not make the final app is to be taken as a suggestion for possible future expansion.
-
-\begin{tabulary}{\textwidth}{L || L}
-Modify Model & This task shall allow the user to change basic properties such as rotation and scale of a loaded object. Further options might be toggling the rendering of a wireframe or textures. Future work might even include shader control or blending options for transparency or blur.\\
-\hline
-Primitive Objects & Allow basic text or pictures to be used directly as an object without having to build them manually in a 3d modeling program. This feature would enable fast prototyping for text- and picture-based AR.\\
-\hline
-Camera Chooser & For devices that have multiple cameras, allow the user to choose which one to use as source for the live view and the rendering.\\
 \end{tabulary}
 
 \section{Dialog Structure}
