@@ -1,6 +1,5 @@
 Finally we will give a broad overview of the accomplishments of this work, difficulties encountered, possible improvements, and use cases.
-
-TODO MORE
+We will finish with a broad closing statement.
 
 \section{Future Possibilities}
 \label{future}
@@ -36,6 +35,9 @@ Again, these features are nontrivial for us, thus we decided to leave that for f
 Another feature that would make using Imagine easier is implementing either a lookup model for camera values or offering an internal method for generating them.
 This would allow the removal of determining these numbers externally into the framework, further abstracting away possible hurdles to using it.
 
+To improve resistance against marker occlusion and increase marker detection precision, support for marker boards such as used by Aruco could also be added.
+However we believe that implementation of such a capability would only be feasible once Imagine has better performance, as the number of markers required for a marker board greatly decrease the framerate.
+
 \subsection{Improvements}
 \label{improvements}
 
@@ -47,7 +49,9 @@ The external application programming interface could be expanded too to allow a 
 Care should be taken to keep the basic simplicity of using the framework though.
 Internal states that could be opened to external control include the resolution of the images, rendering settings, and marker properties.
 
-TODO: Marker boards, refine corners using subpixel interpolation, ...???
+Internally, Imagine could be expanded to refine corners using subpixel interpolation when detecting the contours of possible markers.
+The OpenCV method for subpixel precision is however expensive in terms of performance.
+The advantage of subpixel interpolation would be a better pose estimation, removing sudden jumps and improving the visual fidelity.
 
 \subsection{Extended Possibilities}
 
@@ -72,4 +76,6 @@ Insight into debugging capabilities and possible areas where difficulties might 
 We have also shown some possibilities for further work that would significantly expand the use-cases of our framework.
 To help with future evaluations we have also done some basic benchmarks and timed the currently most processing intensive part – the detection algorithm.
 
-??? TODO
+All in all, we are satisfied with the promise of Imagine, although in detail there are many areas worthy of more development time.
+We consider the framework to be academically usable, but would refrain from utilizing it in a production scenario due to low performance while detecting markers.
+We believe the code of Imagine however to be an excellent starting point to learn how to implement augmented reality applications as it provides at the very least a basically functional framework.
