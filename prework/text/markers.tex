@@ -1,12 +1,8 @@
-\section{Markers}
 \label{section_markers}
 
 To enable the framework to detect a 3d pose from a video feed, a marker with specific properties will be required.
 A marker is a visually significant pattern that the system can detect within an image and can be used to calculate spatial coordinates.
 Figure \ref{fig:marker_example} shows an example of such a marker.
-
-Due to our approach for marker detection, we selected a square black on white marker.
-Other types exist, such as rotary markers or image-based feature markers.
 
 \begin{figure}
 	\centering
@@ -15,7 +11,10 @@ Other types exist, such as rotary markers or image-based feature markers.
 	\label{fig:marker_example}
 \end{figure}
 
-\subsection{Coding Scheme}
+Due to our approach for marker detection, we selected a square black on white marker.
+Other types exist, such as rotary markers or image-based feature markers.
+
+\section{Coding Scheme}
 
 For this framework, a marker is coded as seen in \ref{fig:marker_template}.
 The basis is a 6 by 6 sized grid, where the border is solid black.
@@ -36,7 +35,19 @@ This was deemed sufficient, considering the penalty in performance for each addi
 
 \section{Usage}
 
-For best results when using the markers with our framework, the markers should be printed black on white on a flat surface.
+Concerning the placement and creation of the marker a few points should be considered.
+First off, the framework offers a helper method for creating a binary representation of a marker given an identification number.
+This removes any need for the user to manually create and encode a marker and the resulting marker is guaranteed to be correct.
+
+Secondly, the marker should be black on white, with the black border contrasted by white space around it.
+Correct detection of the presence of a marker can not be guaranteed otherwise.
+Generally speaking, the framework is sensitive to the contrast range of the recorded camera feed, and thus it should be maximized.
+Apart from monochrome markers, this also means that the environment should be brightly and constantly lit.
+
+Thirdly, the marker should be created and printed digitally.
+The correct detection of the border is the first and most important step in the detection of the marker and should thus be as good as can be managed.
 Drawing the markers by hand is possible, but will result in a loss of accuracy due to imperfections that are bound to arise with hand-drawn markers.
 Care should especially be taken concerning the outermost border of the marker, as it is the main aspect used for calculating its pose.
+This is only true for the border, however: the internal 4x4 grid containing the orientation and identification of the marker can be drawn in, so long as the drawing is done carefully.
+
 Markers that are not smooth or have other imperfections will either outright fail in being identified or have an incorrect pose assigned to them.
