@@ -4,7 +4,7 @@ We will then discuss the implementation and its difficulties.
 
 \section{Proposed Functionality}
 
-The framework shall have two primary capabilities: first, it should enable fast and easy access to the 3d pose calculated from the detected marker.
+The framework shall have two primary capabilities: first, it should enable fast and easy access to the 3D pose calculated from the detected marker.
 Second, given a digital 3d model to display, it should be capable of returning a rendering of the object within the scene on top of the live preview, correctly positioned.
 
 Generally, the framework shall work as in the following.
@@ -51,32 +51,32 @@ To use the framework on Android, the OpenCV Manager\cite{opencvmanager} needs to
 The OpenCV Manager offers the best version of OpenCV for Android for each Android device according to its specifications and capabilities.
 
 Apart from OpenCV for Android, OpenGL ES is used for the rendering of the 3D objects to the display.
-For this dependency, nothing has to be considered from an app that would use the framework, as the mobile version of OpenGL is already built into Android.
-According to the capabilities of the developer device used, we chose to use OpenGL ES 2.0.
-We chose not to go with version three because at the time of development, a minority of devices support it and we lack access to a device capable of it.
-At the same time using a lower version would broaden the pool of compatible devices by an insignificant amount, therefore version two suffices for our needs.
+For this dependency, nothing has to be considered from an application that would use the framework, as the mobile version of OpenGL is already built into Android.
+According to the capabilities of the developer device used, we choose to use OpenGL ES 2.x.
+This has the added advantage that at the time of development, a minority of devices support OpenGL ES 3.x anyway.
+At the same time using version (OpenGL ES 1.x) would broaden the pool of compatible devices by an insignificant amount.
 
 \section{Limitations of Scope}
 \label{scope_limit}
 
 In the following we will look at the features required of the framework for it to be considered feature complete and basically usable.
-Some nice-to-have features will also be listed, meaning features that will not be implemented but could possibly be interesting for future further work.
+Some nice-to-have features will also be listed, meaning features that will not be implemented but could possibly be interesting for future development.
 For completeness we will also take a short look at features that are possibly too difficult to do and or would require significant work.
 
-To clarify the scope of the proposed framework, all features that will be delivered are described within the following table.
+To clarify the scope of the proposed framework, all features that will be delivered are described within the following table:
 
 \begin{tabulary}{\textwidth}{L || L}
-Debug Messaging & The framework should be easy to debug and allow simple access to status messages.\\
+Debug messaging & The framework should be easy to debug and allow simple access to status messages\\
 \hline
-Manage Trackers & Allow to add and remove trackers during runtime.\\
+Manage trackers & Allow to add and remove trackers during runtime\\
 \hline
-Read Raw Pose Data & Give the possibility of accessing the raw data returned from the OpenCV Wrapper, bypassing the rendering step.\\
+Read position data & Give the possibility of accessing the raw data returned from the OpenCV interface, bypassing the rendering step\\
 \hline
-Configuration & Allow easy visualization for various aspects of the framework.\\
+Configuration & Allow easy visualization for various aspects of the framework\\
 \hline
-Multi-threading & Allow computationally expensive tasks to run multi-threaded.\\
+Multi-threading & Allow computationally expensive tasks to run multi-threaded\\
 \hline
-Helpful Functions & Offer functions for marker creation and object loading to decrease external work required to use Imagine.\\
+Helpful functions & Offer functions for marker creation and object loading to decrease external work required to use Imagine\\
 \end{tabulary}
 
 The features in the following table are features that could be implemented relatively easily.
@@ -94,7 +94,7 @@ These features would possibly require significant work to include and change fun
 \begin{tabulary}{\textwidth}{L || L}
 Marker-less Tracking & Foregoing markers and allowing any feature-rich object to be used instead.\\
 \hline
-Fancy Rendering & Alternative rendering output, such as stereoscopic output to be used by 3d capable viewing devices.\\
+Fancy Rendering & Alternative rendering output, such as stereoscopic output to be used by 3D capable viewing devices.\\
 \hline
 Occlusion & The capability to detect where scene occlusion is taking place and render accordingly.\\
 \hline
@@ -129,7 +129,7 @@ With the listed methods, all functionality that the framework offers can be acce
 
 {\footnotesize
 \begin{tabulary}{\textwidth}{J || J}
-<Initialization> & Constructs all the internal classes and prepares the major functionality. Also used to set the most important values such as camera distortion and camera perspective, as these are crucial for a correct processing. Furthermore also used to set the output layout where the results are drawn to.\\
+<<Initialization>> & Constructs all the internal classes and prepares the major functionality. Also used to set the most important values such as camera distortion and camera perspective, as these are crucial for a correct processing. Furthermore also used to set the output layout where the results are drawn to.\\
 \hline
 onCreate & Must be called in the activities onCreate; handles all the necessary calls within the framework.\\
 \hline
@@ -178,10 +178,10 @@ The following section describes in more detail the implementation of the framewo
 \subsection{Tools and Environment}
 
 We developed Imagine on a Linux Mint Debian Edition powered computer with the IntelliJ IDEA IDE\cite{idea}.
-The development device, an Asus Transfomer Prime tablet, was connected via USB debugging for rapid iterative coding.
+The development device was connected via USB debugging for rapid iterative coding.
 Javadoc was written directly into the code and then generated to readable format via internal IntelliJ IDEA tools.
 
-For further documentation, we utilized Dia\cite{dia} for generating diagrams, Umbrello\cite{umbrello} for the class diagrams, Texmaker\cite{texmaker} for \LaTeX creation, and Git\cite{git} for revision control.
+For further documentation, we utilized Dia\cite{dia} for generating diagrams, Umbrello\cite{umbrello} for the class diagrams, Texmaker\cite{texmaker} for \LaTeX  creation, and Git\cite{git} for revision control.
 
 Imagine was developed with the target of running smoothly on a Nvidia Tegra 3 processor.
 The development device is the Transformer Prime, a 10'' tablet from ASUS\cite{devicedev}.
@@ -199,8 +199,8 @@ However, this method proved to be too computationally expensive considering that
 Initial tests only for detecting feature points in a live camera view yielded framerates below 2 frames per second.
 This was deemed insufficient for a realtime use of the finished product.
 
-More research turned up a better solution based on the method used by the comparable Aruco\cite{aruco} framework.
-Thus, the feature-based approach was discarded in favor for a marker-based approach.
+Initialized by that, further detailed research turned up a better solution based on the method used by the comparable Aruco\cite{aruco} framework.
+By comparing the performance of the marker-based approach of Aruco, the feature-based approach was discarded in favor of a marker-based approach, as it promised to offer a significant performance increase.
 
 \subsection{Implemented Algorithm}
 \label{detection_workflow}
@@ -212,26 +212,26 @@ It results in a list of detected markers with their transformation matrices.
 The first step is to reduce the color image into a binary image.
 To do this, we take the gray-scaled image that we receive from OpenCV and threshold it against a constant value.
 As we are interested in highly contrasted regions as our markers are monochrome, this threshold was chosen relatively low.
-Alternative methods are available, but either have other drawbacks or take a longer amount of time.
+Alternative methods are available, but either have other drawbacks or take a longer amount of time\footnote{TAMINO TODO: Redo when done, other methods should work now too!}.
 
 This binary image is suitable for fast detection of all contours within the image.
 The detected contours are then filtered for size, as any contour that represents a marker below a certain size will be too small to safely and correctly identify.
 The filtering also improves performance as it removes much contour noise, therefore decreasing our workload for further steps.
 Next we calculate polynomial approximations for all remaining contours.
 We can then filter the polynomial objects based on criteria for our markers.
-Of these criteria there are two: only objects with 4 corners and that form a convex hull are kept.
+Of these criteria there are two: only objects with four corners and those which form a convex hull are kept.
 
 Now that we have a selection of detected perspective rectangles that might be markers, we sample all candidates for a black border.
 To do this, we first have to de-warp the part of the image that is confined by the rectangles.
-This is done to decrease sampling difficulty and costs us almost nothing speed-wise.
-The now square texture is then used in the further steps, of which the first is to check that the candidates have a valid black border.
+This is done to decrease sampling difficulty and decreases speed only by an insignificant amount.
+The now square texture is then used in the following steps, of which the first is to check that the candidates have a valid black border.
 Next we check for the orientation bits: if we find these, we can be comparatively sure that we have a valid marker and can continue to its identification.
 If the detection of orientation fails (meaning that we do not find a pattern of three white and one black inner corner block), we consider the candidate to be invalid.
 Now all that remains is the marker identification, which is done by sampling the remaining inside bits and decoding them.
-This process is further detailed in \ref{section_markers}.
+This process is further detailed in section \ref{section_markers}.
 
-One of the major advantages of the polynomial representation of the markers is that it is very easy to calculate the 3d position of the markers from them.
-This is done by solving a linear equation that tries to find the translation values required to move the marker from the camera plane correctly to its 3d location according to its perspective distorted location.
+One of the major advantages of the polynomial representation of the markers is that it is very easy to calculate the 3D position of the markers from them.
+This is done by solving a linear equation that tries to find the translation values required to move the marker from the camera plane correctly to its 3D location according to its perspective distorted location.
 That step is the one that requires the camera matrix and camera distortion values, which have to be determined beforehand for each device.
 The resulting translation is saved along with marker identification and angle.
 It will later be used to correctly place an object on top of the marker to be rendered in OpenGL.
@@ -248,13 +248,13 @@ Figure \ref{fig:complete_class_diagram} shows the complete class diagram of the 
 MainInterface encapsulates all the primary functionality within the framework that is required to work with if from an application.
 Apart from managing all the other classes on startup and closure, it also handles the information exchange between them and the application itself.
 It also enables the management of the entities and their assigned trackables\footnote{TAMINO TODO: Add to glossary!}.
-MainInterface also handles any inter-system compatibility that the passage of information between the Renderer and Wrapper require, such as the filtering of detected markers for trackables that are to be rendered.
+MainInterface also handles any inter-system compatibility that the passage of information between the renderer and interface require, such as the filtering of detected markers for trackables that are to be rendered.
 
 The Messenger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
 This allows outside threads to be directly notified when a message is written and allows the end user to expand on any messages from the framework.
 
 The OpenGLRenderer implements the functions that take the list of detected trackables and renders their objects onto the position given by the pose estimation.
-This class also implements all functionality for the rendering types and 3d drawing functions that are required.
+This class also implements all functionality for the rendering types and 3D drawing functions that are required.
 
 The OpenCVWorker is a single thread that continually takes an input image and tries to detect all markers in it.
 The functionality itself however rests in the Detector class; this class only handles the logical functions surrounding the multithreading and work delegation.
@@ -292,5 +292,5 @@ One such helper function is the creation of correct markers in the form of a bin
 This can be used one-off to create a printable set of markers, or during use of the framework for internal representation of markers.
 The method takes the identification number and generates the complete marker for it, including border, orientation bits, and Hamming encoding.
 
-Another helper function loads a 3d model file and converts it to the correct representation to be used with the entity class.
-This method takes a 3d model file and converts it to the FloatBuffer data structure used by the framework, if capable.
+Another helper function loads a 3D model file and converts it to the correct representation to be used with the entity class.
+This method takes a 3D model file and converts it to the FloatBuffer data structure used by the framework, if capable.

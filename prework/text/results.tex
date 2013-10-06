@@ -11,7 +11,7 @@ To allow our work to be put into perspective, we will also compare the framework
 The first major difficulty we encountered upon beginning the implementation was the user generated documentation of the Java OpenCV for Android framework in the form of questions and answers or tutorials.
 The probable cause for this is most likely due to the fact that OpenCV was originally written for desktop applications using C++.
 That means that there are two major differences between the more widely used and documented version of the framework compared to the version used for this project.
-The first is that one of the goals of our work was to write a Java framework, thus encouraging that we use the Java wrapper for OpenCV – thus making the majority of C++ resources moot and hard to use.
+The first is that one of the goals of our work was to write a Java framework, thus encouraging that we use the Java wrapper for OpenCV – therefore making the majority of C++ resources moot and hard to use.
 The second difference is due to the fact that our framework's platform was to be Android, for which a few small differences existed compared to the normal use of OpenCV – such as the use of OpenCV via the elegant solution of a separate application, the OpenCV manager.
 These two differences seem to have been sufficient in decreasing the usage of the Java port of OpenCV enough that documentation and accessible tutorials and examples proved to be far in between.
 This forced development to rely all too often on examples written for other platforms and programming languages.
@@ -33,13 +33,13 @@ Thankfully, we were able to work around any conversions by parallel usage of mul
 Then another difficulty emerged while using the OpenCV function to calculate polygons for detected contours within an image.
 The method for these polygons returns these in a special mat subtype that is specialized for floating point numbers.
 However, the methods we then required to work with these polygons required the polygons in a normal mat, thus forcing us to convert from one type of mat to another.
-Again this problem could largely be mitigated by converting as little as possible, although the base conversion proved to be one of the smaller problems in the grand scope of speed within the Imagine worker threads.
+Again this problem could largely be mitigated by converting as little as possible, although the base conversion proved to be one of the smaller problems in the overall context of speed within the Imagine worker threads.
 Furthermore, there exist no methods for determining the type and allocation of channels within a mat.
 While not being able to check for these properties forced a clean usage of the data class within Imagine and thus probably increased speed somewhat, such methods are crucial for learning the correct usage of mat and certainty of stored data type.
 Writing and reading data with mats is also something that requires faith, as no checks for sanity can be performed on the data.
 For example, the method for reading a single coordinate returns a double array – always, even when using the mat for binary images (in which case a boolean would suffice), luminance images (possibly a short data type), or as an integer matrix (integers).
 The returned value then has to be cast to the (hopefully) correct data type – and if we made a mistake somewhere along the line and the mat doesn't contain the data we expect it to contain, we have little in the way of catching that mistake.
-We therefore kindly suggest that OpenCV for Android make use of the Java generics mechanism, as we believe that would start to simplify the confusion surrounding mats.
+We therefore kindly suggest that OpenCV for Android make use of the Java generics mechanism, as we believe that would start to reduce the confusion surrounding mats.
 
 % Problems debugging
 A further difficulty proved to be the debugging of errors while programming the worker threads within Imagine.
