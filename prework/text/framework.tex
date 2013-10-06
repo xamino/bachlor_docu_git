@@ -63,43 +63,58 @@ In the following we will look at the features required of the framework for it t
 Some nice-to-have features will also be listed, meaning features that will not be implemented but could possibly be interesting for future development.
 For completeness we will also take a short look at features that are possibly too difficult to do and or would require significant work.
 
-To clarify the scope of the proposed framework, all features that will be delivered are described within the following table:
+To clarify the scope of the proposed framework, all features that will be delivered are described within table \ref{required_features}.
 
-\begin{tabulary}{\textwidth}{L || L}
-Debug messaging & The framework should be easy to debug and allow simple access to status messages\\
-\hline
-Manage trackers & Allow to add and remove trackers during runtime\\
-\hline
-Read position data & Give the possibility of accessing the raw data returned from the OpenCV interface, bypassing the rendering step\\
-\hline
-Configuration & Allow easy visualization for various aspects of the framework\\
-\hline
-Multi-threading & Allow computationally expensive tasks to run multi-threaded\\
-\hline
-Helpful functions & Offer functions for marker creation and object loading to decrease external work required to use Imagine\\
-\end{tabulary}
+\begin{table}
+	\centering
+	\begin{tabulary}{\textwidth}{L || L}
+	Debug messaging & The framework should be easy to debug and allow simple access to status messages\\
+	\hline
+	Manage trackers & Allow to add and remove trackers during runtime\\
+	\hline
+	Read position data & Give the possibility of accessing the raw data returned from the OpenCV interface, bypassing the rendering step\\
+	\hline
+	Configuration & Allow easy visualization for various aspects of the framework\\
+	\hline
+	Multi-threading & Allow computationally expensive tasks to run multi-threaded\\
+	\hline
+	Helpful functions & Offer functions for marker creation and object loading to decrease external work required to use Imagine\\
+	\end{tabulary}
+	\caption[Required Features]{This table lists the required features for the framework to be considered completely functional.}
+	\label{required_features}
+\end{table}
 
-The features in the following table are features that could be implemented relatively easily.
+The features in table \ref{possible_features} are features that could be implemented relatively easily.
 Future work should begin with these features to expand the use-cases of the proposed framework.
 
-\begin{tabulary}{\textwidth}{L || L}
-Animated Objects & Allow the object to have an animation and offer access to control animation dynamically.\\
-\hline
-Simple Advanced Rendering & Allow textured rendering and other visual improvements.\\
-\end{tabulary}
+\begin{table}
+	\centering
+	\begin{tabulary}{\textwidth}{L || L}
+	Animated Objects & Allow the object to have an animation and offer access to control animation dynamically.\\
+	\hline
+	Simple Advanced Rendering & Allow textured rendering and other visual improvements.\\
+	\end{tabulary}
+	\caption[Possible Features]{Features that could be added without a lot of work and time.}
+	\label{possible_features}
+\end{table}
 
-The following are features that will not be implemented.
+Table \ref{hard_features} lists features that will not be implemented.
 These features would possibly require significant work to include and change fundamental parts of how the framework currently runs.
 
-\begin{tabulary}{\textwidth}{L || L}
-Marker-less Tracking & Foregoing markers and allowing any feature-rich object to be used instead.\\
-\hline
-Fancy Rendering & Alternative rendering output, such as stereoscopic output to be used by 3D capable viewing devices.\\
-\hline
-Occlusion & The capability to detect where scene occlusion is taking place and render accordingly.\\
-\hline
-Real-time Detection & Raise performance enough to be perceived as smooth, no detection lag.\\
-\end{tabulary}
+\begin{table}
+	\centering
+	\begin{tabulary}{\textwidth}{L || L}
+	Marker-less Tracking & Foregoing markers and allowing any feature-rich object to be used instead.\\
+	\hline
+	Fancy Rendering & Alternative rendering output, such as stereoscopic output to be used by 3D capable viewing devices.\\
+	\hline
+	Occlusion & The capability to detect where scene occlusion is taking place and render accordingly.\\
+	\hline
+	Real-time Detection & Raise performance enough to be perceived as smooth, no detection lag.\\
+	\end{tabulary}
+	\caption[Difficult Features]{Features that are not implementable without comprehensive work.}
+	\label{hard_features}
+\end{table}
 
 For broader future possibilities concerning the use and further development of Imagine, see also section \ref{future}.
 
@@ -124,34 +139,39 @@ Interface classes are also provided for passing and receiving information.
 
 \section{Application Programming Interface}
 
-The following represents the methods that make up the more important aspects of the framework.
+Table \ref{api} lists the methods that make up the more important aspects of the framework.
 With the listed methods, all functionality that the framework offers can be accessed.
 
-{\footnotesize
-\begin{tabulary}{\textwidth}{J || J}
-<<Initialization>> & Constructs all the internal classes and prepares the major functionality. Also used to set the most important values such as camera distortion and camera perspective, as these are crucial for a correct processing. Furthermore also used to set the output layout where the results are drawn to.\\
-\hline
-onCreate & Must be called in the activities onCreate; handles all the necessary calls within the framework.\\
-\hline
-onResume & Must be called in the activities onResume.\\
-\hline
-onPause & Must be called in the activities onPause.\\
-\hline
-onDestroy & Must be called in the activities onDestroy.\\
-\hline
-registerListener & Add a homography listener. Listeners will be called if the correct flag has been set. Listeners will receive a list of detected markers containing all information.\\
-\hline
-removeListener & Removes a homography listener. \\
-\hline
-registerEntity & Adds an entity containing the ID, visibility status, and vertice buffer. This means that upon detection of the corresponding marker, the object will be rendered on top of it, according to the status of the visibility.\\
-\hline
-removeEntity & Removes an entity from the list.\\
-\hline
-setDebugFlag & Sets the given debug flag. For possible flags please see the Javadoc.\\
-\hline
-removeDebugFlag & Unsets the given debug flag.\\
-\end{tabulary}
-}
+\begin{table}
+	\centering
+	{\footnotesize
+	\begin{tabulary}{\textwidth}{J || J}
+	<<Initialization>> & Constructs all the internal classes and prepares the major functionality. Also used to set the most important values such as camera distortion and camera perspective, as these are crucial for a correct processing. Furthermore also used to set the output layout where the results are drawn to.\\
+	\hline
+	onCreate & Must be called in the activities onCreate; handles all the necessary calls within the framework.\\
+	\hline
+	onResume & Must be called in the activities onResume.\\
+	\hline
+	onPause & Must be called in the activities onPause.\\
+	\hline
+	onDestroy & Must be called in the activities onDestroy.\\
+	\hline
+	registerListener & Add a homography listener. Listeners will be called if the correct flag has been set. Listeners will receive a list of detected markers containing all information.\\
+	\hline
+	removeListener & Removes a homography listener. \\
+	\hline
+	registerEntity & Adds an entity containing the ID, visibility status, and vertice buffer. This means that upon detection of the corresponding marker, the object will be rendered on top of it, according to the status of the visibility.\\
+	\hline
+	removeEntity & Removes an entity from the list.\\
+	\hline
+	setDebugFlag & Sets the given debug flag. For possible flags please see the Javadoc.\\
+	\hline
+	removeDebugFlag & Unsets the given debug flag.\\
+	\end{tabulary}
+	}
+	\caption[Application Programming Interface]{Methods for accessing the functionality of Imagine. Referred to as the application programming interface, short API, of the framework.}
+	\label{api}
+\end{table}
 
 Important to note is that the onCreate, onPause, onResume, and onDestroy methods are inherent to the way programs work on Android, and thus must be called for the framework to function correctly.
 
