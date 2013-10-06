@@ -14,17 +14,25 @@ Note that we differentiate between required tasks (meaning tasks that should rel
 
 \subsection{Required Tasks}
 
-\begin{tabulary}{\textwidth}{L || L}
-View Camera & The user should, upon opening the app, be confronted with the view of the live camera feed.\\
-\hline
-Manage Model & Load, prepare, and remove a 3d model to be used within the app with a marker. Any model in a recognized format should be selectable as a file from a file browser. \\
-\hline
-Manage Markers & Allow for the management of multiple markers and their associations to the models. \\
-\hline
-Toggle Debugging Information & If desirable, the user can toggle a debugging view to be rendered on top of the feed. This should offer detailed information on the shown view, marker detection, and any other factors. \\
-\hline
-Screenshot & As Android does not offer a screenshot tool by default, an option to capture the feed shall be provided. \\
-\end{tabulary}
+Table \ref{app_tasks} lists the tasks that the sample application should minimally allow to be accessed and used.
+Further tasks may be implemented as required.
+
+\begin{table}
+	\centering
+	\begin{tabulary}{\textwidth}{L || L}
+	View Camera & The user should, upon opening the app, be confronted with the view of the live camera feed.\\
+	\hline
+	Manage Model & Load, prepare, and remove a 3d model to be used within the app with a marker. Any model in a recognized format should be selectable as a file from a file browser. \\
+	\hline
+	Manage Markers & Allow for the management of multiple markers and their associations to the models. \\
+	\hline
+	Toggle Debugging Information & If desirable, the user can toggle a debugging view to be rendered on top of the feed. This should offer detailed information on the shown view, marker detection, and any other factors. \\
+	\hline
+	Screenshot & As Android does not offer a screenshot tool by default, an option to capture the feed shall be provided. \\
+	\end{tabulary}
+	\caption[Application Tasks]{Tasks that the sample application should enable.}
+	\label{app_tasks}
+\end{table}
 
 \section{Dialog Structure}
 
