@@ -17,8 +17,8 @@ Other types exist, such as rotary markers or image-based feature markers.
 \section{Coding Scheme}
 
 For this framework, a marker is coded as seen in \ref{fig:marker_template}.
-The basis is a 6 by 6 sized grid, where the border is solid black.
-The internal 4 by 4 spaces are used to encode the orientation and identification of the marker.
+The basis is a six by six sized grid, where the border is solid black.
+The internal four by four spaces are used to encode the orientation and identification of the marker.
 The orientation is encoded by coloring the corners white except for the top right corner, which is encoded black.
 The identification is binary encoded with a Hamming code\cite{hamming} for error detection and correction.
 Parity bits are the red bits.
@@ -48,6 +48,6 @@ Thirdly, the marker should be created and printed digitally.
 The correct detection of the border is the first and most important step in the detection of the marker and should thus be as good as can be managed.
 Drawing the markers by hand is possible, but will result in a loss of accuracy due to imperfections that are bound to arise with hand-drawn markers.
 Care should especially be taken concerning the outermost border of the marker, as it is the main aspect used for calculating its pose.
-This is only true for the border, however: the internal 4x4 grid containing the orientation and identification of the marker can be drawn in, so long as the drawing is done carefully.
+This is only true for the border, however: the internal four by four grid containing the orientation and identification of the marker can be drawn in, so long as the drawing is done carefully.
 
 Markers that are not smooth or have other imperfections will either outright fail in being identified or have an incorrect pose assigned to them.
