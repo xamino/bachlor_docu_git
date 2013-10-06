@@ -90,9 +90,9 @@ Future work should begin with these features to expand the use-cases of the prop
 \begin{table}
 	\centering
 	\begin{tabulary}{\textwidth}{L || L}
-	Animated Objects & Allow the object to have an animation and offer access to control animation dynamically.\\
+	Animated objects & Allow the object to have an animation and offer access to control animation dynamically\\
 	\hline
-	Simple Advanced Rendering & Allow textured rendering and other visual improvements.\\
+	Simple advanced rendering & Allow textured rendering and other visual improvements\\
 	\end{tabulary}
 	\caption[Possible Features]{Features that could be added without a lot of work and time.}
 	\label{possible_features}
@@ -104,13 +104,13 @@ These features would possibly require significant work to include and change fun
 \begin{table}
 	\centering
 	\begin{tabulary}{\textwidth}{L || L}
-	Marker-less Tracking & Foregoing markers and allowing any feature-rich object to be used instead.\\
+	Marker-less tracking & Foregoing markers and allowing any feature-rich object to be used instead\\
 	\hline
-	Fancy Rendering & Alternative rendering output, such as stereoscopic output to be used by 3D capable viewing devices.\\
+	Fancy rendering & Alternative rendering output, such as stereoscopic output to be used by 3D capable viewing devices\\
 	\hline
-	Occlusion & The capability to detect where scene occlusion is taking place and render accordingly.\\
+	Occlusion & The capability to detect where scene occlusion is taking place and render accordingly\\
 	\hline
-	Real-time Detection & Raise performance enough to be perceived as smooth, no detection lag.\\
+	Real-time detection & Raise performance enough to be perceived as smooth, no detection lag\\
 	\end{tabulary}
 	\caption[Difficult Features]{Features that are not implementable without comprehensive work.}
 	\label{hard_features}
@@ -131,7 +131,7 @@ Now let us take a look at the proposed class structure of the framework, as illu
 For the complete class diagram, see section \ref{complete_class}.
 
 Main access is controlled over the framework controller, labeled MainInterface, which almost exclusively contains all the public methods callable from outside of the framework that matter for normal usage.
-Apart from MainInterace, the log messages can be listened to via the Messenger, ConvertHelper offers Mat and float conversions, and MarkerPatternHelper offers methods for generating and detecting markers.\footnote{TAMINO TODO: See issue tracker on Github, should be consolidated into MainInterface if possible!}
+Apart from MainInterace, the log messages can be listened to via the Messenger, ConvertHelper offers Mat and float conversions, and MarkerPatternHelper offers methods for generating and detecting markers.
 
 Some data object classes are also accessible as public classes to ease data transfer.
 Notably, this includes the Marker class for accessing the pose information and the Flags class for controlling flags for Imagine.
@@ -232,7 +232,7 @@ It results in a list of detected markers with their transformation matrices.
 The first step is to reduce the color image into a binary image.
 To do this, we take the gray-scaled image that we receive from OpenCV and threshold it against a constant value.
 As we are interested in highly contrasted regions as our markers are monochrome, this threshold was chosen relatively low.
-Alternative methods are available, but either have other drawbacks or take a longer amount of time\footnote{TAMINO TODO: Redo when done, other methods should work now too!}.
+Alternative methods are available, but either have other drawbacks or take a longer amount of time.
 
 This binary image is suitable for fast detection of all contours within the image.
 The detected contours are then filtered for size, as any contour that represents a marker below a certain size will be too small to safely and correctly identify.
@@ -267,7 +267,7 @@ Figure \ref{fig:complete_class_diagram} shows the complete class diagram of the 
 
 MainInterface encapsulates all the primary functionality within the framework that is required to work with if from an application.
 Apart from managing all the other classes on startup and closure, it also handles the information exchange between them and the application itself.
-It also enables the management of the entities and their assigned trackables\footnote{TAMINO TODO: Add to glossary!}.
+It also enables the management of the entities and their assigned trackables.
 MainInterface also handles any inter-system compatibility that the passage of information between the renderer and interface require, such as the filtering of detected markers for trackables that are to be rendered.
 
 The Messenger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
