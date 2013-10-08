@@ -4,8 +4,8 @@ We will then discuss the implementation and its difficulties.
 
 \section{Proposed Functionality}
 
-The framework shall have two primary capabilities: first, it should enable fast and easy access to the 3D pose calculated from the detected marker.
-Second, given a digital 3d model to display, it should be capable of returning a rendering of the object within the scene on top of the live preview, correctly positioned.
+The framework shall have two primary capabilities: first, it should enable \textbf{fast and easy access to the 3D pose calculated from the detected marker}.
+Second, given a \textbf{digital 3D model to display}, it should be capable of returning a rendering of the object within the scene on top of the live preview, correctly positioned.
 
 Generally, the framework shall work as in the following.
 Once the framework is running, OpenCV reads the camera frame directly from the camera.
@@ -24,19 +24,19 @@ These trackables have to have been registered beforehand by the user.
 Then the model information is attached to all detected trackable assets and passed down to the rendering part of the framework.
 Here, this filtered and supplemented list is used to render all objects onto the correct positions with the correct perspective modifications on top of the camera image.
 
-Apart from the above mentioned basic functionality capabilities, the framework should also handle the easy gathering of performance and error information, mainly by extending the relevant functions of Android.
-This can include gathering the logs to a listener, bypassing the Android logging mechanism, and any further functionality that could be useful.
-
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=12cm]{img/sequence_access.eps}
 	\caption[Access Sequence.]{The proposed sequence of the workflow with the framework, using OpenCV for Android and OpenGL ES.}
 	\label{fig:sequence_access}
 \end{figure}
 
+Apart from the above mentioned basic functionality capabilities, the framework should also \textbf{handle the easy gathering of performance and error information}, mainly by extending the relevant functions of Android.
+This can include gathering the logs to a listener, bypassing the Android logging mechanism, and any further functionality that could be useful.
+
 Figure \ref{fig:sequence_access} shows the proposed sequence of events of Imagine, and where data can be input or read.
 As proposed, the framework should offer a wide variety of uses, without being overly complex from an outside perspective.
-Another important aspect we want to make possible is the possibility of changing all the more important parameters during runtime, such as switching the model or adding a new marker.
+Another important aspect we want to make possible is the possibility of \textbf{changing all the more important parameters during runtime}, such as switching the model or adding a new marker.
 This should allow a less restrictive usage of the framework and any derived apps as a result.
 
 \section{Dependencies}
@@ -45,8 +45,8 @@ Primary dependency is of course an Android environment, given that it is the tar
 The framework is written in Java with Android specific syntax and structure.
 Aside from the basic requirements, the framework will depend mainly on two external software solutions.
 
-The first is OpenCV\cite{opencv}, an open source collection of computer vision and machine learning software.
-Imagine makes use of the Java-based port, called OpenCV for Android.
+The first is OpenCV, an open source collection of computer vision and machine learning software.
+Imagine makes use of the Java-based port, called OpenCV for Android \cite{opencvandroid}.
 To use the framework on Android, the OpenCV Manager\cite{opencvmanager} needs to be installed alongside the application using the framework, as the marker detection relies on it.
 The OpenCV Manager offers the best version of OpenCV for Android for each Android device according to its specifications and capabilities.
 
@@ -61,11 +61,11 @@ At the same time using version (OpenGL ES 1.x) would broaden the pool of compati
 
 In the following we will look at the features required of the framework for it to be considered feature complete and basically usable.
 Some nice-to-have features will also be listed, meaning features that will not be implemented but could possibly be interesting for future development.
-For completeness we will also take a short look at features that are possibly too difficult to do and or would require significant work.
+For completeness we will also take a short look at features that are possibly too difficult to do, would take too much extra time, and or would require significant work.
 
 To clarify the scope of the proposed framework, all features that will be delivered are described within table \ref{required_features}.
 
-\begin{table}
+\begin{table}[H]
 	\centering
 	\begin{tabulary}{\textwidth}{L || L}
 	Debug messaging & The framework should be easy to debug and allow simple access to status messages\\
@@ -87,7 +87,7 @@ To clarify the scope of the proposed framework, all features that will be delive
 The features in table \ref{possible_features} are features that could be implemented relatively easily.
 Future work should begin with these features to expand the use-cases of the proposed framework.
 
-\begin{table}
+\begin{table}[H]
 	\centering
 	\begin{tabulary}{\textwidth}{L || L}
 	Animated objects & Allow the object to have an animation and offer access to control animation dynamically\\
@@ -101,7 +101,7 @@ Future work should begin with these features to expand the use-cases of the prop
 Table \ref{hard_features} lists features that will not be implemented.
 These features would possibly require significant work to include and change fundamental parts of how the framework currently runs.
 
-\begin{table}
+\begin{table}[H]
 	\centering
 	\begin{tabulary}{\textwidth}{L || L}
 	Marker-less tracking & Foregoing markers and allowing any feature-rich object to be used instead\\
@@ -118,23 +118,24 @@ These features would possibly require significant work to include and change fun
 
 For broader future possibilities concerning the use and further development of Imagine, see also section \ref{future}.
 
+\newpage
 \section{General Class Diagram}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=13cm]{img/class_diagram.eps}
-	\caption[Public Class Diagram]{This is the preliminary class diagram of the proposed functionality of the framework accessible from outside. It also includes data objects and interfaces required for meshing the application with Imagine.}
-	\label{fig:class_diagram}
-\end{figure}
 
 Now let us take a look at the proposed class structure of the framework, as illustrated in figure \ref{fig:class_diagram}.
 For the complete class diagram, see section \ref{complete_class}.
 
-Main access is controlled over the framework controller, labeled MainInterface, which almost exclusively contains all the public methods callable from outside of the framework that matter for normal usage.
-Apart from MainInterace, the log messages can be listened to via the Messenger, ConvertHelper offers Mat and float conversions, and MarkerPatternHelper offers methods for generating and detecting markers.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{img/class_diagram.eps}
+	\caption[Public Class Diagram]{This is the preliminary class diagram of the proposed functionality of the framework accessible from outside.}
+	\label{fig:class_diagram}
+\end{figure}
+
+Main access is controlled over the framework controller, labeled \textit{MainInterface}, which almost exclusively contains all the public methods callable from outside of the framework that matter for normal usage.
+Apart from MainInterface, the log messages can be listened to via the \textit{Messenger}, \textit{ConvertHelper} offers matrix and float conversions, and \textit{MarkerPatternHelper} offers methods for generating and detecting markers.
 
 Some data object classes are also accessible as public classes to ease data transfer.
-Notably, this includes the Marker class for accessing the pose information and the Flags class for controlling flags for Imagine.
+Notably, this includes the \textit{Marker} class for accessing the pose information and the \textit{Flags} class for controlling flags for Imagine.
 Interface classes are also provided for passing and receiving information.
 
 \section{Application Programming Interface}
@@ -142,19 +143,19 @@ Interface classes are also provided for passing and receiving information.
 Table \ref{api} lists the methods that make up the more important aspects of the framework.
 With the listed methods, all functionality that the framework offers can be accessed.
 
-\begin{table}
+\begin{table}[H]
 	\centering
 	{\footnotesize
 	\begin{tabulary}{\textwidth}{J || J}
 	<<Initialization>> & Constructs all the internal classes and prepares the major functionality. Also used to set the most important values such as camera distortion and camera perspective, as these are crucial for a correct processing. Furthermore also used to set the output layout where the results are drawn to.\\
 	\hline
-	onCreate & Must be called in the activities onCreate; handles all the necessary calls within the framework.\\
+	onCreate & Must be called in the activities onCreate method; handles all the necessary calls within the framework.\\
 	\hline
-	onResume & Must be called in the activities onResume.\\
+	onResume & Must be called in the activities onResume method.\\
 	\hline
-	onPause & Must be called in the activities onPause.\\
+	onPause & Must be called in the activities onPause method.\\
 	\hline
-	onDestroy & Must be called in the activities onDestroy.\\
+	onDestroy & Must be called in the activities onDestroy method.\\
 	\hline
 	registerListener & Add a homography listener. Listeners will be called if the correct flag has been set. Listeners will receive a list of detected markers containing all information.\\
 	\hline
@@ -173,10 +174,10 @@ With the listed methods, all functionality that the framework offers can be acce
 	\label{api}
 \end{table}
 
-Important to note is that the onCreate, onPause, onResume, and onDestroy methods are inherent to the way programs work on Android, and thus must be called for the framework to function correctly.
+Important to note is that the \textit{onCreate}, \textit{onPause}, \textit{onResume}, and \textit{onDestroy} methods are inherent to the way programs work on Android, and thus must be called for the framework to function correctly.
 
-Upon initialization of the framework, entities can be added to be tracked and rendered with the registerEntity method.
-To do that, the user has to implement the entity interface, providing functionality for reading the identification that the object is to be bound to, whether it is to be rendered (the visibility option), and finally a FloatBuffer containing the vertice location and color information.
+Upon initialization of the framework, entities can be added to be tracked and rendered with the \textit{registerEntity} method.
+To do that, the user has to implement the entity interface, providing functionality for reading the identification that the object is to be bound to, whether it is to be rendered (the visibility option), and finally a FloatBuffer containing vertice locations and color information.
 The use of the FloatBuffer might not seem intuitive at first glance, however it allows the framework to handle the rendering all on its own, greatly simplifying the usage of the framework.
 
 \section{Usage}
@@ -186,8 +187,15 @@ In fact, it tracks all markers it finds from the beginning, only filtering out t
 This allows comparatively easy use of multiple, separately tracked entities.
 However, this also has a significant drawback: as the framework is computationally expensive, multiple markers can quickly degrade its performance, even if the user is only interested in a single marker – see also section \ref{performance}.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=12cm]{img/mult_marker.png}
+	\caption[Complete Class Diagram]{From left to right: generated marker on screen, the same marker printed, the marker drawn by hand.}
+	\label{fig:mult_markers}
+\end{figure}
+
 For the tracking to work, the marker must be visible to the camera.
-The marker can be shown on a separate screen, printed on paper, or drawn.
+The marker can be shown on a separate screen, printed on paper, or drawn – as seen in figure \ref{fig:mult_markers}.
 The framework will then detect the presence of the marker, continue with its identification and perspective information, and finally store it as a successfully detected marker for the render interface to render.
 Utilizing the thus calculated perspective information, paired with the correct object, the renderer then proceeds to render objects onto their respective markers.
 

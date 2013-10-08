@@ -1,15 +1,16 @@
 \section{Introduction}
 
-This paper represents the initial design and development work for an Android framework to simplify the detection and usage of makers in augmented reality applications.
-The framework shall henceforth be named Imagine to differentiate it from other similar frameworks and the libraries it utilizes.
+TODO: Introduction (use cases, etc)
 
-Imagine will initially only target applications written for Android\cite{android} using Java.
-It will utilize the OpenCV for Android\cite{opencvandroid} library, a sub-project of the original OpenCV framework\cite{opencv} specifically targeted for Android devices.
-By separating the detection and the rendering modules within Imagine, it should be relatively easy to extend the functionality of Imagine to other platforms and other technologies.
+This paper represents the initial design and development work for an Android framework to simplify the detection and usage of markers in Augmented Reality applications.
+The framework shall henceforth be named \textit{Imagine} to differentiate it from other similar frameworks and the libraries it utilizes.
 
-To develop and test the framework, we will also provide an application that implements Imagine as the basic feature.
-The application will allow for the real-time viewing of virtual objects on top of a marker.
-By moving the device, the object can be viewed from different perspectives.
+Imagine will initially only target applications written for Android using Java \cite{android}.
+It will utilize the OpenCV for Android library, a sub-project of the original OpenCV framework specifically targeted for Android devices \cite{opencvandroid}.
+By separating the detection and the rendering modules within Imagine, it should be relatively easy to extend the functionality of Imagine to other platforms and other technologies, such as desktop applications for Linux or rendering with DirectX instead of OpenGL ES.
+
+To develop and test the framework, we will also implement an application that relies on Imagine for basic functionality.
+The application will allow for the real-time viewing of virtual objects on top of a marker and be used to test and evaluate Imagine.
 This shall prove the capability and initial concept of the framework and also serve as a starting point for any future derivative work.
 
 This paper consists of all the work done around the actual implementation.
