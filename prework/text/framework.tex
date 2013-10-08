@@ -190,7 +190,7 @@ However, this also has a significant drawback: as the framework is computational
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=12cm]{img/mult_marker.png}
-	\caption[Complete Class Diagram]{From left to right: generated marker on screen, the same marker printed, the marker drawn by hand.}
+	\caption[Usage Forms of Markers]{From left to right: generated marker on screen, the same marker printed, the marker drawn by hand.}
 	\label{fig:mult_markers}
 \end{figure}
 
@@ -202,6 +202,7 @@ Utilizing the thus calculated perspective information, paired with the correct o
 \section{Implementation}
 
 The following section describes in more detail the implementation of the framework.
+Here we will look at the tools used, the process of arriving at a satisfactory algorithm, and then how it works.
 
 \subsection{Tools and Environment}
 
@@ -213,7 +214,7 @@ For further documentation, we utilized Dia\cite{dia} for generating diagrams, Um
 
 Imagine was developed with the target of running smoothly on a Nvidia Tegra 3 processor.
 The development device is the Transformer Prime, a 10'' tablet from ASUS\cite{devicedev}.
-This means that the framework should run smoothly on a 1.6Ghz Quadcore ARM processor rendering to a 1280 by 800 pixel screen.
+This means that the framework should run smoothly on a 1.6 Ghz Quadcore ARM processor rendering to a 1280 by 800 pixel screen.
 
 \subsection{First Steps and Trials}
 
@@ -240,14 +241,36 @@ It results in a list of detected markers with their transformation matrices.
 The first step is to reduce the color image into a binary image.
 To do this, we take the gray-scaled image that we receive from OpenCV and threshold it against a constant value.
 As we are interested in highly contrasted regions as our markers are monochrome, this threshold was chosen relatively low.
-Alternative methods are available, but either have other drawbacks or take a longer amount of time.
+Figure \ref{fig:binary} shows the result of the operation.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{img/binary.png}
+	\caption[Binarization]{A typical result of the bianrization step.}
+	\label{fig:binary}
+\end{figure}
+
+Alternative methods are available, but require some more work.
+These are using the Canny edge detection algorithm or an adaptive threshold.
+Both of these however only detect edges as black on white lines.
+These can also be used to get possible contours but result in two contours for a marker – one on each side of the line, effectively an inside and outside contour.
+Therefore we filter these out, leaving only the outer contours in place.
 
 This binary image is suitable for fast detection of all contours within the image.
 The detected contours are then filtered for size, as any contour that represents a marker below a certain size will be too small to safely and correctly identify.
 The filtering also improves performance as it removes much contour noise, therefore decreasing our workload for further steps.
+Figure \ref{fig:contours} shows the detected contours, filtered and overlayed on the original image.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{img/contours.png}
+	\caption[Contour Detection]{The detected contours.}
+	\label{fig:contours}
+\end{figure}
+
 Next we calculate polynomial approximations for all remaining contours.
-We can then filter the polynomial objects based on criteria for our markers.
-Of these criteria there are two: only objects with four corners and those which form a convex hull are kept.
+We can then filter the polynomial objects based on two criteria for our markers.
+We only take polynomial objects with four corners and those which form a convex hull.
 
 Now that we have a selection of detected perspective rectangles that might be markers, we sample all candidates for a black border.
 To do this, we first have to de-warp the part of the image that is confined by the rectangles.
@@ -257,6 +280,14 @@ Next we check for the orientation bits: if we find these, we can be comparativel
 If the detection of orientation fails (meaning that we do not find a pattern of three white and one black inner corner block), we consider the candidate to be invalid.
 Now all that remains is the marker identification, which is done by sampling the remaining inside bits and decoding them.
 This process is further detailed in section \ref{section_markers}.
+These steps can be seen in figure \ref{fig:sampling} in the top left corner.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{img/sampling.png}
+	\caption[Marker Sampling]{Screenshot with the sampling visual debugging view active. The polygon rendering is also shown.}
+	\label{fig:sampling}
+\end{figure}
 
 One of the major advantages of the polynomial representation of the markers is that it is very easy to calculate the 3D position of the markers from them.
 This is done by solving a linear equation that tries to find the translation values required to move the marker from the camera plane correctly to its 3D location according to its perspective distorted location.
@@ -268,34 +299,35 @@ All thus detected marker candidates are then passed to the main controller, whic
 For further commentary on the implementation, see section \ref{implementation}.
 Concerning final performance of the framework, see section \ref{performance}.
 
+\newpage
 \section{Complete Class Diagram}
 \label{complete_class}
 
 Figure \ref{fig:complete_class_diagram} shows the complete class diagram of the finished framework.
 
-MainInterface encapsulates all the primary functionality within the framework that is required to work with if from an application.
+\textit{MainInterface} encapsulates all the primary functionality within the framework that is required to work with if from an application.
 Apart from managing all the other classes on startup and closure, it also handles the information exchange between them and the application itself.
 It also enables the management of the entities and their assigned trackables.
-MainInterface also handles any inter-system compatibility that the passage of information between the renderer and interface require, such as the filtering of detected markers for trackables that are to be rendered.
+\textit{MainInterface} also handles any inter-system compatibility that the passage of information between the renderer and interface require, such as the filtering of detected markers for trackables that are to be rendered.
 
-The Messenger class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
+The \textit{Messenger} class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
 This allows outside threads to be directly notified when a message is written and allows the end user to expand on any messages from the framework.
 
-The OpenGLRenderer implements the functions that take the list of detected trackables and renders their objects onto the position given by the pose estimation.
+The \textit{OpenGLRenderer} implements the functions that take the list of detected trackables and renders their objects onto the position given by the pose estimation.
 This class also implements all functionality for the rendering types and 3D drawing functions that are required.
 
-The OpenCVWorker is a single thread that continually takes an input image and tries to detect all markers in it.
-The functionality itself however rests in the Detector class; this class only handles the logical functions surrounding the multithreading and work delegation.
+The \textit{OpenCVWorker} is a single thread that continually takes an input image and tries to detect all markers in it.
+The functionality itself however rests in the \textit{Detector} class; this class only handles the logical functions surrounding the multithreading and work delegation.
 
-The Detector class is where the main detection code lies.
+The \textit{Detector} class is where the main detection code lies.
 The algorithm was thus extracted from other classes to allow a clean differentiation in functionality.
 Here, the main OpenCV work is done.
-Detector also implements a few internal methods for the detection work that would be ill suited to lay elsewhere.
+\textit{Detector} also implements a few internal methods for the detection work that would be ill suited to lay elsewhere.
 
 \begin{sidewaysfigure}
 	\centering
 	\includegraphics[width=21cm]{img/complete_class_diagram.eps}
-	\caption[Complete Class Diagram]{This is the complete class diagram of the Imagine framework. It lists all methods of all the public, protected, and private classes. Attributes were left out for formatting reasons; especially the Detector class has a large amount of attributes that would not fit into this diagram.}
+	\caption[Complete Class Diagram]{This is the complete class diagram of the Imagine framework. It lists all methods of all the public, protected, and private classes.}
 	\label{fig:complete_class_diagram}
 \end{sidewaysfigure}
 
@@ -306,12 +338,12 @@ That would enable the framework to run on normal personal computers using the fu
 \section{How to Use}
 
 Using the framework is very easy.
-Simply create an instance of the MainInterface of the framework either in the constructor or in the onCreate method of the activity where the application is run from.
-After creating the instance, the onCreate method of the framework must be called from within the activity's own onCreate method.
+Simply create an instance of the MainInterface class of the framework either in the constructor or in the onCreate method of the activity where the application is run from.
+After creating the instance, the onCreate method of the framework must be called within the activity's own onCreate method.
 To create the framework, an Android GroupView is required.
 Here it will place the camera view and the view responsible for rendering the detected objects. Also required are the camera values for the target device.
-These can either be calculated, copied from device information, or detected with an application like the following: \url{https://github.com/Itseez/opencv/tree/master/samples/android/camera-calibration}.
-Now all that remains is to also call onPause, onResume, and onDestroy in the respective functions of the activity via the framework.
+These can either be calculated, copied from device information, or detected with an application like camera-calibration \cite{calib}.
+Now all that remains is to also call onPause, onResume, and onDestroy in the respective methods of the activity via the framework.
 
 The framework offers some helper functions to shift some workload away from the user.
 These should allow the usage of the framework to be very quick to learn and implement, without having to understand how the framework works internally.
