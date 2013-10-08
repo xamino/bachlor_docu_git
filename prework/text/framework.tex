@@ -251,7 +251,7 @@ Figure \ref{fig:binary} shows the result of the operation.
 \end{figure}
 
 Alternative methods are available, but require some more work.
-These are using the Canny edge detection algorithm or an adaptive threshold.
+These are using the Canny edge detection algorithm \cite{canny} or an adaptive threshold.
 Both of these however only detect edges as black on white lines.
 These can also be used to get possible contours but result in two contours for a marker – one on each side of the line, effectively an inside and outside contour.
 Therefore we filter these out, leaving only the outer contours in place.

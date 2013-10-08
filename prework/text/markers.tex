@@ -4,31 +4,42 @@ To enable the framework to detect a 3D pose from a video feed, a marker with spe
 A marker is a visually significant pattern that the system can detect within an image and can be used to calculate spatial coordinates.
 Figure \ref{fig:marker_example} shows an example of such a marker.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=4cm]{img/marker_example.png}
-	\caption[Example Marker.]{An example of a marker. This image is either printed or displayed by some other means in the real world to allow a system to use it as a reference to base a virtual overlay off of it.}
+	\caption[Example Marker.]{An example of a marker compatible with Imagine.}
 	\label{fig:marker_example}
 \end{figure}
 
 Due to our approach for marker detection, we selected a square black on white marker.
-Other types exist, such as rotary markers or image-based feature markers.
+Other types exist, such as rotary markers or image-based feature markers, as seen in figure \ref{fig:marker_alt}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=8cm]{img/marker_alternatives.png}
+	\caption[Alternative Marker Types.]{An example of other types of markers: left a feature marker, right a rotary marker.}
+	\label{fig:marker_alt}
+\end{figure}
 
 \section{Coding Scheme}
 
-For this framework, a marker is coded as seen in \ref{fig:marker_template}.
+For this framework, a marker is coded as seen in figure \ref{fig:marker_template}.
 The basis is a six by six sized grid, where the border is solid black.
 The internal four by four spaces are used to encode the orientation and identification of the marker.
 The orientation is encoded by coloring the corners white except for the top right corner, which is encoded black.
-The identification is binary encoded with a Hamming code\cite{hamming} for error detection and correction.
-Parity bits are the red bits.
+The identification is binary encoded with a Hamming code \cite{hamming} for error detection and correction.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=4cm]{img/marker_template.png}
-	\caption[Template Marker.]{A color coded representation of a legitimate marker. A real marker is monochrome, the colors here show the location of interesting bits. Green denotes the bits used to determine the rotation: the dark green bit is black, the rest white. Light blue denotes the binary encoded identification number of the marker. Red represents the Hamming encoded parity bits used for error correction.}
+	\caption[Template Marker.]{A color coded representation of a legitimate marker.}
 	\label{fig:marker_template}
 \end{figure}
+
+A real marker is monochrome, the colors here show the location of interesting bits.
+Green denotes the bits used to determine the rotation: the dark green bit is black, the rest white.
+Light blue denotes the binary encoded identification number of the marker.
+Red represents the Hamming encoded parity bits used for error correction.
 
 Thus encoded, the framework can by default detect 256 different markers.
 This was deemed sufficient, considering the penalty in performance for each additional detected marker when running on a mobile device, as Imagine becomes unusably slow long before reaching this limit – as seen in section \ref{performance}.
