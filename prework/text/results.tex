@@ -6,7 +6,9 @@ For that we implemented a basic application that implements the functionality of
 \section{Implementation}
 \label{implementation}
 
-TODO: TEXT HERE
+Here we will take a look at the process of implementing Imagine.
+First we will discuss difficulties and hardships endured during actual coding.
+Then we will take a closer look at the performance of the completed framework.
 
 \subsection{Encountered Difficulties}
 
@@ -19,7 +21,7 @@ The second difference is due to the fact that our framework's platform was to be
 These two differences seem to have been sufficient in decreasing the usage of the Java port of OpenCV enough that documentation and accessible tutorials and examples proved to be far in between.
 This forced development to rely all too often on examples written for other platforms and programming languages.
 Luckily however the framework syntax is consistent, although the used data types are not always transferable.
-Thus such translation work was possible if difficult.
+Thus such translation work was possible but difficult.
 
 % Lacking documentation
 But not only unofficial documentation is lacking: official documentation in the form of documentation for the application programming interface and official tutorials are, for all intents, almost non existent at the time of this paper.
@@ -33,6 +35,7 @@ Mats are used within OpenCV as a one-size-fits-all solution for any data ranging
 While it was still easy to recognize the RGBA format\footnote{RGBA stands for, respectively: red, green, blue, alpha. This depicts the order and type of channels for an image.} that the framework receives the camera image in, using the correct conversions and the correct mat subtypes in the principle work thread within Imagine proved to be very frustrating.
 First we encountered difficulties with the conversion of different image formats to other formats, an operation that costs a good bit of processing power and time.
 Thankfully, we were able to work around any conversions by parallel usage of multiple mats whose results are used on one another to retain a higher overall speed.
+
 Then another difficulty emerged while using the OpenCV function to calculate polygons for detected contours within an image.
 The method for these polygons returns these in a special mat subtype that is specialized for floating point numbers.
 However, the methods we then required to work with these polygons required the polygons in a normal mat, thus forcing us to convert from one type of mat to another.
@@ -41,7 +44,7 @@ Furthermore, there exist no methods for determining the type and allocation of c
 While not being able to check for these properties forced a clean usage of the data class within Imagine and thus probably increased speed somewhat, such methods are crucial for learning the correct usage of mat and certainty of stored data type.
 Writing and reading data with mats is also something that requires faith, as no checks for sanity can be performed on the data.
 For example, the method for reading a single coordinate returns a double array – always, even when using the mat for binary images (in which case a boolean would suffice), luminance images (possibly a short data type), or as an integer matrix (integers).
-The returned value then has to be cast to the (hopefully) correct data type – and if we made a mistake somewhere along the line and the mat doesn't contain the data we expect it to contain, we have little in the way of catching that mistake.
+The returned value then has to be cast to the (hopefully) correct data type – and if we made a mistake somewhere along the line and the mat doesn't contain the data we expect it to contain, we have no tools that would help us catch that mistake.
 We therefore kindly suggest that OpenCV for Android make use of the Java generics mechanism, as we believe that would start to reduce the confusion surrounding mats.
 
 % Problems debugging
@@ -53,11 +56,11 @@ OpenCV for Android does not cast the numeric error codes into equivalent Java ex
 Furthermore, the numerical error codes proved to be very generic in their implications.
 An example of this can be found with the error code we mostly fought with, which was 215.
 That numerical error can (and does!) mean anything from incorrect mat sizes to incorrect number of channels.
-A quick search also showed that that very same code is also used to signal unimplemented methods within OpenCV itself.
+A quick search also showed that the very same code is also used to signal unimplemented methods within OpenCV itself.
 
 % Paradigm problems
 While on the topic of paradigm differences: another difficulty we encountered with OpenCV for Android was the difference in coding styles.
-With this we mean for example that the result of a method was not returned, but instead written into an object passed on to the method\footnote{This stems from the way C++ usually does error handling by returning numerical error codes. The result is written into a referenced data class, freeing the return call for passing back numerically coded error or success messages.}.
+With this we mean for example that the result of a method was not returned, but instead called by reference\footnote{This stems from the way C++ usually does error handling by returning numerical error codes. The result is written into a referenced data class, freeing the return call for passing back numerically coded error or success messages.}.
 Due to the existence of exceptions, this is usually done differently when using Java.
 While generally more of a nuisance than a source of error, it would be helpful if the wrapper took care of the paradigm shift between Java and the C++ interface, thus freeing developers from having to work with two paradigms in parallel.
 
@@ -80,6 +83,7 @@ To give the following numbers a frame of reference, here some numbers concerning
 OpenCV captures the preview frame of the camera from Android for the base frame from which all processing originates.
 This means that the speed at which it does this is the first important reference for all further values.
 The speed of this operation proves to be the first limiting factor: due to how Android camera capture works, the preview only offers 15 frames per second.
+This was measured by simply showing the image as received through OpenCV, meaning that there was no overhead work being done.
 This has some strong implications for the Imagine framework: however much the work done can be optimized, it will never be capable of running faster than that.
 As humans only begin to see a smooth video upwards of approximately 20 frames per second – for perfectly smooth video however at least 60 frames per second – this places Imagine already outside the range of smooth output.
 
@@ -92,66 +96,69 @@ Newer versions of it should theoretically be able to increase the speed up to th
 To achieve even higher speeds, the speed at which Android fetches the camera preview must be increased, which could happen with newer devices and or newer version of Android.
 All of these possible speed increases however lie outside of the influence of the Imagine framework.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=14cm]{img/performance_chart.png}
-	\caption[Imagine Performance Chart.]{This chart shows the performance in frames per second of Imagine, working both as a single pipeline and with multithreading. The effect of the number of markers in a camera image on the performance can clearly be seen.}
+	\includegraphics[width=16cm]{img/performance_chart.png}
+	\caption[Imagine Performance Chart.]{This chart shows the performance in frames per second of Imagine, working both as a single pipeline and with multithreading.}
 	\label{fig:performance_chart}
 \end{figure}
 
 For the speed of the Imagine framework, a general understanding of the algorithm that detects markers is required – as can be found in section \ref{detection_workflow}.
-Imagine idles at up to seven frames per second, meaning that this is the best case performance under ideal circumstances with no markers present.
+Imagine idles at up to \textbf{seven frames per second}, meaning that this is the best case performance under ideal circumstances with no markers present.
 When markers are present and detected, performance takes a hard dip.
 This and the difference multithreading makes can be seen in figure \ref{fig:performance_chart}.
 
 \subsubsection{Speed of Operations in Detector}
 
-The first performance sensitive operation is the conversion of the input image into a binary image.
+The first performance sensitive operation is the \textbf{conversion of the input image into a binary image}.
 The default method with a static threshold takes around 8 ms.
 It is significantly faster than adaptive thresholding with 88 ms.
 However it does not work reliably in low contrast images or in high dynamic ranges within an image.
 
-Next is the operation that finds all contours from the binary image.
+Next is the \textbf{operation that finds all contours from the binary image}.
 This operation is a vital part of the algorithm and can not easily be exchanged for some other operation.
 The cost of finding contours varies strongly on the binary image, but generally takes around 22 ms.
 
-Now Imagine has to process each contour separately, as each could be a marker.
+Now Imagine has to \textbf{process each contour separately}, as each could be a marker.
 This step is where most of the performance is siphoned from.
 In total these operations take around 100 ms, with a high variance for the number of markers.
 
-For each found contour, we calculate the polynomial approximation and use it to filter out any polygons that aren't convex and don't have 4 corners.
+For each found contour, we \textbf{calculate the polynomial approximation} and use it to filter out any polygons that aren't convex and don't have 4 corners.
 This step takes about 3 ms.
-Imagine then calculates the perspective transform and applies it to dewarp the texture of the marker candidate to allow sampling.
-Using the rgba input mat, OpenCV does this step in 12 ms.
+Imagine then calculates the perspective transform and applies it to \textbf{dewarp the texture} of the marker candidate to allow sampling.
+Using the RGBA input mat, OpenCV does this step in 12 ms.
 Originally however we require a grayscale image at this point; however it turns out that OpenCV has no hardware acceleration for dewarping grayscale mats on a Tegra CPU, such as the developer machine has.
 Using the grayscale image would impose a more hefty performance cost.
 
-If the contour is still a valid candidate at this point, Imagine tries to detect a marker from it and the dewarped texture.
+If the contour is still a valid candidate at this point, Imagine tries to \textbf{detect a marker} from it and the dewarped texture.
 This method takes anywhere from 5 ms to 30 ms, depending on whether the candidate is valid in terms of sampling its properties from the texture (meaning valid border, orientation, and identification marks).
 If a marker is rotated, then the correction of the identification pattern takes additional time, as rotating matrices is computationally expensive.
 
-Now only one step remains for a complete marker detection: calculating the perspective transformations.
+Now only one step remains for a complete marker detection: \textbf{calculating the perspective transformations}.
 This is done for all detected markers, but luckily is relatively fast compared to other operations.
 OpenCV takes 2 ms to calculate the data for every marker.
 
 \section{Features and Capabilities}
 
+In this section, we will take a look at the implemented features of Imagine.
+This includes basic features that are required for basic usability and capabilities for debugging various algorithm stages.
+
 \subsection{Debugging Capabilities}
 
 Imagine offers some easy options for selective debugging beyond the log output on Android.
 Specifically for debugging the visual pipeline we implemented some options so that pinpointing an error is comparatively easy.
-Setting debugging up is done via flags and should only be done before calling the onCreate function.
+Setting debugging up is done via flags and should only be done before calling the onCreate method.
 
-The first option we offer is to activate a more verbose logging mode, where Imagine logs quite a bit more information concerning possible errors – for example, the status of the hamming decoding upon marker detection.
-On par with that one can also activate frame per frame time logging, where Imagine will log the time each detection and rendering step takes.
+The first option we offer is to \textit{activate a more verbose logging mode}, where Imagine logs quite a bit more information concerning possible errors – for example, the status of the hamming decoding upon marker detection.
+On par with that one can also \textit{activate frame per frame time logging}, where Imagine will log the time each detection and rendering step takes.
 
 Going into the visual debugging it is important to note that marker detection is partially suspended.
 In any case Imagine deactivates multithreading to enable the output to be shown – as seen in section \ref{performance}, this decreases performance quite a bit.
 Once in visual debugging mode, three main aspects can be shown.
-The first option that can be activated shows the binary picture.
+The first option that can be activated \textit{shows the binary picture}.
 This can be used to check whether the chosen binarization method is working correctly.
 
-Another output that can be chosen is to let Imagine draw the detected contours.
+Another output that can be chosen is to let Imagine \textit{draw the detected contours}.
 This option can be used to detect errors within the contour detection that arise from the method used to binarize the image.
 
 \begin{figure}
@@ -183,7 +190,7 @@ Managing so-called trackables is possible, including the on-the-fly adding, remo
 Reading the pure 3D transformation data is also possible via a listener, bypassing the graphical part of Imagine.
 Manual configuration is somewhat possible, as many values can be changed to accomondate special use cases.
 It is however easily possible to configure debugging views to display relevant information and to enable extensive debugging output.
-multithreading is also implemented and beneficial, as seen in section \ref{performance}.
+Multithreading is also implemented and beneficial, as seen in section \ref{performance}.
 If required or when debugging views are to be used, a single thread pipeline can also be used.
 
 Therefore we conclude that our framework covers the basics in functionality, although a multitude of improvements can be made.
@@ -196,18 +203,18 @@ It consists of two activities: one for setting parameters and control values and
 
 Figure \ref{fig:debugging_view} is a screenshot of the application running the framework activity with debugging values activated.
 
-TAMINO TODO: MORE!
+TAMINO TODO: TODO AND MORE!
 
 \section{Comparison to similar Apps}
 
 In this section, we will compare Imagine to two other marker-based augmented reality frameworks for Android.
-Both are opensource projects and can be used freely in personal projects.
+Both are open source projects and can be used freely in personal projects.
 Table \ref{comp} lists the main differences.
 
-\begin{table}
+\begin{table}[H]
 	\centering
 	\begin{tabulary}{\textwidth}{J | J | J | J}
-	Framework & FPS & Number of markers & Maximum parallel markers \\
+	\textbf{Framework} & \textbf{FPS} & \textbf{Number of markers} & \textbf{Maximum parallel markers} \\
 	\hline
 	Imagine & ~5 & 256 & 256 \\
 	\hline
@@ -221,9 +228,16 @@ Table \ref{comp} lists the main differences.
 
 \subsection{Aruco}
 
-Aruco\cite{aruco} is a minimal library for augmented reality applications based on OpenCV.
+Aruco \cite{aruco} is a minimal library for Augmented Reality applications based on OpenCV.
 Primarily, it is intended for desktop C++ applications, although an Android port and web-based Javascript port exist.
-For the purpose of comparing it to our own framework, we will base the comparison on the Javascript port\cite{jsaruco} running on the same developer machine.
+For the purpose of comparing it to our own framework, we will base the comparison on the Javascript port \cite{jsaruco} running on the same developer machine.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=8cm]{img/aruco.png}
+	\caption[Aruco]{Screenshot of a basic Aruco application.}
+	\label{fig:aruco}
+\end{figure}
 
 The main features of Aruco are simple usage, 1024 markers that can be identified, and the support of so-called AR boards\footnote{Markers composed of several markers for higher reliability.}.
 The marker detection algorithm used by Aruco is the basis for our own work and thus works similarly.
@@ -234,13 +248,20 @@ The Javascript port runs at around four frames per second in a mobile web browse
 This is a low difference compared to Imagine, although our framework runs natively.
 We believe this due to the fact that while Aruco is based on OpenCV, the Javascript port can not use the library, and thus re-implements the required features.
 That removes any overhead caused by unused features and allows a completely native environment for data objects, without any significant conversions having to be done, which were one bottleneck in Imagine.
-Non the less Imagine is a small step faster.
+Nonetheless Imagine is a small step faster.
 
 \subsection{DroidAR}
 
-DroidAR\cite{droidar} is another framework for Android that allows, among other augmented reality features, marker-based tracking.
+DroidAR\cite{droidar} is another framework for Android that allows, among other Augmented Reality features, marker-based tracking.
 Due to difficulties using the framework on the developer's machine, no performance comparison could be made.
 DroidAR could not be tested solely without any other features without writing an application for that, which is beyond the scope of this comparison.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{img/droidar.png}
+	\caption[DroidAR]{Screenshot of a basic DroidAR application.}
+	\label{fig:aruco}
+\end{figure}
 
 Feature wise a few things are different compared to Imagine, although some interesting parallels also exist.
 Most notably, DroidAR uses threads for the detection of markers and also utilizes OpenCV for Android.
