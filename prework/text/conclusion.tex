@@ -10,7 +10,7 @@ In this section, we will propose some aspects that we think could be of interest
 
 \subsection{Performance}
 
-Concerning the performance of Imagine a lot could still be done, although globally the performance will remain limited by the capabilities of OpenCV for Android.
+Concerning the performance of Imagine a lot could still be done, although globally the performance will remain limited by the capabilities of OpenCV for Android – see also section \ref{performance}.
 One of the main aspects that could be tried however is writing the main method that detects markers using OpenCV with native C++ and calling that from the Java environment with a native call.
 We did not try that because of two factors: one, a basic Java framework was the primary goal, and two, developing a Java application for Android with native code in C++ would have put this work beyond our time frame.
 It would also have further divided our attention away from the core functionality, as considerable time would have had to be spent learning and utilizing the native development kit.
@@ -23,7 +23,7 @@ Apart from Imagine, improvements in the runtime environment – Android itself �
 Apart from software aspects various hardware considerations could also lead to better performance.
 One would be the increase of the speed at which the camera generates preview images, allowing OpenCV to grab these faster for further accessing.
 A higher count of CPU cores could also serve to increase the speed by running more worker threads.
-A faster CPU than the 1.4 Ghz quadcore used here will should also increase performance.
+A faster CPU than the 1.4 GHz Quadcore used here will should also increase performance.
 
 \subsection{Features}
 
@@ -62,9 +62,10 @@ Higher graphical fidelity and more features for the rendering side would also be
 A further possibility would be the harnessing of further OpenCV functionality concerning the adaptability of the output.
 This could range from situation aware rendering concerning the lighting of models to detection of further information from objects found in the scene.
 
+\newpage
 \section{Closing Statement}
 
-We have shown our results of implementing a Java framework for Android for marker based detection to be used in augmented reality programs.
+We have shown our results of implementing a Java framework for Android for marker based detection to be used in Augmented Reality programs.
 This includes preparatory work for the framework and the basic application that utilizes it, to the finished results.
 The framework, called Imagine, covers the basic required features to be fully functioning, although various aspects could still be greatly improved and expanded upon.
 
@@ -78,4 +79,4 @@ To help with future evaluations we have also done some basic benchmarks and time
 
 All in all, we are satisfied with the promise of Imagine, although in detail there are many areas worthy of more development time.
 We consider the framework to be academically usable, but would refrain from utilizing it in a production scenario due to low performance while detecting markers.
-We believe the code of Imagine however to be an excellent starting point to learn how to implement augmented reality applications as it provides at the very least a basically functional framework.
+We believe the code of Imagine however to be an excellent starting point to learn how to implement Augmented Reality applications as it provides at the very least a basically functional framework.
