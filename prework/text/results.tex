@@ -104,37 +104,37 @@ All of these possible speed increases however lie outside of the influence of th
 \end{figure}
 
 For the speed of the Imagine framework, a general understanding of the algorithm that detects markers is required – as can be found in section \ref{detection_workflow}.
-Imagine idles at up to \textbf{seven frames per second}, meaning that this is the best case performance under ideal circumstances with no markers present.
+Imagine idles at up to \textit{seven frames per second}, meaning that this is the best case performance under ideal circumstances with no markers present.
 When markers are present and detected, performance takes a hard dip.
 This and the difference multithreading makes can be seen in figure \ref{fig:performance_chart}.
 
 \subsubsection{Speed of Operations in Detector}
 
-The first performance sensitive operation is the \textbf{conversion of the input image into a binary image}.
+The first performance sensitive operation is the \textit{conversion of the input image into a binary image}.
 The default method with a static threshold takes around 8 ms.
 It is significantly faster than adaptive thresholding with 88 ms.
 However it does not work reliably in low contrast images or in high dynamic ranges within an image.
 
-Next is the \textbf{operation that finds all contours from the binary image}.
+Next is the \textit{operation that finds all contours from the binary image}.
 This operation is a vital part of the algorithm and can not easily be exchanged for some other operation.
 The cost of finding contours varies strongly on the binary image, but generally takes around 22 ms.
 
-Now Imagine has to \textbf{process each contour separately}, as each could be a marker.
+Now Imagine has to \textit{process each contour separately}, as each could be a marker.
 This step is where most of the performance is siphoned from.
 In total these operations take around 100 ms, with a high variance for the number of markers.
 
-For each found contour, we \textbf{calculate the polynomial approximation} and use it to filter out any polygons that aren't convex and don't have 4 corners.
+For each found contour, we \textit{calculate the polynomial approximation} and use it to filter out any polygons that aren't convex and don't have 4 corners.
 This step takes about 3 ms.
-Imagine then calculates the perspective transform and applies it to \textbf{dewarp the texture} of the marker candidate to allow sampling.
+Imagine then calculates the perspective transform and applies it to \textit{dewarp the texture} of the marker candidate to allow sampling.
 Using the RGBA input mat, OpenCV does this step in 12 ms.
 Originally however we require a grayscale image at this point; however it turns out that OpenCV has no hardware acceleration for dewarping grayscale mats on a Tegra CPU, such as the developer machine has.
 Using the grayscale image would impose a more hefty performance cost.
 
-If the contour is still a valid candidate at this point, Imagine tries to \textbf{detect a marker} from it and the dewarped texture.
+If the contour is still a valid candidate at this point, Imagine tries to \textit{detect a marker} from it and the dewarped texture.
 This method takes anywhere from 5 ms to 30 ms, depending on whether the candidate is valid in terms of sampling its properties from the texture (meaning valid border, orientation, and identification marks).
 If a marker is rotated, then the correction of the identification pattern takes additional time, as rotating matrices is computationally expensive.
 
-Now only one step remains for a complete marker detection: \textbf{calculating the perspective transformations}.
+Now only one step remains for a complete marker detection: \textit{calculating the perspective transformations}.
 This is done for all detected markers, but luckily is relatively fast compared to other operations.
 OpenCV takes 2 ms to calculate the data for every marker.
 
@@ -205,6 +205,8 @@ Figure \ref{fig:debugging_view} is a screenshot of the application running the f
 
 TAMINO TODO: TODO AND MORE!
 
+TODO: Add image of how it looks with rendering (mustn't be real)
+
 \section{Comparison to similar Apps}
 
 In this section, we will compare Imagine to two other marker-based augmented reality frameworks for Android.
@@ -214,7 +216,7 @@ Table \ref{comp} lists the main differences.
 \begin{table}[H]
 	\centering
 	\begin{tabulary}{\textwidth}{J | J | J | J}
-	\textbf{Framework} & \textbf{FPS} & \textbf{Number of markers} & \textbf{Maximum parallel markers} \\
+	\textit{Framework} & \textit{FPS} & \textit{Number of markers} & \textit{Maximum parallel markers} \\
 	\hline
 	Imagine & ~5 & 256 & 256 \\
 	\hline
@@ -252,7 +254,7 @@ Nonetheless Imagine is a small step faster.
 
 \subsection{DroidAR}
 
-DroidAR\cite{droidar} is another framework for Android that allows, among other Augmented Reality features, marker-based tracking.
+DroidAR \cite{droidar} is another framework for Android that allows, among other Augmented Reality features, marker-based tracking.
 Due to difficulties using the framework on the developer's machine, no performance comparison could be made.
 DroidAR could not be tested solely without any other features without writing an application for that, which is beyond the scope of this comparison.
 

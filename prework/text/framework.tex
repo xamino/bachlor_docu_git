@@ -4,8 +4,8 @@ We will then discuss the implementation and its difficulties.
 
 \section{Proposed Functionality}
 
-The framework shall have two primary capabilities: first, it should enable \textbf{fast and easy access to the 3D pose calculated from the detected marker}.
-Second, given a \textbf{digital 3D model to display}, it should be capable of returning a rendering of the object within the scene on top of the live preview, correctly positioned.
+The framework shall have two primary capabilities: first, it should enable \textit{fast and easy access to the 3D pose calculated from the detected marker}.
+Second, given a \textit{digital 3D model to display}, it should be capable of returning a rendering of the object within the scene on top of the live preview, correctly positioned.
 
 Generally, the framework shall work as in the following.
 Once the framework is running, OpenCV reads the camera frame directly from the camera.
@@ -31,12 +31,12 @@ Here, this filtered and supplemented list is used to render all objects onto the
 	\label{fig:sequence_access}
 \end{figure}
 
-Apart from the above mentioned basic functionality capabilities, the framework should also \textbf{handle the easy gathering of performance and error information}, mainly by extending the relevant functions of Android.
+Apart from the above mentioned basic functionality capabilities, the framework should also \textit{handle the easy gathering of performance and error information}, mainly by extending the relevant functions of Android.
 This can include gathering the logs to a listener, bypassing the Android logging mechanism, and any further functionality that could be useful.
 
 Figure \ref{fig:sequence_access} shows the proposed sequence of events of Imagine, and where data can be input or read.
 As proposed, the framework should offer a wide variety of uses, without being overly complex from an outside perspective.
-Another important aspect we want to make possible is the possibility of \textbf{changing all the more important parameters during runtime}, such as switching the model or adding a new marker.
+Another important aspect we want to make possible is the possibility of \textit{changing all the more important parameters during runtime}, such as switching the model or adding a new marker.
 This should allow a less restrictive usage of the framework and any derived apps as a result.
 
 \section{Dependencies}
@@ -47,7 +47,7 @@ Aside from the basic requirements, the framework will depend mainly on two exter
 
 The first is OpenCV, an open source collection of computer vision and machine learning software.
 Imagine makes use of the Java-based port, called OpenCV for Android \cite{opencvandroid}.
-To use the framework on Android, the OpenCV Manager\cite{opencvmanager} needs to be installed alongside the application using the framework, as the marker detection relies on it.
+To use the framework on Android, the OpenCV Manager \cite{opencvmanager} needs to be installed alongside the application using the framework, as the marker detection relies on it.
 The OpenCV Manager offers the best version of OpenCV for Android for each Android device according to its specifications and capabilities.
 
 Apart from OpenCV for Android, OpenGL ES is used for the rendering of the 3D objects to the display.
@@ -67,7 +67,7 @@ To clarify the scope of the proposed framework, all features that will be delive
 
 \begin{table}[H]
 	\centering
-	\begin{tabulary}{\textwidth}{L || L}
+	\begin{tabulary}{\textwidth}{p{3.75cm} || L}
 	Debug messaging & The framework should be easy to debug and allow simple access to status messages\\
 	\hline
 	Manage trackers & Allow to add and remove trackers during runtime\\
@@ -146,7 +146,7 @@ With the listed methods, all functionality that the framework offers can be acce
 \begin{table}[H]
 	\centering
 	{\footnotesize
-	\begin{tabulary}{\textwidth}{J || J}
+	\begin{tabulary}{\textwidth}{p{2.5cm} || J}
 	<<Initialization>> & Constructs all the internal classes and prepares the major functionality. Also used to set the most important values such as camera distortion and camera perspective, as these are crucial for a correct processing. Furthermore also used to set the output layout where the results are drawn to.\\
 	\hline
 	onCreate & Must be called in the activities onCreate method; handles all the necessary calls within the framework.\\
@@ -206,14 +206,14 @@ Here we will look at the tools used, the process of arriving at a satisfactory a
 
 \subsection{Tools and Environment}
 
-We developed Imagine on a Linux Mint Debian Edition powered computer with the IntelliJ IDEA IDE\cite{idea}.
+We developed Imagine on a Linux Mint Debian Edition powered computer with the IntelliJ IDEA IDE \cite{idea}.
 The development device was connected via USB debugging for rapid iterative coding.
 Javadoc was written directly into the code and then generated to readable format via internal IntelliJ IDEA tools.
 
-For further documentation, we utilized Dia\cite{dia} for generating diagrams, Umbrello\cite{umbrello} for the class diagrams, Texmaker\cite{texmaker} for \LaTeX  creation, and Git\cite{git} for revision control.
+For further documentation, we utilized Dia \cite{dia} for generating diagrams, Umbrello \cite{umbrello} for the class diagrams, Texmaker \cite{texmaker} for \LaTeX  creation, and Git \cite{git} for revision control.
 
 Imagine was developed with the target of running smoothly on a Nvidia Tegra 3 processor.
-The development device is the Transformer Prime, a 10'' tablet from ASUS\cite{devicedev}.
+The development device is the Transformer Prime, a 10'' tablet from ASUS \cite{devicedev}.
 This means that the framework should run smoothly on a 1.6 Ghz Quadcore ARM processor rendering to a 1280 by 800 pixel screen.
 
 \subsection{First Steps and Trials}
@@ -238,17 +238,17 @@ This section describes in detail how we detect, identify, and calculate the pers
 These steps are done for each frame, leveraging the image processing capabilities of OpenCV.
 It results in a list of detected markers with their transformation matrices.
 
-The first step is to reduce the color image into a binary image.
-To do this, we take the gray-scaled image that we receive from OpenCV and threshold it against a constant value.
-As we are interested in highly contrasted regions as our markers are monochrome, this threshold was chosen relatively low.
-Figure \ref{fig:binary} shows the result of the operation.
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=14cm]{img/binary.png}
 	\caption[Binarization]{A typical result of the bianrization step.}
 	\label{fig:binary}
 \end{figure}
+
+The first step is to reduce the color image into a binary image.
+To do this, we take the gray-scaled image that we receive from OpenCV and threshold it against a constant value.
+As we are interested in highly contrasted regions as our markers are monochrome, this threshold was chosen relatively low.
+Figure \ref{fig:binary} shows the result of the operation.
 
 Alternative methods are available, but require some more work.
 These are using the Canny edge detection algorithm \cite{canny} or an adaptive threshold.
@@ -311,7 +311,6 @@ It also enables the management of the entities and their assigned trackables.
 \textit{MainInterface} also handles any inter-system compatibility that the passage of information between the renderer and interface require, such as the filtering of detected markers for trackables that are to be rendered.
 
 The \textit{Messenger} class allows easy and quick access to any debugging, logging, or error messages to outside classes via a listener principle.
-This allows outside threads to be directly notified when a message is written and allows the end user to expand on any messages from the framework.
 
 The \textit{OpenGLRenderer} implements the functions that take the list of detected trackables and renders their objects onto the position given by the pose estimation.
 This class also implements all functionality for the rendering types and 3D drawing functions that are required.
