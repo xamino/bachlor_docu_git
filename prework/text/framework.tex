@@ -150,6 +150,14 @@ With the listed methods, all functionality that the framework offers can be acce
 	\begin{tabulary}{\textwidth}{p{2.5cm} || J}
 	<<Initialization>> & Constructs all the internal classes and prepares the major functionality. Also used to set the most important values such as camera distortion and camera perspective, as these are crucial for a correct processing. Furthermore also used to set the output layout where the results are drawn to.\\
 	\hline
+	setFlag & Sets the given flag to the specified value. For possible flags please see the Javadoc.\\
+	\hline
+	getMarker & Helper method for creating a boolean array representation of a marker for the given identification number.\\
+	\hline
+	importOBJ & Given an object file in the form of a string returns the correct float representation of it.\\
+	\hline
+	setBinaryThreshold & Sets the threshold used for binarizing the image for detecting markers.\\
+	\hline
 	onCreate & Must be called in the activities onCreate method; handles all the necessary calls within the framework.\\
 	\hline
 	onResume & Must be called in the activities onResume method.\\
@@ -165,10 +173,6 @@ With the listed methods, all functionality that the framework offers can be acce
 	registerEntity & Adds an entity containing the ID, visibility status, and vertice buffer. This means that upon detection of the corresponding marker, the object will be rendered on top of it, according to the status of the visibility.\\
 	\hline
 	removeEntity & Removes an entity from the list.\\
-	\hline
-	setDebugFlag & Sets the given debug flag. For possible flags please see the Javadoc.\\
-	\hline
-	removeDebugFlag & Unsets the given debug flag.\\
 	\end{tabulary}
 	}
 	\caption[Application Programming Interface]{Methods for accessing the functionality of Imagine. Referred to as the application programming interface, short API, of the framework.}
@@ -353,4 +357,4 @@ This can be used one-off to create a printable set of markers, or during use of 
 The method takes the identification number and generates the complete marker for it, including border, orientation bits, and Hamming encoding.
 
 Another helper function loads a 3D model file and converts it to the correct representation to be used with the entity class.
-This method takes a 3D model file and converts it to the FloatBuffer data structure used by the framework, if capable.
+This method takes a 3D model file and converts it to a float array, which can easily be converted to the FloatBuffer object used by the framework.

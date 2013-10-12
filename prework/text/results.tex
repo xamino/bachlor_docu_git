@@ -198,16 +198,37 @@ If required or when debugging views are to be used, a single thread pipeline can
 Therefore we conclude that our framework covers the basics in functionality, although a multitude of improvements can be made.
 These improvements are listed in section \ref{improvements}.
 
+\newpage
 \section{Application}
 
 To enable rapid testing and experimenting, we implemented a basic application for evaluating our framework.
 It consists of two activities: one for setting parameters and control values and one for actually running the framework.
 
+Figure \ref{fig:app} shows a screenshot of the menu of the application.
+Here, most values that are of interest for using Imagine can be set.
+Most important are the start button on top and the textfield for adding and removing trackables beneath it.
+For this application, a simple model is provided – the user can only change which markers will be tracked.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{img/app.png}
+	\caption[Application Menu]{A screenshot of the menu of the application.}
+	\label{fig:app}
+\end{figure}
+
+Figure \ref{fig:rendering} shows how the application is rendering after choosing marker 42 to track.
+Note that the model is imported from an obj file.
+The face colors are chosen at random, as distinguishing them without shading is impossible.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{img/rendering.png}
+	\caption[Application Render]{A screenshot of the application rendering the trackable for marker 42.}
+	\label{fig:rendering}
+\end{figure}
+
 Figure \ref{fig:debugging_view} is a screenshot of the application running the framework activity with debugging values activated.
-
-TAMINO TODO: TODO AND MORE!
-
-TODO: Add image of how it looks with rendering (mustn't be real)
+These are all the options given below the marker selection field.
 
 \section{Comparison to similar Apps}
 
