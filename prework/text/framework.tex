@@ -209,7 +209,7 @@ Utilizing the thus calculated perspective information, paired with the correct o
 The following section describes in more detail the implementation of the framework.
 Here we will look at the tools used, the process of arriving at a satisfactory algorithm, and then how it works.
 
-Due to performance considerations and access to low level hardware access, we decided not to implement a hybrid framework, such as a HTML5 application in a native container, but a native application\cite{sabrina918}.
+Due to performance considerations and access to low level hardware access, we decided not to implement a hybrid framework, such as a HTML5 application in a native container, but a native application \cite{sabrina918}.
 
 \subsection{Tools and Environment}
 
@@ -235,7 +235,7 @@ However, this method proved to be too computationally expensive considering that
 Initial tests only for detecting feature points in a live camera view yielded framerates below 2 frames per second.
 This was deemed insufficient for a realtime use of the finished product.
 
-Initialized by that, further detailed research turned up a better solution based on the method used by the comparable Aruco\cite{aruco} framework.
+Initialized by that, further detailed research turned up a better solution based on the method used by the comparable Aruco \cite{aruco} framework.
 By comparing the performance of the marker-based approach of Aruco, the feature-based approach was discarded in favor of a marker-based approach, as it promised to offer a significant performance increase.
 
 \subsection{Implemented Algorithm}
@@ -248,7 +248,7 @@ It results in a list of detected markers with their transformation matrices.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=14cm]{img/binary.png}
-	\caption[Binarization]{A typical result of the bianrization step.}
+	\caption[Binarization]{A typical result of the binarization step.}
 	\label{fig:binary}
 \end{figure}
 
